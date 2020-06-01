@@ -19,7 +19,7 @@ public class SplashScreen extends AppCompatActivity {
 
 
 
-    private static final int SPLASH_HIDE_DELAY_MILLIS = 2000;
+    private static final int SPLASH_HIDE_DELAY_MILLIS = 5000;
     /** Duration of wait **/
 
 

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="splashScreenBack">#DDDAE1</color>
-    <color name="black_overlay">#66000000</color>
+        <color name="primaryColor">#192952</color>
+        <color name="primaryLightColor">#46517f</color>
+        <color name="primaryDarkColor">#000029</color>
+        <color name="secondaryColor">#e8de79</color>
+        <color name="secondaryLightColor">#ffffaa</color>
+        <color name="secondaryDarkColor">#b4ac4a</color>
+        <color name="primaryTextColor">#ffffff</color>
+        <color name="secondaryTextColor">#000000</color>
+        <color name="BackColor">#ffffff</color>
 </resources>

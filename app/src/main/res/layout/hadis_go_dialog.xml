@@ -8,27 +8,20 @@
     android:paddingTop="@dimen/activity_margin">
 
     <TextView android:id="@+id/hadis_go_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_10"
-        android:fontFamily="sans-serif-medium"
-        android:lineSpacingExtra="8sp"
+        style="@style/TextStyleBasicHeader"
         android:text="@string/lbl_hadis_go_title"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/lbl_new_note_title"
-        android:textStyle="normal" />
+/>
 
     <EditText
         android:id="@+id/hadisno"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
         android:background="@android:color/transparent"
-        android:gravity="top"
+
         android:hint="123.."
         android:maxLength="4"
         android:inputType="number"
-        android:textColorHint="@color/hint_enter_hadis_no"
-        android:textSize="@dimen/input_go_hadis_no"
+
+        style="@style/TextStyleBasic"
         />
 
 </LinearLayout>

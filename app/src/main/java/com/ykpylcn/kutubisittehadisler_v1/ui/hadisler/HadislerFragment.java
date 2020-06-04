@@ -1,4 +1,4 @@
-package com.ykpylcn.kutubisittehadisler_v1.ui.home;
+package com.ykpylcn.kutubisittehadisler_v1.ui.hadisler;
 
 
 import android.app.AlertDialog;
@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,10 +38,10 @@ import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HadislerFragment extends Fragment {
 
     DBAdapter dbAdapter;
-    private HomeViewModel homeViewModel;
+    private HadislerViewModel hadislerViewModel;
     Button before, next;
     ViewFlipper simpleViewFlipper;
     AdapterViewFlipper adapViewFlipper;
@@ -55,8 +53,8 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        hadislerViewModel =
+                ViewModelProviders.of(this).get(HadislerViewModel.class);
 
         context=getActivity().getApplicationContext();
 //        if(savedInstanceState!=null)
@@ -64,9 +62,9 @@ public class HomeFragment extends Fragment {
         refindexVP=context.getSharedPreferences("refindexVP",0);
         indexVP=refindexVP.getInt("refindexVPkey",indexVP);
 
-        final View root = inflater.inflate(R.layout.fragment_home, container, false);
+        final View root = inflater.inflate(R.layout.fragment_hadisler, container, false);
 //        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getHadisler().observe(getViewLifecycleOwner(), new Observer<ArrayList<Hadis>>() {
+        hadislerViewModel.getHadisler().observe(getViewLifecycleOwner(), new Observer<ArrayList<Hadis>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
 //                Message.show(getContext(),"getHadisler() observe yapildi");
@@ -171,7 +169,7 @@ public class HomeFragment extends Fragment {
                 int hadisno=Integer.parseInt(inputHadisNo.getText().toString());
                 //Message.show(getActivity(),String.valueOf(hadisno));
                 if(dbAdapter.CheckHadisBy(hadisno)){
-                    int i= homeViewModel.getHadisler().getValue().indexOf(dbAdapter.getHadis(hadisno));
+                    int i= hadislerViewModel.getHadisler().getValue().indexOf(dbAdapter.getHadis(hadisno));
                     adapViewFlipper.setSelection(i);
                 }
 

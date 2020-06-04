@@ -1,4 +1,4 @@
-package com.ykpylcn.kutubisittehadisler_v1.ui.home;
+package com.ykpylcn.kutubisittehadisler_v1.ui.hadisler;
 
 
 
@@ -15,13 +15,13 @@ import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import java.util.ArrayList;
 
 
-public class HomeViewModel extends AndroidViewModel {
+public class HadislerViewModel extends AndroidViewModel {
 
 
     private MutableLiveData<String> mText;
     private MutableLiveData<ArrayList<Hadis>> mArrListHadisler;
     private DBAdapter dbAdapter;
-    public HomeViewModel(Application application) {
+    public HadislerViewModel(Application application) {
         super(application);
 
         if(mArrListHadisler==null){

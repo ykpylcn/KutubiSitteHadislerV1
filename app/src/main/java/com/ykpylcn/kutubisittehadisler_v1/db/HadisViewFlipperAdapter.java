@@ -60,7 +60,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).
-                    inflate(R.layout.fragment_hadis_view, parent, false);
+                    inflate(R.layout.hadis_list_row, parent, false);
         }
 
         Hadis hadis = hadisler.get(position);

@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -51,6 +53,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DBAdapter adapter=new DBAdapter(getApplicationContext());
         setContentView(R.layout.activity_splash_screen);
         mHideHandler.postDelayed(new Runnable(){
             @Override

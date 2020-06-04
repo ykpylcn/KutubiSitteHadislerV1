@@ -1,5 +1,7 @@
 package com.ykpylcn.kutubisittehadisler_v1.ui.gallery;
 
+
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+
 import com.ykpylcn.kutubisittehadisler_v1.R;
+import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
+import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
+import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
+
+import java.util.List;
 
 public class GalleryFragment extends Fragment {
 
@@ -27,9 +35,17 @@ public class GalleryFragment extends Fragment {
         galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                Context context=getActivity().getApplicationContext();
+                DBAdapter dbAdapter=new DBAdapter(context);
+                Message.show(context,"basladi");
+                List<Hadis> list=dbAdapter.getAllHadisler();
+                Message.show(context,"bitti");
+                textView.setText(list.get(14).getHadis());
+
+
             }
         });
+
         return root;
     }
 }

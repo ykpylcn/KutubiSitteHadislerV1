@@ -14,9 +14,31 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="24sp"
+        android:scrollbars="vertical"
+        tools:ignore="MissingConstraints" />
+    <ViewFlipper
+        android:id="@+id/simpleViewFlipper"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal"
+        android:scrollbars="vertical"
+        android:paddingHorizontal="@dimen/activity_vertical_margin"
+        tools:ignore="MissingConstraints"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First TextView"
+            android:textSize="25dp" />
+
+
+
+
+    </ViewFlipper>
 </androidx.constraintlayout.widget.ConstraintLayout>

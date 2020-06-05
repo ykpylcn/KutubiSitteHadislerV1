@@ -1,6 +1,11 @@
 package com.ykpylcn.kutubisittehadisler_v1.db;
 
 public class Hadis {
+    public static final String COLUMN_HADIS_ID = "ID";
+    public static final String COLUMN_HADIS = "Hadis";
+    public static final String COLUMN_ISFAV = "IsFav";
+
+
     private int ID;
     private String AnaKonu, AltKonu, RivayetKaynak,Rivayet,Hadis,Kaynak;
     private boolean IsFav=false;

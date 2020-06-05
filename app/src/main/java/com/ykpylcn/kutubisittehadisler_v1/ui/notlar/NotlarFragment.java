@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
@@ -38,7 +39,7 @@ import java.util.List;
 public class NotlarFragment extends Fragment {
 
     private NotlarViewModel notlarViewModel;
-    DBAdapter dbAdapter;
+
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
     private CoordinatorLayout coordinatorLayout;
@@ -60,9 +61,9 @@ public class NotlarFragment extends Fragment {
         coordinatorLayout = root.findViewById(R.id.coordinator_layout);
         recyclerView = root.findViewById(R.id.recycler_view);
         noNotesView = root.findViewById(R.id.empty_notes_view);
-        dbAdapter=new DBAdapter(getActivity().getApplicationContext());
 
-        notesList.addAll(dbAdapter.getAllNotes());
+
+        notesList.addAll(App.DbAdapter.getAllNotes());
 
         FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +133,7 @@ public class NotlarFragment extends Fragment {
      */
     private void deleteNote(int position) {
         // deleting the note from db
-        dbAdapter.deleteNote(notesList.get(position));
+        App.DbAdapter.deleteNote(notesList.get(position));
 
         // removing the note from the list
         notesList.remove(position);
@@ -208,10 +209,10 @@ public class NotlarFragment extends Fragment {
     private void createNote(String note) {
         // inserting note in db and getting
         // newly inserted note id
-        long id = dbAdapter.insertNote(note,0);
+        long id = App.DbAdapter.insertNote(note,0);
 
         // get the newly inserted note from db
-        Note n = dbAdapter.getNote(id);
+        Note n = App.DbAdapter.getNote(id);
 
         if (n != null) {
             // adding new note to array list at 0 position
@@ -233,7 +234,7 @@ public class NotlarFragment extends Fragment {
         n.setNote(note);
 
         // updating note in db
-        dbAdapter.updateNote(n);
+        App.DbAdapter.updateNote(n);
 
         // refreshing the list
         notesList.set(position, n);
@@ -247,7 +248,7 @@ public class NotlarFragment extends Fragment {
     private void toggleEmptyNotes() {
         // you can check notesList.size() > 0
 
-        if (dbAdapter.getNotesCount() > 0) {
+        if (App.DbAdapter.getNotesCount() > 0) {
             noNotesView.setVisibility(View.GONE);
         } else {
             noNotesView.setVisibility(View.VISIBLE);

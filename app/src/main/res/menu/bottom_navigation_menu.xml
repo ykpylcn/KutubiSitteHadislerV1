@@ -3,18 +3,18 @@
     <item
         android:id="@+id/navigate_hadis_no"
         android:icon="@drawable/ic_home"
-        android:title="Hadis Bul" />
+        android:title="Getir" />
     <item
 
         android:id="@+id/navigation_note"
         android:icon="@drawable/ic_sms"
-        android:title="NOT Ekle" />
+        android:title="Not Ekle" />
     <item
     android:id="@+id/navigation_notifications"
     android:icon="@drawable/ic_notifications"
     android:title="Notification" />
     <item
-        android:id="@+id/navigation_notifications2"
-        android:icon="@drawable/ic_menu_camera"
-        android:title="Not 2" />
+        android:id="@+id/fav_add"
+        android:icon="@drawable/ic_action_favorite_border"
+        android:title="" />
 </menu>

@@ -52,6 +52,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
         return  hadisler.get(position).getHadisNo();
     }
 
+
     public int getItemIndexByHadisID(int HadisID) {
 
         return  hadisler.indexOf(getItem(HadisID));

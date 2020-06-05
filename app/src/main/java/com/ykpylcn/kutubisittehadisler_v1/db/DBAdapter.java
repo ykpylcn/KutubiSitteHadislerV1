@@ -23,15 +23,38 @@ public class DBAdapter {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 //        String[] columns = {myDbHelper.UID,myDbHelper.NAME,myDbHelper.MyPASSWORD};
-        Cursor cursor=dbHelper.getReadableDatabase().query(dbHelper.TABLE_NAME_HADISLER,new String[]{"Hadis"},"ID = ?",new String[]{String.valueOf(hadisNo)},null,null,null);
+        Cursor cursor=dbHelper.getReadableDatabase().query(dbHelper.TABLE_NAME_HADISLER,new String[]{Hadis.COLUMN_HADIS},Hadis.COLUMN_HADIS_ID+"= ?",new String[]{String.valueOf(hadisNo)},null,null,null);
+        Hadis hadis;
         if (cursor != null){
             cursor.moveToFirst();
-            return new Hadis(hadisNo,"","","","",cursor.getString(cursor.getColumnIndex("Hadis")),"","0");
+            hadis= new Hadis(hadisNo,"","","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),"","0");
 
         }else
-            return new Hadis(hadisNo,"","","","","Hadis Bulunamadi!","","0");
+            hadis= new Hadis(hadisNo,"","","","","Hadis Bulunamadi!","","0");
+        cursor.close();
+        db.close();
+        return hadis;
+    }
+    public Hadis getHadis(long id) {
+        // get readable database as we are not inserting anything
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+        Cursor cursor = db.query(DBHelper.TABLE_NAME_HADISLER,
+                new String[]{Hadis.COLUMN_HADIS, Hadis.COLUMN_ISFAV},
+                Hadis.COLUMN_HADIS_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        Hadis hadis=null;
+        if (cursor != null){
+            cursor.moveToFirst();
+            // prepare note object
+            hadis = new Hadis(Integer.parseInt(String.valueOf(id)) ,"","","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),"",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
 
+        }
+
+        // close the db connection
+        cursor.close();
+        db.close();
+        return hadis;
     }
     public Boolean CheckHadisBy(int hadisNo) {
 
@@ -45,6 +68,16 @@ public class DBAdapter {
             return false;
 
 
+    }
+    public int updateHadisIsFav(long hadisid, boolean isFav) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Hadis.COLUMN_ISFAV, isFav);
+
+        // updating row
+        return db.update(DBHelper.TABLE_NAME_HADISLER, values, Hadis.COLUMN_HADIS_ID + " = ?",
+                new String[]{String.valueOf(hadisid)});
     }
     public List<Hadis> getAllHadisler() {
         List<Hadis> hadisList = new ArrayList<Hadis>();

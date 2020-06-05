@@ -12,6 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
+import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
+
+import java.io.IOException;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -53,25 +56,33 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DBAdapter adapter=new DBAdapter(getApplicationContext());
-        setContentView(R.layout.activity_splash_screen);
-        mHideHandler.postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashScreen.this,MainActivity.class);
-                SplashScreen.this.startActivity(mainIntent);
-                SplashScreen.this.finish();
+
+        try {
+            App.DbAdapter=new DBAdapter(getApplicationContext());
+            if(App.DbAdapter!=null){
+                setContentView(R.layout.activity_splash_screen);
+                mHideHandler.postDelayed(new Runnable(){
+                    @Override
+                    public void run() {
+                        /* Create an Intent that will start the Menu-Activity. */
+                        Intent mainIntent = new Intent(SplashScreen.this,MainActivity.class);
+                        SplashScreen.this.startActivity(mainIntent);
+                        SplashScreen.this.finish();
+                    }
+                }, SPLASH_HIDE_DELAY_MILLIS);
+            }else {
+                Message.show(getApplicationContext(),"Hata Oluştu, Açılamıyor..!");
+                return;
             }
-        }, SPLASH_HIDE_DELAY_MILLIS);
 
-//        mControlsView = findViewById(R.id.fullscreen_content_controls);
-       // mContentView = findViewById(R.id.fullscreen_content);
+        } catch (Exception e) {
+
+            Message.show(getApplicationContext(),"Hata Olustu: "+e.getMessage());
+            return;
+        }
 
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
+
 
     }
 

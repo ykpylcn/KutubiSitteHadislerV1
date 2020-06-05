@@ -42,6 +42,7 @@ public class HadislerFragment extends Fragment {
 
     DBAdapter dbAdapter;
     private HadislerViewModel hadislerViewModel;
+    BottomNavigationView bnavigate;
     Button before, next;
     ViewFlipper simpleViewFlipper;
     AdapterViewFlipper adapViewFlipper;
@@ -63,18 +64,18 @@ public class HadislerFragment extends Fragment {
         indexVP=refindexVP.getInt("refindexVPkey",indexVP);
 
         final View root = inflater.inflate(R.layout.fragment_hadisler, container, false);
-//        final TextView textView = root.findViewById(R.id.text_home);
+//      final TextView textView = root.findViewById(R.id.text_home);
         hadislerViewModel.getHadisler().observe(getViewLifecycleOwner(), new Observer<ArrayList<Hadis>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
-//                Message.show(getContext(),"getHadisler() observe yapildi");
+
                 FlipMethodCalistirbyAdapter(root,s);
 
             }
         });
 
         dbAdapter=new DBAdapter(getActivity().getApplicationContext());
-        BottomNavigationView bnavigate=root.findViewById(R.id.bottom_navigation);
+        bnavigate=root.findViewById(R.id.bottom_navigation);
         bnavigate.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -106,19 +107,6 @@ public class HadislerFragment extends Fragment {
         });
 
 
-//        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-////                Message.show(getContext(),"getText() observe yapildi");
-//                textView.setText(s);
-//
-//            }
-//        });
-
-
-
-//        FlipMethodCalistirbyAdapter(root);
-        //FlipMethodCalistir(root);
         return root;
     }
 
@@ -159,8 +147,9 @@ public class HadislerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Show toast message when no text is entered
+                String msg=getResources().getText(R.string.hint_enter_hadis_go).toString();
                 if (TextUtils.isEmpty(inputHadisNo.getText().toString())) {
-                    String msg=getResources().getText(R.string.hint_enter_hadis_go).toString();
+
                     Message.show(getActivity(),msg);
                     return;
                 } else {
@@ -169,8 +158,18 @@ public class HadislerFragment extends Fragment {
                 int hadisno=Integer.parseInt(inputHadisNo.getText().toString());
                 //Message.show(getActivity(),String.valueOf(hadisno));
                 if(dbAdapter.CheckHadisBy(hadisno)){
-                    int i= hadislerViewModel.getHadisler().getValue().indexOf(dbAdapter.getHadis(hadisno));
+//                    int i= hadislerViewModel.getHadisler().getValue().indexOf(dbAdapter.getHadis(hadisno));
+                    int i=GetIndexID(hadislerViewModel.getHadisler().getValue(),hadisno);
+                    if(i<0){
+                        msg=getResources().getText(R.string.hint_enter_hadis_go2).toString();
+                        Message.show(getActivity(),msg);
+                        return;
+                    }
                     adapViewFlipper.setSelection(i);
+                }
+                else{
+                    Message.show(getActivity(),msg);
+
                 }
 
 
@@ -182,20 +181,35 @@ public class HadislerFragment extends Fragment {
 
     }
 
+    public int GetIndexID(ArrayList<Hadis> hadisler,int hadisid){
+        for (int i=0;i<hadisler.size();i++){
+
+            if (hadisler.get(i).getHadisNo()==hadisid) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     private void FlipMethodCalistirbyAdapter(View root,ArrayList<Hadis> list1) {
         before=root.findViewById(R.id.btn_before);
         next=root.findViewById(R.id.btn_Next);
 
 
-//        ArrayList<Hadis> list=dbAdapter.getAllHadislerArrList();
-//        ArrayList<Hadis> list=list1;
         adapViewFlipper = root.findViewById(R.id.adapterViewFlipper);
         adapViewFlipper.setAdapter(new HadisViewFlipperAdapter(getActivity().getApplicationContext(), list1));
         adapViewFlipper.setDisplayedChild(indexVP);
 
         adapViewFlipper.setFlipInterval(1000);
 
+//        adapViewFlipper.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+//            @Override
+//            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+//                CheckIsFavorite(adapViewFlipper.getDisplayedChild());
+//
+//            }
+//        });
+//        adapViewFlipper.o
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,6 +222,7 @@ public class HadislerFragment extends Fragment {
                     adapViewFlipper.setInAnimation(context, android.R.animator.fade_in);
                     adapViewFlipper.setOutAnimation(context, android.R.animator.fade_out);
                     adapViewFlipper.showNext();
+//                    CheckIsFavorite(adapViewFlipper.getDisplayedChild());
 
                 }catch (Exception ex){
                     Message.show(context,ex.getMessage());
@@ -228,6 +243,7 @@ public class HadislerFragment extends Fragment {
                     adapViewFlipper.setInAnimation(context, android.R.animator.fade_in);
 //                    adapViewFlipper.setOutAnimation(con1, android.R.animator.fade_out);
                     adapViewFlipper.showPrevious();
+//                    CheckIsFavorite(adapViewFlipper.getDisplayedChild());
                 }catch (Exception ex){
                     Message.show(context,ex.getMessage());
                 }
@@ -236,8 +252,6 @@ public class HadislerFragment extends Fragment {
         });
 
 
-        //simpleViewFlipper.startFlipping(); // start the flipping of views
-        //set 1 seconds for interval time
     }
     private void FlipMethodCalistir(View root) {
         before=root.findViewById(R.id.btn_before);
@@ -334,7 +348,9 @@ public class HadislerFragment extends Fragment {
         simpleViewFlipper.setFlipInterval(2000); //set 1 seconds for interval time
     }
 
-
+    private boolean CheckIsFavorite(int index){
+        return false;
+    }
 
     @Override
     public void onDestroyView() {

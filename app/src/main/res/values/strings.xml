@@ -27,6 +27,7 @@
     <string name="lbl_edit_note_title">Notu Duzenle</string>
     <string name="hint_enter_note">Notunuzu Girin!</string>
     <string name="hint_enter_hadis_go">Gecerli bir Hadis Numarasi Giriniz!</string>
+    <string name="hint_enter_hadis_go2">Herhangi bir hadis bulunamadi!</string>
     <string name="home_second">Home Second</string>
 
 

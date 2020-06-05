@@ -1,4 +1,4 @@
-package com.ykpylcn.kutubisittehadisler_v1.ui.slideshow;
+package com.ykpylcn.kutubisittehadisler_v1.ui.notlar;
 
 
 import android.app.AlertDialog;
@@ -35,9 +35,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlideshowFragment extends Fragment {
+public class NotlarFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private NotlarViewModel notlarViewModel;
     DBAdapter dbAdapter;
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
@@ -47,11 +47,11 @@ public class SlideshowFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
+        notlarViewModel =
+                ViewModelProviders.of(this).get(NotlarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
 //        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        notlarViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
 //                textView.setText(s);

@@ -53,33 +53,33 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =(SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                searchView.setQuery(query,false);
-                searchView.onActionViewCollapsed();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.options_menu, menu);
+//        // Associate searchable configuration with the SearchView
+//        SearchManager searchManager =(SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//
+//        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                searchView.clearFocus();
+//                searchView.setQuery(query,false);
+//                searchView.onActionViewCollapsed();
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
+//        return true;
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {

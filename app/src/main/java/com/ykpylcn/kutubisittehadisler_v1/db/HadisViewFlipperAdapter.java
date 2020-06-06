@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import com.ykpylcn.kutubisittehadisler_v1.R;
+
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -21,21 +24,23 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 
 
-public class HadisViewFlipperAdapter extends BaseAdapter {
+public class HadisViewFlipperAdapter extends BaseAdapter implements Filterable {
     private ArrayList<Hadis> hadisler;
+    private ArrayList<Hadis> hadislerTempFiltered;
     private Context mContext;
-    int textSizeHadis=18;
+    int textSizeHadis=16;
     SharedPreferences refTextSize;
     public HadisViewFlipperAdapter(Context context, ArrayList<Hadis> hadisler) {
         this.mContext = context;
         this.hadisler = hadisler;
+        this.hadislerTempFiltered = hadisler;
         this.refTextSize=mContext.getSharedPreferences("refTextSize",0);
         this.textSizeHadis=refTextSize.getInt("HadisTextSize",textSizeHadis);
 
     }
     @Override
     public int getCount() {
-        return hadisler.size();
+        return hadislerTempFiltered.size();
     }
 
 
@@ -43,20 +48,24 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
 
-        return hadisler.get(position);
+        return hadislerTempFiltered.get(position);
     }
 
 
     public long getItemId(int position) {
 
-        return  hadisler.get(position).getHadisNo();
+        if(hadislerTempFiltered.size()==0)
+            return -1;
+        return  hadislerTempFiltered.get(position).getHadisNo();
     }
 
 
-    public int getItemIndexByHadisID(int HadisID) {
+//    public int getItemIndexByHadisID(int HadisID) {
+//
+//        return  hadislerTempFiltered.indexOf(getItem(HadisID));
+//    }
 
-        return  hadisler.indexOf(getItem(HadisID));
-    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -64,7 +73,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                     inflate(R.layout.hadis_list_row, parent, false);
         }
 
-        Hadis hadis = hadisler.get(position);
+        Hadis hadis = hadislerTempFiltered.get(position);
         final TextView textHadis = convertView.findViewById(R.id.txt_hadis);
         textHadis.setText(hadis.getHadis());
         textHadis.setMovementMethod(new ScrollingMovementMethod());
@@ -125,5 +134,39 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 
 
         return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String query = charSequence.toString();
+
+                ArrayList<Hadis> filtered = new ArrayList<>();
+
+                if (query.isEmpty()) {
+                    filtered = hadisler;
+                } else {
+                    for (Hadis hadis : hadisler) {
+                        if (hadis.getHadis().toLowerCase().contains(query.toLowerCase())) {
+                            filtered.add(hadis);
+                        }
+                    }
+                }
+
+                FilterResults results = new FilterResults();
+                results.count = filtered.size();
+                results.values = filtered;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults results) {
+                hadislerTempFiltered = (ArrayList<Hadis>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

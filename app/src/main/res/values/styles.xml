@@ -7,7 +7,7 @@
         <item name="colorAccent">@color/primaryLightColor</item>
     </style>
 
-    <style name="AppTheme.Genel">
+    <style name="AppTheme.Genel" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:fontFamily">@font/basliklar_font</item>

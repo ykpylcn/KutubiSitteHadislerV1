@@ -3,6 +3,7 @@ package com.ykpylcn.kutubisittehadisler_v1.ui.hadisler;
 
 import android.animation.Animator;
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,12 +20,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -46,10 +50,11 @@ public class HadislerFragment extends Fragment {
 
 
     private HadislerViewModel hadislerViewModel;
+    SearchView searchView;
     BottomNavigationView bnavigate;
     Button before, next;
-    ViewFlipper simpleViewFlipper;
     AdapterViewFlipper adapViewFlipper;
+    HadisViewFlipperAdapter hadisViewFlipperAdapter;
     SharedPreferences refindexVP;
     Context context;
     int indexVP=0;
@@ -78,7 +83,7 @@ public class HadislerFragment extends Fragment {
             }
         });
 
-
+        setHasOptionsMenu(true);
 //        dbAdapter=new DBAdapter(getActivity().getApplicationContext());
         bnavigate=root.findViewById(R.id.bottom_navigation);
         bnavigate.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -250,7 +255,8 @@ public class HadislerFragment extends Fragment {
 
 
         adapViewFlipper = root.findViewById(R.id.adapterViewFlipper);
-        adapViewFlipper.setAdapter(new HadisViewFlipperAdapter(getActivity().getApplicationContext(), list1));
+        hadisViewFlipperAdapter=new HadisViewFlipperAdapter(getActivity().getApplicationContext(), list1);
+        adapViewFlipper.setAdapter(hadisViewFlipperAdapter);
         adapViewFlipper.setDisplayedChild(indexVP);
         adapViewFlipper.setFlipInterval(1000);
         adapViewFlipper.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -294,7 +300,6 @@ public class HadislerFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
                 try {
                     adapViewFlipper.stopFlipping();
                     adapViewFlipper.setInAnimation(context, android.R.animator.fade_in);
@@ -313,6 +318,37 @@ public class HadislerFragment extends Fragment {
 
 
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate( R.menu.options_menu, menu);
+
+        final MenuItem myActionMenuItem = menu.findItem( R.id.search);
+        searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Toast like print
+                Message.show(getContext(), "Search: " + query);
+                hadisViewFlipperAdapter.getFilter().filter(query);
+
+//                if( ! searchView.isIconified()) {
+//                    searchView.setIconified(true);
+//                }
+//                myActionMenuItem.collapseActionView();
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                return false;
+            }
+        });
+        return;
+
+    }
 
     @Override
     public void onDestroyView() {

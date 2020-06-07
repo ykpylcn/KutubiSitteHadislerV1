@@ -23,14 +23,14 @@ public class DBAdapter {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 //        String[] columns = {myDbHelper.UID,myDbHelper.NAME,myDbHelper.MyPASSWORD};
-        Cursor cursor=dbHelper.getReadableDatabase().query(dbHelper.TABLE_NAME_HADISLER,new String[]{Hadis.COLUMN_HADIS},Hadis.COLUMN_HADIS_ID+"= ?",new String[]{String.valueOf(hadisNo)},null,null,null);
+        Cursor cursor=dbHelper.getReadableDatabase().query(dbHelper.TABLE_NAME_HADISLER,new String[]{Hadis.COLUMN_HADIS,Hadis.COLUMN_KAYNAK,Hadis.COLUMN_ISFAV},Hadis.COLUMN_HADIS_ID+"= ?",new String[]{String.valueOf(hadisNo)},null,null,null);
         Hadis hadis;
         if (cursor != null){
             cursor.moveToFirst();
-            hadis= new Hadis(hadisNo,"","","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),"","0");
+            hadis= new Hadis(hadisNo,"","","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_KAYNAK)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
 
         }else
-            hadis= new Hadis(hadisNo,"","","","","Hadis Bulunamadi!","","0");
+            hadis= new Hadis(hadisNo,"","","","","Hadis Bulunamadi!",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_KAYNAK)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
         cursor.close();
         db.close();
         return hadis;
@@ -40,14 +40,14 @@ public class DBAdapter {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query(DBHelper.TABLE_NAME_HADISLER,
-                new String[]{Hadis.COLUMN_HADIS, Hadis.COLUMN_ISFAV},
+                new String[]{Hadis.COLUMN_HADIS,Hadis.COLUMN_KAYNAK, Hadis.COLUMN_ISFAV},
                 Hadis.COLUMN_HADIS_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         Hadis hadis=null;
         if (cursor != null){
             cursor.moveToFirst();
             // prepare note object
-            hadis = new Hadis(Integer.parseInt(String.valueOf(id)) ,"","","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),"",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
+            hadis = new Hadis(Integer.parseInt(String.valueOf(id)) ,"","","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_KAYNAK)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
 
         }
 

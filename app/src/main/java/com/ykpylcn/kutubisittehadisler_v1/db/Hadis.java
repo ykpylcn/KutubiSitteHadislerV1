@@ -3,6 +3,7 @@ package com.ykpylcn.kutubisittehadisler_v1.db;
 public class Hadis {
     public static final String COLUMN_HADIS_ID = "ID";
     public static final String COLUMN_HADIS = "Hadis";
+    public static final String COLUMN_KAYNAK = "Kaynak";
     public static final String COLUMN_ISFAV = "IsFav";
 
 
@@ -50,6 +51,9 @@ public class Hadis {
     }
     public boolean getIsFav(){
         return this.IsFav;
+    }
+    public void setIsFav(boolean isFav){
+        this.IsFav=isFav;
     }
 
 

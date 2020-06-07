@@ -50,7 +50,7 @@ public class HadislerFragment extends Fragment {
 
 
     private HadislerViewModel hadislerViewModel;
-    SearchView searchView;
+
     BottomNavigationView bnavigate;
     Button before, next;
     AdapterViewFlipper adapViewFlipper;
@@ -83,7 +83,7 @@ public class HadislerFragment extends Fragment {
             }
         });
 
-        setHasOptionsMenu(true);
+
 //        dbAdapter=new DBAdapter(getActivity().getApplicationContext());
         bnavigate=root.findViewById(R.id.bottom_navigation);
         bnavigate.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -318,37 +318,7 @@ public class HadislerFragment extends Fragment {
 
 
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate( R.menu.options_menu, menu);
 
-        final MenuItem myActionMenuItem = menu.findItem( R.id.search);
-        searchView = (SearchView) myActionMenuItem.getActionView();
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Toast like print
-                Message.show(getContext(), "Search: " + query);
-                hadisViewFlipperAdapter.getFilter().filter(query);
-
-//                if( ! searchView.isIconified()) {
-//                    searchView.setIconified(true);
-//                }
-//                myActionMenuItem.collapseActionView();
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
-                return false;
-            }
-        });
-        return;
-
-    }
 
     @Override
     public void onDestroyView() {

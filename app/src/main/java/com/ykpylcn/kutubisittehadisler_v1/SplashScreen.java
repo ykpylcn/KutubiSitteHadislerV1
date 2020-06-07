@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,9 +50,6 @@ public class SplashScreen extends AppCompatActivity {
 //    };
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +57,10 @@ public class SplashScreen extends AppCompatActivity {
 
         try {
             App.DbAdapter=new DBAdapter(getApplicationContext());
+
+
             if(App.DbAdapter!=null){
+                App.mArrayListHadisler=App.DbAdapter.getAllHadislerArrList();
                 setContentView(R.layout.activity_splash_screen);
                 mHideHandler.postDelayed(new Runnable(){
                     @Override

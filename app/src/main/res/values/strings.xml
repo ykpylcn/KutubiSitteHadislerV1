@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Kutubi Sitte Hadisler</string>
-    <string name="search_title">Hadis Ara</string>
+    <string name="search_title">Hadis Ara..</string>
     <string name="search_hint">Hadis Ara..</string>
     <string name="navigation_drawer_open">Aç</string>
     <string name="navigation_drawer_close">Kapat</string>
@@ -12,7 +12,7 @@
     <string name="menu_home">Hadisler</string>
     <string name="menu_gallery">Notlar cancel</string>
     <string name="menu_notlar">Notlar</string>
-    <string name="menu_test">Test</string>
+    <string name="menu_search_hadisler">Hadis Ara</string>
     <string name="title_activity_splash_screen">FullscreenActivity</string>
 
     <string name="splash_content">Allah c.c \nOkuyan herkese okuduğu ile amel etmeyi nasip etsin\nAmin..</string>

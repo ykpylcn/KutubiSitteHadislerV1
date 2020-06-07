@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 
@@ -20,7 +21,7 @@ public class HadislerViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<ArrayList<Hadis>> mArrListHadisler;
-    private DBAdapter dbAdapter;
+
     public HadislerViewModel(Application application) {
         super(application);
 
@@ -34,10 +35,10 @@ public class HadislerViewModel extends AndroidViewModel {
     }
     public void loadHadisler(Context context){
         mArrListHadisler= new MutableLiveData<>();
-        dbAdapter=new DBAdapter(context);
+
 //        Message.show(context,"loadHadisler(Context context) calisti");
-        ArrayList<Hadis> list=dbAdapter.getAllHadislerArrList();
-        mArrListHadisler.setValue(list);
+//        ArrayList<Hadis> list= App.DbAdapter.getAllHadislerArrList();
+        mArrListHadisler.setValue(App.mArrayListHadisler);
     }
     public void setValue(String val){
 
@@ -54,7 +55,7 @@ public class HadislerViewModel extends AndroidViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        dbAdapter.close();
+//        dbAdapter.close();
     }
     //    public LiveData<ArrayList<Hadis>> getHadisArrayList() {
 //        return mArrListHadisler;

@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 
+import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
@@ -35,12 +36,12 @@ public class GalleryFragment extends Fragment {
         galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                Context context=getActivity().getApplicationContext();
-                DBAdapter dbAdapter=new DBAdapter(context);
-                Message.show(context,"basladi");
-                List<Hadis> list=dbAdapter.getAllHadisler();
-                Message.show(context,"bitti");
-                textView.setText(list.get(14).getHadis());
+//                Context context=getActivity().getApplicationContext();
+//                DBAdapter dbAdapter=new DBAdapter(context);
+//                Message.show(context,"basladi");
+//                List<Hadis> list=dbAdapter.getAllHadisler();
+//                Message.show(context,"bitti");
+                textView.setText(App.mArrayListHadisler.get(14).getHadis());
 
 
             }

@@ -22,5 +22,11 @@
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
+    <fragment
+        android:id="@+id/nav_search_hadisler"
+        android:name="com.ykpylcn.kutubisittehadisler_v1.ui.search.SearchFragment"
+        android:label="@string/menu_search_hadisler"
+        tools:layout="@layout/fragment_search_hadisler" />
+
 
 </navigation>

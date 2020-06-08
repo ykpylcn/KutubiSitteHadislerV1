@@ -18,6 +18,7 @@
     <string name="splash_content">Allah c.c \nOkuyan herkese okuduğu ile amel etmeyi nasip etsin\nAmin..</string>
     <string name="activity_title_home">Notlar</string>
     <string name="msg_no_notes">Herhangi bir not bulunamadi!</string>
+
     <string name="lbl_new_note_title">Yeni Not</string>
     <string name="lbl_hadis_go_title">Hadis No Giriniz</string>
     <string name="btn_hadis_go">Hadis Bul!</string>

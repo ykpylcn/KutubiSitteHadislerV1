@@ -14,7 +14,7 @@
         android:id="@+id/nav_notlar"
         android:name="com.ykpylcn.kutubisittehadisler_v1.ui.notlar.NotlarFragment"
         android:label="@string/menu_notlar"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_notlar" />
 
     <fragment
         android:id="@+id/nav_gallery"

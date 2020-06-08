@@ -36,6 +36,7 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
         this.context = context;
         this.hadisList = hadislerArrayList;
         this.filteredHadisList = hadislerArrayList;
+        setHasStableIds(true);
 //        this.customItemClickListener = customItemClickListener;
     }
     public int GetIndexID(int hadisid){
@@ -64,8 +65,16 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-        holder.tv_hadis.setText(filteredHadisList.get(position).getHadis().substring(0,90)+"...");
+
+        String sBuild="";
+        if(filteredHadisList.get(position).getHadis().length()>90)
+            sBuild=filteredHadisList.get(position).getHadis().substring(0,90)+"...";
+        else
+            sBuild=filteredHadisList.get(position).getHadis();
+
+        holder.tv_hadis.setText(sBuild);
         final boolean[] arrowP = {true};
+        final String finalSBuild = sBuild;
         holder.tv_hadis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +84,7 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
                     arrowP[0] =false;
                 }
                 else{
-                    holder.tv_hadis.setText(filteredHadisList.get(position).getHadis().substring(0,90)+"...");
+                    holder.tv_hadis.setText(finalSBuild);
 //                    holder.tv_hadis.setBackgroundResource(R.color.);
                     arrowP[0] =true;
                 }
@@ -125,15 +134,34 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
                 }
 
                 filteredHadisList.set(position,hadis);
+
                 //notifyItemChanged(position);
             }
         });
     }
+    @Override
+    public long getItemId(int position) {
+        if(filteredHadisList!=null)
+            if(filteredHadisList.isEmpty())
+                return 0;
+            else
+                return filteredHadisList.get(position).getHadisNo();
+        return 0;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
     public int getItemCount() {
-        return filteredHadisList.size();
+        if(filteredHadisList!=null)
+            if(filteredHadisList.isEmpty())
+                return 0;
+            else
+                return filteredHadisList.size();
+        return 0;
     }
 
     @Override
@@ -162,10 +190,12 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
                     }
 
                     filteredHadisList = tempFilteredList;
+
                 }
 
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = filteredHadisList;
+
                 return filterResults;
             }
 

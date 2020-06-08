@@ -1,6 +1,7 @@
 package com.ykpylcn.kutubisittehadisler_v1.ui.search;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,16 +9,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,11 +34,15 @@ import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private HadislerAdapter hadislerAdapter;
-    Context context;
+    private Spinner spinAnaKonu;
 //    private ArrayList<Hadis> hadisList;
     private SearchViewModel searchViewModel;
 
@@ -51,40 +58,48 @@ public class SearchFragment extends Fragment {
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
 
+                GetAnaKonuSpinler(s);
                 GetHadisler(s);
+                setHasOptionsMenu(true);
+//                toggleEmptyHadisler();
 
             }
         });
         Init(root);
 
 
-        setHasOptionsMenu(true);
+
 
 
         return root;
     }
 
     private void Init(View root){
-        context=getActivity().getApplicationContext();
-        recyclerView = root.findViewById(R.id.rv_Hadisler);
 
+        recyclerView = root.findViewById(R.id.rv_Hadisler);
+        spinAnaKonu=root.findViewById(R.id.spinnerAnaKonu);
+    }
+
+    private void GetAnaKonuSpinler(final ArrayList<Hadis> hadisler){
+//        Map<String, List<Hadis>> hadislistGrouped =
+//                hadisler.stream().collect(Collectors.groupingBy(w -> w.));
     }
     private void GetHadisler(final ArrayList<Hadis> hadisler){
         //                hadisList = s;
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(App.app_context);
         recyclerView.setLayoutManager(mLayoutManager);
     //        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     //        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
 
-        hadislerAdapter = new HadislerAdapter(context, hadisler);
+        hadislerAdapter = new HadislerAdapter(App.app_context, hadisler);
         recyclerView.setAdapter(hadislerAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(context,
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(App.app_context,
                 recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-
+//                Message.show(hadisler.get(position).getHadis());
             }
 
             @Override
@@ -115,9 +130,12 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Toast like print
-                Message.show("Search: " + query);
+
+
+
                 hadislerAdapter.getFilter().filter(query);
+
+//                toggleEmptyHadisler();
 
 //                if( ! searchView.isIconified()) {
 //                    searchView.setIconified(true);
@@ -128,11 +146,21 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
                 // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
-                hadislerAdapter.getFilter().filter(s);
-                return true;
+
+                return false;
             }
         });
         return;
 
     }
+//    private void toggleEmptyHadisler() {
+//        // you can check notesList.size() > 0
+//
+//        if (hadislerAdapter.getItemCount() > 0) {
+//            noHadisView.setVisibility(View.GONE);
+//        }
+//         else {
+//            noHadisView.setVisibility(View.VISIBLE);
+//        }
+//    }
 }

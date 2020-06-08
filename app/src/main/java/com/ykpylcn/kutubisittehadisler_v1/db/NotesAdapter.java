@@ -57,7 +57,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         holder.note.setText(note.getNote());
 
         // Displaying dot from HTML character code
-        holder.dot.setText(Html.fromHtml("&#8226;"));
+        holder.dot.setText(Html.fromHtml("&#8227;"));
+       // &#8227,&#8226
 
         // Formatting and displaying timestamp
         holder.timestamp.setText(formatDate(note.getTimestamp()));

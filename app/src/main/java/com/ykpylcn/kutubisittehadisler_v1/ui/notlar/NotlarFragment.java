@@ -24,14 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
-import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 import com.ykpylcn.kutubisittehadisler_v1.db.NotesAdapter;
-import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,7 @@ public class NotlarFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         notlarViewModel =
                 ViewModelProviders.of(this).get(NotlarViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
+        View root = inflater.inflate(R.layout.fragment_notlar, container, false);
 //        final TextView textView = root.findViewById(R.id.text_slideshow);
         notlarViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -65,15 +62,15 @@ public class NotlarFragment extends Fragment {
 
         notesList.addAll(App.DbAdapter.getAllNotes());
 
-        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialogs dial = new Dialogs();
-                dial.showNoteDialog(false,null,-1,getActivity(),0);
-                //showNoteDialog(false, null, -1);
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Dialogs dial = new Dialogs();
+//                dial.showNoteDialog(false,null,-1,getActivity(),0);
+//                //showNoteDialog(false, null, -1);
+//            }
+//        });
         mAdapter = new NotesAdapter(App.app_context, notesList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(App.app_context);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -113,7 +110,7 @@ public class NotlarFragment extends Fragment {
         CharSequence colors[] = new CharSequence[]{sEdit, sDelete};
         Context con=getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(con);
-        builder.setTitle("Choose option");
+        builder.setTitle(getResources().getString(R.string.activity_title_home));
         builder.setItems(colors, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

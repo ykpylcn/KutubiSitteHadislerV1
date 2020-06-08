@@ -17,7 +17,7 @@
         android:layout_marginRight="@dimen/dot_margin_right"
         android:layout_marginTop="@dimen/dimen_10"
         android:includeFontPadding="false"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/secondaryDarkColor"
         android:lineSpacingExtra="0dp"
         android:textSize="@dimen/dot_text_size" />
 
@@ -31,12 +31,10 @@
 
     <TextView
         android:id="@+id/note"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/TextStyleBasic"
         android:layout_below="@id/timestamp"
         android:layout_toRightOf="@id/dot"
-        android:textColor="@color/hadis_color_text"
-        android:textSize="@dimen/note_list_text" />
+ />
 
 
 </RelativeLayout>

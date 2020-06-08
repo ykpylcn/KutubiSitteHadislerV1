@@ -59,7 +59,7 @@ public class Dialogs {
                 // Show toast message when no text is entered
                 if (TextUtils.isEmpty(inputNote.getText().toString())) {
                     String msg=activity.getResources().getText(R.string.hint_enter_note).toString();
-                    Message.show(activity,msg);
+                    Message.show(msg);
                     return;
                 } else {
                     alertDialog.dismiss();

@@ -58,6 +58,7 @@ public class SplashScreen extends AppCompatActivity {
         try {
             App.DbAdapter=new DBAdapter(getApplicationContext());
 
+            App.app_context=getApplicationContext();
 
             if(App.DbAdapter!=null){
                 App.mArrayListHadisler=App.DbAdapter.getAllHadislerArrList();
@@ -72,13 +73,13 @@ public class SplashScreen extends AppCompatActivity {
                     }
                 }, SPLASH_HIDE_DELAY_MILLIS);
             }else {
-                Message.show(getApplicationContext(),"Hata Oluştu, Açılamıyor..!");
+                Message.show("Hata Oluştu, Açılamıyor..!");
                 return;
             }
 
         } catch (Exception e) {
 
-            Message.show(getApplicationContext(),"Hata Olustu: "+e.getMessage());
+            Message.show("Hata Olustu: "+e.getMessage());
             return;
         }
 

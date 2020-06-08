@@ -1,6 +1,9 @@
 package com.ykpylcn.kutubisittehadisler_v1.db;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ykpylcn.kutubisittehadisler_v1.App;
+import com.ykpylcn.kutubisittehadisler_v1.MainActivity;
 import com.ykpylcn.kutubisittehadisler_v1.R;
+import com.ykpylcn.kutubisittehadisler_v1.SplashScreen;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 
 import java.util.ArrayList;
@@ -31,7 +38,15 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
         this.filteredHadisList = hadislerArrayList;
 //        this.customItemClickListener = customItemClickListener;
     }
+    public int GetIndexID(int hadisid){
+        for (int i=0;i<hadisList.size();i++){
 
+            if (hadisList.get(i).getHadisNo()==hadisid) {
+                return i;
+            }
+        }
+        return -1;
+    }
     @NonNull
     @Override
     public HadislerAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -49,7 +64,41 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-        holder.tv_hadis.setText(filteredHadisList.get(position).getHadis());
+        holder.tv_hadis.setText(filteredHadisList.get(position).getHadis().substring(0,90)+"...");
+        final boolean[] arrowP = {true};
+        holder.tv_hadis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(arrowP[0]){
+                    holder.tv_hadis.setText(filteredHadisList.get(position).getHadis());
+                    holder.tv_hadis.setBackgroundResource(R.color.secondaryLightColor2);
+                    arrowP[0] =false;
+                }
+                else{
+                    holder.tv_hadis.setText(filteredHadisList.get(position).getHadis().substring(0,90)+"...");
+//                    holder.tv_hadis.setBackgroundResource(R.color.);
+                    arrowP[0] =true;
+                }
+
+            }
+
+        });
+        holder.tv_hadis.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
+
+                SharedPreferences.Editor editor=refindexVP.edit();
+                editor.putInt("refindexVPkey",GetIndexID(filteredHadisList.get(position).getHadisNo()));
+                editor.commit();
+                Context context = v.getContext();
+                context.startActivity(new Intent(context, MainActivity.class));
+
+
+                return false;
+            }
+        });
 //        holder.tv_hadis.setMovementMethod(new ScrollingMovementMethod());
         holder.tv_kaynak.setText(filteredHadisList.get(position).getKaynak());
         final Hadis hadis=App.DbAdapter.getHadis(filteredHadisList.get(position).getHadisNo());

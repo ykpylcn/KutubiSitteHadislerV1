@@ -56,7 +56,6 @@ public class HadislerFragment extends Fragment {
     AdapterViewFlipper adapViewFlipper;
     HadisViewFlipperAdapter hadisViewFlipperAdapter;
     SharedPreferences refindexVP;
-    Context context;
     int indexVP=0;
     private float startX;
     int i=1;
@@ -66,10 +65,9 @@ public class HadislerFragment extends Fragment {
         hadislerViewModel =
                 ViewModelProviders.of(this).get(HadislerViewModel.class);
 
-        context=getActivity().getApplicationContext();
 //        if(savedInstanceState!=null)
 //            indexVP=savedInstanceState.getInt("indexVP");
-        refindexVP=context.getSharedPreferences("refindexVP",0);
+        refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
         indexVP=refindexVP.getInt("refindexVPkey",indexVP);
 
         final View root = inflater.inflate(R.layout.fragment_hadisler, container, false);
@@ -143,7 +141,7 @@ public class HadislerFragment extends Fragment {
 
         }else
             msg=getResources().getText(R.string.hint_enter_hadis_go2).toString();
-        Message.show(getActivity(),msg);
+        Message.show(msg);
     }
     private void CheckIsFavorite(long hadisId){
         Hadis hadis=App.DbAdapter.getHadis(hadisId);
@@ -210,7 +208,7 @@ public class HadislerFragment extends Fragment {
                 String msg=getResources().getText(R.string.hint_enter_hadis_go).toString();
                 if (TextUtils.isEmpty(inputHadisNo.getText().toString())) {
 
-                    Message.show(getActivity(),msg);
+                    Message.show(msg);
                     return;
                 } else {
                     alertDialog.dismiss();
@@ -222,13 +220,13 @@ public class HadislerFragment extends Fragment {
                     int i=GetIndexID(hadislerViewModel.getHadisler().getValue(),hadisno);
                     if(i<0){
                         msg=getResources().getText(R.string.hint_enter_hadis_go2).toString();
-                        Message.show(getActivity(),msg);
+                        Message.show(msg);
                         return;
                     }
                     adapViewFlipper.setSelection(i);
                 }
                 else{
-                    Message.show(getActivity(),msg);
+                    Message.show(msg);
 
                 }
 
@@ -282,13 +280,13 @@ public class HadislerFragment extends Fragment {
 //                simpleViewFlipper.setInAnimation(AnimationUtils.loadAnimation(con1, R.anim.in));
                 try {
                     adapViewFlipper.stopFlipping();
-                    adapViewFlipper.setInAnimation(context, android.R.animator.fade_in);
-                    adapViewFlipper.setOutAnimation(context, android.R.animator.fade_out);
+                    adapViewFlipper.setInAnimation(App.app_context, android.R.animator.fade_in);
+                    adapViewFlipper.setOutAnimation(App.app_context, android.R.animator.fade_out);
                     adapViewFlipper.showNext();
 //                    CheckIsFavorite(adapViewFlipper.getDisplayedChild());
 
                 }catch (Exception ex){
-                    Message.show(context,ex.getMessage());
+                    Message.show(ex.getMessage());
                 }
 
 
@@ -302,12 +300,12 @@ public class HadislerFragment extends Fragment {
 
                 try {
                     adapViewFlipper.stopFlipping();
-                    adapViewFlipper.setInAnimation(context, android.R.animator.fade_in);
+                    adapViewFlipper.setInAnimation(App.app_context, android.R.animator.fade_in);
 //                    adapViewFlipper.setOutAnimation(con1, android.R.animator.fade_out);
                     adapViewFlipper.showPrevious();
 //                    CheckIsFavorite(adapViewFlipper.getDisplayedChild());
                 }catch (Exception ex){
-                    Message.show(context,ex.getMessage());
+                    Message.show(ex.getMessage());
                 }
 
             }

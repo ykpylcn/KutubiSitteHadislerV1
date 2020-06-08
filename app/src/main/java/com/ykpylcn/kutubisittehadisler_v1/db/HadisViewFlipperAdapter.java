@@ -24,23 +24,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 
 
-public class HadisViewFlipperAdapter extends BaseAdapter implements Filterable {
+public class HadisViewFlipperAdapter extends BaseAdapter {
     private ArrayList<Hadis> hadisler;
-    private ArrayList<Hadis> hadislerTempFiltered;
     private Context mContext;
     int textSizeHadis=16;
     SharedPreferences refTextSize;
     public HadisViewFlipperAdapter(Context context, ArrayList<Hadis> hadisler) {
         this.mContext = context;
         this.hadisler = hadisler;
-        this.hadislerTempFiltered = hadisler;
         this.refTextSize=mContext.getSharedPreferences("refTextSize",0);
         this.textSizeHadis=refTextSize.getInt("HadisTextSize",textSizeHadis);
 
     }
     @Override
     public int getCount() {
-        return hadislerTempFiltered.size();
+        return hadisler.size();
     }
 
 
@@ -48,15 +46,15 @@ public class HadisViewFlipperAdapter extends BaseAdapter implements Filterable {
     @Override
     public Object getItem(int position) {
 
-        return hadislerTempFiltered.get(position);
+        return hadisler.get(position);
     }
 
 
     public long getItemId(int position) {
 
-        if(hadislerTempFiltered.size()==0)
+        if(hadisler.size()==0)
             return -1;
-        return  hadislerTempFiltered.get(position).getHadisNo();
+        return  hadisler.get(position).getHadisNo();
     }
 
 
@@ -73,7 +71,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter implements Filterable {
                     inflate(R.layout.hadis_list_row, parent, false);
         }
 
-        Hadis hadis = hadislerTempFiltered.get(position);
+        Hadis hadis = hadisler.get(position);
         final TextView textHadis = convertView.findViewById(R.id.txt_hadis);
         textHadis.setText(hadis.getHadis());
         textHadis.setMovementMethod(new ScrollingMovementMethod());
@@ -136,37 +134,5 @@ public class HadisViewFlipperAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
 
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String query = charSequence.toString();
-
-                ArrayList<Hadis> filtered = new ArrayList<>();
-
-                if (query.isEmpty()) {
-                    filtered = hadisler;
-                } else {
-                    for (Hadis hadis : hadisler) {
-                        if (hadis.getHadis().toLowerCase().contains(query.toLowerCase())) {
-                            filtered.add(hadis);
-                        }
-                    }
-                }
-
-                FilterResults results = new FilterResults();
-                results.count = filtered.size();
-                results.values = filtered;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults results) {
-                hadislerTempFiltered = (ArrayList<Hadis>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
 }

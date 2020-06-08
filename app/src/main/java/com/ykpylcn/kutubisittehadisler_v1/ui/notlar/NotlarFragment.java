@@ -74,11 +74,11 @@ public class NotlarFragment extends Fragment {
                 //showNoteDialog(false, null, -1);
             }
         });
-        mAdapter = new NotesAdapter(getActivity().getApplicationContext(), notesList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mAdapter = new NotesAdapter(App.app_context, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(App.app_context);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(App.app_context, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setAdapter(mAdapter);
 
         toggleEmptyNotes();
@@ -88,7 +88,7 @@ public class NotlarFragment extends Fragment {
          * with options to choose
          * Edit and Delete
          * */
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(),
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(App.app_context,
                 recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
@@ -185,7 +185,7 @@ public class NotlarFragment extends Fragment {
                 // Show toast message when no text is entered
                 if (TextUtils.isEmpty(inputNote.getText().toString())) {
                     String msg=getResources().getText(R.string.hint_enter_note).toString();
-                    Message.show(getActivity(),msg);
+                    Message.show(msg);
                     return;
                 } else {
                     alertDialog.dismiss();

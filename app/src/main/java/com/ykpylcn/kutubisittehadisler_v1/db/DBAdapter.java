@@ -100,6 +100,34 @@ public class DBAdapter {
         // return contact list
         return hadisList;
     }
+    public List<Hadis> getAnaKonular() {
+        List<Hadis> hadisList = new ArrayList<Hadis>();
+        Hadis hadis=new Hadis();
+        hadis.AltKonuSize=0;
+        hadis.AnaKonu="KONULAR";
+
+        hadisList.add(hadis);
+        // Select All Query
+        String selectQuery = "Select AnaKonu,count(AltKonu) as SubCount from "+ dbHelper.TABLE_NAME_HADISLER+" GROUP BY AnaKonu" ;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Hadis hadis1=new Hadis();
+                hadis1.AltKonuSize=Integer.parseInt(cursor.getString(1));
+                hadis1.AnaKonu=cursor.getString(0);
+
+                // Adding contact to list
+                hadisList.add(hadis1);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        // return contact list
+        return hadisList;
+    }
     public ArrayList<Hadis> getAllHadislerArrList() {
         ArrayList<Hadis> hadisList = new ArrayList<>();
         // Select All Query

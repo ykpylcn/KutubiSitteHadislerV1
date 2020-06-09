@@ -28,6 +28,7 @@ import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadislerAdapter;
+import com.ykpylcn.kutubisittehadisler_v1.db.HadislerSpinnerAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
 
@@ -85,17 +86,31 @@ public class SearchFragment extends Fragment {
 //    @RequiresApi(api = Build.VERSION_CODES.N)
     private void GetAnaKonuSpinler(final ArrayList<Hadis> hadisler){
 
-        HashMap<String, List<Hadis>> hashMap = new HashMap<String, List<Hadis>>();
-        for(Hadis hadis : hadisler) {
-            if(!hashMap.containsKey(hadis.getAnaKonu())){
-                List<Hadis> list = new ArrayList<Hadis>();
-                list.add(hadis);
+        List<Hadis> hadislist=App.DbAdapter.getAnaKonular();
 
-                hashMap.put(hadis.getAnaKonu(), list);
-            } else {
-                hashMap.get(hadis.getAnaKonu()).add(hadis);
+        spinAnaKonu.setAdapter(new HadislerSpinnerAdapter(App.app_context,R.layout.spinner_hadisler_list_row,hadislist));
+        spinAnaKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Hadis hadis = (Hadis) parent.getSelectedItem();
+                DisplayAltKonular(hadis);
             }
-        }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+//        HashMap<String, List<Hadis>> hashMap = new HashMap<String, List<Hadis>>();
+//        for(Hadis hadis : hadisler) {
+//            if(!hashMap.containsKey(hadis.getAnaKonu())){
+//                List<Hadis> list = new ArrayList<Hadis>();
+//                list.add(hadis);
+//
+//                hashMap.put(hadis.getAnaKonu(), list);
+//            } else {
+//                hashMap.get(hadis.getAnaKonu()).add(hadis);
+//            }
+//        }
 
 
 //        Map<Object, List<Object>> studlistGrouped =
@@ -109,27 +124,10 @@ public class SearchFragment extends Fragment {
 
 
 
-//        ArrayAdapter<Hadis> adapter =
-//                new ArrayAdapter<Hadis>(App.app_context,  android.R.layout.simple_spinner_dropdown_item, (ArrayList<Hadis>)studlistGrouped);
-//        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
-//
-//        spinAnaKonu.setAdapter(adapter);
-//        spinAnaKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                Hadis hadis = (Hadis) parent.getSelectedItem();
-//                displayUserData(hadis);
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
     }
-    private void displayUserData(Hadis hadis) {
-        String name = hadis.getHadis();
-        int age = hadis.getHadisNo();
-        String mail = hadis.getKaynak();
-        String userData = "Name: " + name + "\nAge: " + age + "\nMail: " + mail;
+    private void DisplayAltKonular(Hadis hadis) {
+
+        String userData = "Alt Konu Sayisi: " + hadis.AltKonuSize;
         Message.show(userData);
     }
     private void GetHadisler(final ArrayList<Hadis> hadisler){

@@ -8,7 +8,8 @@ public class Hadis {
 
 
     private int ID;
-    private String AltKonu,  RivayetKaynak,Rivayet,Hadis,Kaynak;
+    private String AltKonu, RivayetKaynak,Rivayet,Hadis,Kaynak;
+    public int AltKonuSize=0;
     public String AnaKonu;
     private boolean IsFav=false;
     public Hadis() {
@@ -56,7 +57,9 @@ public class Hadis {
     public void setIsFav(boolean isFav){
         this.IsFav=isFav;
     }
-
+    public int getAltKonuSize(){
+        return AltKonuSize;
+    }
     @Override
     public String toString() {
         return AnaKonu;

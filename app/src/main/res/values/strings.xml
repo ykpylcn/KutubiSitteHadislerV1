@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Kutubi Sitte Hadisler</string>
     <string name="search_title">Hadis Ara..</string>
+    <string name="search_konular_title">KONULAR</string>
     <string name="search_hint">Hadis Ara..</string>
     <string name="navigation_drawer_open">Aç</string>
     <string name="navigation_drawer_close">Kapat</string>

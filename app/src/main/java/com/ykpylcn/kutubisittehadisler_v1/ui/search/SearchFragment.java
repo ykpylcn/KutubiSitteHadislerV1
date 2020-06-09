@@ -1,6 +1,5 @@
 package com.ykpylcn.kutubisittehadisler_v1.ui.search;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,8 +8,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
@@ -29,13 +29,13 @@ import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadislerAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
-import com.ykpylcn.kutubisittehadisler_v1.ui.hadisler.HadislerViewModel;
-import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -55,6 +55,7 @@ public class SearchFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_search_hadisler, container, false);
 
         searchViewModel.getHadisler().observe(getViewLifecycleOwner(), new Observer<ArrayList<Hadis>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
 
@@ -80,9 +81,56 @@ public class SearchFragment extends Fragment {
         spinAnaKonu=root.findViewById(R.id.spinnerAnaKonu);
     }
 
+
+//    @RequiresApi(api = Build.VERSION_CODES.N)
     private void GetAnaKonuSpinler(final ArrayList<Hadis> hadisler){
-//        Map<String, List<Hadis>> hadislistGrouped =
-//                hadisler.stream().collect(Collectors.groupingBy(w -> w.));
+
+        HashMap<String, List<Hadis>> hashMap = new HashMap<String, List<Hadis>>();
+        for(Hadis hadis : hadisler) {
+            if(!hashMap.containsKey(hadis.getAnaKonu())){
+                List<Hadis> list = new ArrayList<Hadis>();
+                list.add(hadis);
+
+                hashMap.put(hadis.getAnaKonu(), list);
+            } else {
+                hashMap.get(hadis.getAnaKonu()).add(hadis);
+            }
+        }
+
+
+//        Map<Object, List<Object>> studlistGrouped =
+//                hadisler.stream().collect(Collectors.groupingBy(new Function<Object, Object>() {
+//                    @Override
+//                    public Object apply(Object w) {
+//                        Hadis h=(Hadis)w;
+//                        return h.getAnaKonu();
+//                    }
+//                }));
+
+
+
+//        ArrayAdapter<Hadis> adapter =
+//                new ArrayAdapter<Hadis>(App.app_context,  android.R.layout.simple_spinner_dropdown_item, (ArrayList<Hadis>)studlistGrouped);
+//        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
+//
+//        spinAnaKonu.setAdapter(adapter);
+//        spinAnaKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Hadis hadis = (Hadis) parent.getSelectedItem();
+//                displayUserData(hadis);
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+    }
+    private void displayUserData(Hadis hadis) {
+        String name = hadis.getHadis();
+        int age = hadis.getHadisNo();
+        String mail = hadis.getKaynak();
+        String userData = "Name: " + name + "\nAge: " + age + "\nMail: " + mail;
+        Message.show(userData);
     }
     private void GetHadisler(final ArrayList<Hadis> hadisler){
         //                hadisList = s;

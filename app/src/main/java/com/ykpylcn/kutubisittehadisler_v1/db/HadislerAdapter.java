@@ -53,13 +53,13 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
     public HadislerAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.hadisler_list_row, viewGroup, false);
         final MyViewHolder myViewHolder = new MyViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // for click item listener
-                //customItemClickListener.onItemClick(filteredUserList.get(myViewHolder.getAdapterPosition()),myViewHolder.getAdapterPosition());
-            }
-        });
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // for click item listener
+//                //customItemClickListener.onItemClick(filteredUserList.get(myViewHolder.getAdapterPosition()),myViewHolder.getAdapterPosition());
+//            }
+//        });
         return myViewHolder;
     }
 
@@ -139,20 +139,10 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
             }
         });
     }
-    @Override
-    public long getItemId(int position) {
-        if(filteredHadisList!=null)
-            if(filteredHadisList.isEmpty())
-                return 0;
-            else
-                return filteredHadisList.get(position).getHadisNo();
-        return 0;
-    }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
+
+
+
 
     @Override
     public int getItemCount() {

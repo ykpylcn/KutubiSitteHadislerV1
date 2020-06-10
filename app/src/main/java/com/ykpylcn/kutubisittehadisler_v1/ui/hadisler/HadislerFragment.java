@@ -125,23 +125,23 @@ public class HadislerFragment extends Fragment {
     private void UpdateHadisIsFav(long hadisId){
 
         Hadis hadis=App.DbAdapter.getHadis(hadisId);
-        String msg="";
+
         if(hadis!=null){
 
             if (hadis.getIsFav()){
                 App.DbAdapter.updateHadisIsFav(hadisId,false);
                 UpdateIconHadisIsFav(false);
-                msg=getResources().getText(R.string.hint_hadis_isfav_remove).toString();
+
             }
             else{
                 App.DbAdapter.updateHadisIsFav(hadisId,true);
                 UpdateIconHadisIsFav(true);
-                msg=getResources().getText(R.string.hint_hadis_isfav_add).toString();
+
             }
 
         }else
-            msg=getResources().getText(R.string.hint_enter_hadis_go2).toString();
-        Message.show(msg);
+            Message.show(getResources().getText(R.string.hint_enter_hadis_go2).toString());
+
     }
     private void CheckIsFavorite(long hadisId){
         Hadis hadis=App.DbAdapter.getHadis(hadisId);
@@ -217,7 +217,7 @@ public class HadislerFragment extends Fragment {
                 //Message.show(getActivity(),String.valueOf(hadisno));
                 if(App.DbAdapter.CheckHadisBy(hadisno)){
 
-                    int i=GetIndexID(hadislerViewModel.getHadisler().getValue(),hadisno);
+                    int i=App.DbAdapter.getHadisRowIndex(hadisno);
                     if(i<0){
                         msg=getResources().getText(R.string.hint_enter_hadis_go2).toString();
                         Message.show(msg);
@@ -238,15 +238,15 @@ public class HadislerFragment extends Fragment {
         });
 
     }
-    public int GetIndexID(ArrayList<Hadis> hadisler,int hadisid){
-        for (int i=0;i<hadisler.size();i++){
-
-            if (hadisler.get(i).getHadisNo()==hadisid) {
-                return i;
-            }
-        }
-        return -1;
-    }
+//    public int GetIndexID(ArrayList<Hadis> hadisler,int hadisid){
+//        for (int i=0;i<hadisler.size();i++){
+//
+//            if (hadisler.get(i).getHadisNo()==hadisid) {
+//                return i;
+//            }
+//        }
+//        return -1;
+//    }
     private void FlipMethodCalistirbyAdapter(View root,ArrayList<Hadis> list1) {
         before=root.findViewById(R.id.btn_before);
         next=root.findViewById(R.id.btn_Next);

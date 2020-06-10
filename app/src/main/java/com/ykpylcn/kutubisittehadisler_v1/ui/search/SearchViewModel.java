@@ -24,8 +24,6 @@ public class SearchViewModel extends AndroidViewModel {
     public void loadHadisler(Context context){
         mArrListHadisler= new MutableLiveData<>();
 
-//        Message.show(context,"loadHadisler(Context context) calisti");
-//        ArrayList<Hadis> list= App.DbAdapter.getAllHadislerArrList();
         mArrListHadisler.setValue(App.mArrayListHadisler);
     }
     public LiveData<ArrayList<Hadis>> getHadisler() {

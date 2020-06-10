@@ -11,17 +11,18 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 
 
 public class Dialogs {
-    DBAdapter dbAdapter;
+
     public Dialogs() {
     }
     public void showNoteDialog(final boolean shouldUpdate, final Note note, final int position, final FragmentActivity activity, final int hadisID) {
-        dbAdapter=new DBAdapter(activity.getApplicationContext());
+
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
         View view = layoutInflaterAndroid.inflate(R.layout.note_dialog, null);
 
@@ -68,10 +69,10 @@ public class Dialogs {
                 // check if user updating note
                 if (shouldUpdate && note != null) {
                     // update note by it's id
-                    dbAdapter.updateNoteByID(inputNote.getText().toString(), position);
+                    App.DbAdapter.updateNoteByID(inputNote.getText().toString(), position);
                 } else {
                     // create new note
-                    long id = dbAdapter.insertNote(inputNote.getText().toString(),hadisID);
+                    long id = App.DbAdapter.insertNote(inputNote.getText().toString(),hadisID);
 
                 }
             }

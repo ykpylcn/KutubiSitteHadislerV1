@@ -22,7 +22,7 @@ public class Hadis {
         this.Rivayet=Rivayet;
         this.Hadis=Hadis;
         this.Kaynak=Kaynak;
-        if (IsFav.contains("1"))
+        if (IsFav.trim().contains("1"))
             this.IsFav=true;
     }
     public int getHadisNo(){

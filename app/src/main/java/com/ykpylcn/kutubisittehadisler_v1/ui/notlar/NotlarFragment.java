@@ -4,6 +4,8 @@ package com.ykpylcn.kutubisittehadisler_v1.ui.notlar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,9 +25,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ykpylcn.kutubisittehadisler_v1.App;
+import com.ykpylcn.kutubisittehadisler_v1.MainActivity;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 import com.ykpylcn.kutubisittehadisler_v1.db.NotesAdapter;
+import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
@@ -89,11 +93,22 @@ public class NotlarFragment extends Fragment {
                 recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
+                showActionsDialog(position);
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                showActionsDialog(position);
+
+                SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
+
+                SharedPreferences.Editor editor=refindexVP.edit();
+                editor.putInt("refindexVPkey",App.DbAdapter.getHadisRowIndex(notesList.get(position).getHadisNo()));
+                editor.commit();
+
+                Context context=getContext();
+
+                context.startActivity(new Intent(context, MainActivity.class));
+                getActivity().finish();
             }
         }));
         return root;

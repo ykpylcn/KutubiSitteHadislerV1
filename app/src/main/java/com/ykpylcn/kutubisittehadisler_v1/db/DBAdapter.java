@@ -178,6 +178,26 @@ public class DBAdapter {
         return hadisList;
     }
 
+    public int getHadisRowIndex(int hadisId) {
+
+        String selectQuery = "SELECT ROWID FROM " + dbHelper.TABLE_NAME_HADISLER+" where ID="+hadisId;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        int rowID=-1;
+        // looping through all rows and adding to list
+        if (cursor != null && cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            rowID=Integer.parseInt(cursor.getString(0));
+            rowID--;
+                // Adding contact to list
+
+        }
+
+        cursor.close();
+        // return contact list
+        return rowID;
+    }
     public long insertNote(String note,int hadisid) {
         // get writable database as we want to write data
         SQLiteDatabase db = dbHelper.getWritableDatabase();

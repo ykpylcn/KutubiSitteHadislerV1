@@ -39,15 +39,15 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
         setHasStableIds(true);
 //        this.customItemClickListener = customItemClickListener;
     }
-    public int GetIndexID(int hadisid){
-        for (int i=0;i<hadisList.size();i++){
-
-            if (hadisList.get(i).getHadisNo()==hadisid) {
-                return i;
-            }
-        }
-        return -1;
-    }
+//    public int GetIndexID(int hadisid){
+//        for (int i=0;i<hadisList.size();i++){
+//
+//            if (hadisList.get(i).getHadisNo()==hadisid) {
+//                return i;
+//            }
+//        }
+//        return -1;
+//    }
     @NonNull
     @Override
     public HadislerAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -99,10 +99,11 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
                 SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
 
                 SharedPreferences.Editor editor=refindexVP.edit();
-                editor.putInt("refindexVPkey",GetIndexID(filteredHadisList.get(position).getHadisNo()));
+                editor.putInt("refindexVPkey",App.DbAdapter.getHadisRowIndex(filteredHadisList.get(position).getHadisNo()));
                 editor.commit();
                 Context context = v.getContext();
                 context.startActivity(new Intent(context, MainActivity.class));
+
 
 
                 return false;
@@ -140,9 +141,15 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
         });
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 
-
-
+    @Override
+    public long getItemId(int position) {
+        return filteredHadisList.get(position).getHadisNo();
+    }
 
     @Override
     public int getItemCount() {

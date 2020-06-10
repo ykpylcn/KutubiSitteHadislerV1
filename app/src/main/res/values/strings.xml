@@ -11,7 +11,7 @@
     <string name="action_settings">Ayarlar</string>
 
     <string name="menu_home">Hadisler</string>
-    <string name="menu_gallery">Notlar cancel</string>
+    <string name="menu_sakli_hadisler">Saklı Hadisler</string>
     <string name="menu_notlar">Notlar</string>
     <string name="menu_search_hadisler">Hadis Ara</string>
     <string name="title_activity_splash_screen">FullscreenActivity</string>

@@ -56,7 +56,6 @@ public class SearchFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_search_hadisler, container, false);
 
         searchViewModel.getHadisler().observe(getViewLifecycleOwner(), new Observer<ArrayList<Hadis>>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
 

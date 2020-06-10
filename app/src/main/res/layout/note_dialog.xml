@@ -15,7 +15,7 @@
 
     <EditText
         android:id="@+id/note"
-        style="@style/TextStyleBasic"
+        style="@style/TextStyleNote"
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="@string/hint_enter_note"

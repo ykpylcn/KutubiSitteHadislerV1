@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private HadislerAdapter hadislerAdapter;
-    private Spinner spinAnaKonu;
+    private Spinner spinAnaKonu, spinAltKonu;
 //    private ArrayList<Hadis> hadisList;
     private SearchViewModel searchViewModel;
 
@@ -60,8 +60,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
 
-                GetAnaKonuSpinler(s);
                 GetHadisler(s);
+                GetAnaKonuSpinler(s);
+
                 setHasOptionsMenu(true);
 //                toggleEmptyHadisler();
 
@@ -80,11 +81,12 @@ public class SearchFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.rv_Hadisler);
         spinAnaKonu=root.findViewById(R.id.spinnerAnaKonu);
+        spinAltKonu=root.findViewById(R.id.spinnerAltKonu);
     }
 
 
 //    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void GetAnaKonuSpinler(final ArrayList<Hadis> hadisler){
+    private void GetAnaKonuSpinler(final ArrayList<Hadis> hadislerAll){
 
         List<Hadis> hadislist=App.DbAdapter.getAnaKonular();
 
@@ -92,8 +94,12 @@ public class SearchFragment extends Fragment {
         spinAnaKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Hadis hadis = (Hadis) parent.getSelectedItem();
-                DisplayAltKonular(hadis);
+                if(position>0){
+                    Hadis hadis = (Hadis) parent.getSelectedItem();
+                    hadislerAdapter.getFilter().filter("@1/"+hadis.getAnaKonu());
+                    DisplayAltKonular(hadis);
+                }
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -127,11 +133,22 @@ public class SearchFragment extends Fragment {
     }
     private void DisplayAltKonular(Hadis hadis) {
 
-        String userData = "Alt Konu Sayisi: " + hadis.AltKonuSize;
-        Message.show(userData);
+        List<Hadis> hadislist=App.DbAdapter.getAltKonular(hadis.getAnaKonu());
+
+        spinAltKonu.setAdapter(new HadislerSpinnerAdapter(App.app_context,R.layout.spinner_hadisler_list_row,hadislist));
+        spinAltKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                Hadis hadis = (Hadis) parent.getSelectedItem();
+                hadislerAdapter.getFilter().filter("@2/"+hadis.getAnaKonu());
+            }}
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
     private void GetHadisler(final ArrayList<Hadis> hadisler){
-        //                hadisList = s;
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(App.app_context);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -141,28 +158,25 @@ public class SearchFragment extends Fragment {
 
         hadislerAdapter = new HadislerAdapter(App.app_context, hadisler);
         recyclerView.setAdapter(hadislerAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(App.app_context,
-                recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, final int position) {
-//                Message.show(hadisler.get(position).getHadis());
-            }
 
-            @Override
-            public void onLongClick(View view, int position) {
 
-             //   Message.show(context,hadisler.get(position).getHadis()+" : ");
-
-                //showActionsDialog(position);
-            }
-        }));
+//        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(App.app_context,
+//                recyclerView, new RecyclerTouchListener.ClickListener() {
+//            @Override
+//            public void onClick(View view, final int position) {
+////                Message.show(hadisler.get(position).getHadis());
+//            }
+//
+//            @Override
+//            public void onLongClick(View view, int position) {
+//
+//             //   Message.show(context,hadisler.get(position).getHadis()+" : ");
+//
+//                //showActionsDialog(position);
+//            }
+//        }));
 
     }
-
-
-
-
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -177,10 +191,10 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-
-
-                hadislerAdapter.getFilter().filter(query);
-
+                if(query.length()>2)
+                    hadislerAdapter.getFilter().filter(query);
+                else
+                    Message.show("En az uc karakter girmelisiniz!");
 //                toggleEmptyHadisler();
 
 //                if( ! searchView.isIconified()) {

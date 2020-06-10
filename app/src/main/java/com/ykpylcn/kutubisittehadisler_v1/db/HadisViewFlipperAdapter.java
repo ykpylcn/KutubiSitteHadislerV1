@@ -13,13 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 

@@ -8,7 +8,7 @@ public class Hadis {
 
 
     private int ID;
-    private String AltKonu, RivayetKaynak,Rivayet,Hadis,Kaynak;
+    private String  RivayetKaynak,AltKonu,Rivayet,Hadis,Kaynak;
     public int AltKonuSize=0;
     public String AnaKonu;
     private boolean IsFav=false;

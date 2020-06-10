@@ -154,6 +154,7 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
         return 0;
     }
 
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -161,6 +162,18 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
             protected FilterResults performFiltering(CharSequence charSequence) {
 
                 String searchString = charSequence.toString();
+                boolean isAna=false;
+                boolean isAlt=false;
+                if(charSequence.toString().startsWith("@1/")){
+
+                    isAna=true;
+                    searchString=searchString.substring(3);
+                }
+                else if(charSequence.toString().startsWith("@2/"))
+                {
+                    isAlt=true;
+                    searchString=searchString.substring(3);
+                }
 
                 if (searchString.isEmpty()) {
 
@@ -172,10 +185,15 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
 
                     for (Hadis hadis : hadisList) {
 
-                        // search for user name
-                        if (hadis.getHadis().toLowerCase().contains(searchString)) {
-
+                        if(isAna && hadis.getAnaKonu().contains(searchString))
                             tempFilteredList.add(hadis);
+                        else if(isAlt && hadis.getAltKonu().contains(searchString))
+                            tempFilteredList.add(hadis);
+                        else{
+                            if (hadis.getHadis().toLowerCase().contains(searchString)) {
+
+                                tempFilteredList.add(hadis);
+                            }
                         }
                     }
 

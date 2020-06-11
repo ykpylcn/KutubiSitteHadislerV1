@@ -177,7 +177,27 @@ public class DBAdapter {
         // return contact list
         return hadisList;
     }
+    public ArrayList<Hadis> getIsFavHadisler(int isFav) {
+        ArrayList<Hadis> hadisList = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + dbHelper.TABLE_NAME_HADISLER+" where IsFav="+isFav;
 
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Hadis hadis = new Hadis(Integer.parseInt(cursor.getString(6)),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(7));
+
+                // Adding contact to list
+                hadisList.add(hadis);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        // return contact list
+        return hadisList;
+    }
     public int getHadisRowIndex(int hadisId) {
 
         String selectQuery = "SELECT ROWID FROM " + dbHelper.TABLE_NAME_HADISLER+" where ID="+hadisId;

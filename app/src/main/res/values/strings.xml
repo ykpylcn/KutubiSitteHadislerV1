@@ -32,7 +32,7 @@
     <string name="hint_enter_note">Notunuzu Girin!</string>
     <string name="hint_enter_hadis_go">Gecerli bir Hadis Numarasi Giriniz!</string>
     <string name="hint_enter_hadis_go2">Herhangi bir hadis bulunamadi!</string>
-    <string name="home_second">Home Second</string>
+    <string name="home_test">Home Second</string>
     <string name="hint_hadis_isfav_add">Kaldır</string>
     <string name="hint_hadis_isfav_remove">Sakla</string>
 

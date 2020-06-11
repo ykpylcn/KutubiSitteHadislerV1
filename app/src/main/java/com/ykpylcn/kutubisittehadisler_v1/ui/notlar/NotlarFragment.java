@@ -108,7 +108,7 @@ public class NotlarFragment extends Fragment {
                 Context context=getContext();
 
                 context.startActivity(new Intent(context, MainActivity.class));
-                getActivity().finish();
+//                getActivity().finish();
             }
         }));
         return root;

@@ -24,12 +24,12 @@ public class SakliHadislerViewModel extends AndroidViewModel {
     }
     public void loadHadisler(Context context){
         mListHadisler= new MutableLiveData<>();
-        ArrayList<Hadis> list=new ArrayList<>();
-        for(Hadis hadis : App.mArrayListHadisler) {
-
-            if (hadis.getIsFav())
-                list.add(hadis);
-        }
+        ArrayList<Hadis> list=App.DbAdapter.getIsFavHadisler(1);
+//        for(Hadis hadis : App.mArrayListHadisler) {
+//
+//            if (hadis.getIsFav())
+//                list.add(hadis);
+//        }
 
         mListHadisler.setValue(list);
     }

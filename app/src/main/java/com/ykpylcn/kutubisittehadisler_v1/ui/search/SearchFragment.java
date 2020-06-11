@@ -43,9 +43,10 @@ import java.util.stream.Collectors;
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private HadislerAdapter hadislerAdapter;
+    private SearchViewModel searchViewModel;
     private Spinner spinAnaKonu, spinAltKonu;
 //    private ArrayList<Hadis> hadisList;
-    private SearchViewModel searchViewModel;
+
 
 
     @Override

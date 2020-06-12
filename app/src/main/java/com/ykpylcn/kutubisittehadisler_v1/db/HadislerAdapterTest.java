@@ -21,37 +21,33 @@ import com.ykpylcn.kutubisittehadisler_v1.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable  {
     private static final int ITEM = 0;
     private static final int LOADING = 1;
     private boolean isLoadingAdded = false;
 
     private ArrayList<Hadis> hadisList;
-    private ArrayList<Hadis> filteredHadisList;
     private Context context;
 //    private CustomItemClickListener customItemClickListener;
 
     public HadislerAdapterTest(Context context) {
         this.context = context;
-        this.filteredHadisList = new ArrayList<>();
+        this.hadisList = new ArrayList<>();
         setHasStableIds(true);
 //        this.customItemClickListener = customItemClickListener;
     }
 
-    public ArrayList<Hadis> getMovies() {
-        return filteredHadisList;
+    public ArrayList<Hadis> getHadisler() {
+        return hadisList;
     }
-
-    public void setMovies(ArrayList<Hadis> movies) {
-        this.filteredHadisList = movies;
+    public void setHadisler(ArrayList<Hadis> hadisler) {
+        this.hadisList = hadisler;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.hadisler_list_row, viewGroup, false);
-//        final MyViewHolder myViewHolder = new MyViewHolder(view);
-//        return myViewHolder;
+
 
         RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -70,30 +66,31 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        Hadis movie = filteredHadisList.get(position);
 
+        final Hadis hadisCurrent=hadisList.get(position);
         switch (getItemViewType(position)) {
             case ITEM:
-                final HadisViewHolder movieVH = (HadisViewHolder) holder;
+                final HadisViewHolder viewHolder = (HadisViewHolder) holder;
                 String sBuild="";
-                if(filteredHadisList.get(position).getHadis().length()>90)
-                    sBuild=filteredHadisList.get(position).getHadis().substring(0,90)+"...";
+                if(hadisCurrent.getHadis().length()>90)
+                    sBuild=hadisCurrent.getHadis().substring(0,90)+"...";
                 else
-                    sBuild=filteredHadisList.get(position).getHadis();
+                    sBuild=hadisCurrent.getHadis();
 
-                movieVH.tv_hadis.setText(sBuild);
+                viewHolder.tv_hadis.setText(sBuild);
+
                 final boolean[] arrowP = {true};
                 final String finalSBuild = sBuild;
-                movieVH.tv_hadis.setOnClickListener(new View.OnClickListener() {
+                viewHolder.tv_hadis.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(arrowP[0]){
-                            movieVH.tv_hadis.setText(filteredHadisList.get(position).getHadis());
-                            movieVH.tv_hadis.setBackgroundResource(R.color.secondaryLightColor2);
+                            viewHolder.tv_hadis.setText(hadisCurrent.getHadis());
+                            viewHolder.tv_hadis.setBackgroundResource(R.color.secondaryLightColor2);
                             arrowP[0] =false;
                         }
                         else{
-                            movieVH.tv_hadis.setText(finalSBuild);
+                            viewHolder.tv_hadis.setText(finalSBuild);
 //                    holder.tv_hadis.setBackgroundResource(R.color.);
                             arrowP[0] =true;
                         }
@@ -101,24 +98,49 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
 
                 });
-                movieVH.tv_hadis.setOnLongClickListener(new View.OnLongClickListener() {
+                viewHolder.tv_hadis.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
 
                         SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
 
                         SharedPreferences.Editor editor=refindexVP.edit();
-                        editor.putInt("refindexVPkey",App.DbAdapter.getHadisRowIndex(filteredHadisList.get(position).getHadisNo()));
+                        editor.putInt("refindexVPkey",App.DbAdapter.getHadisRowIndex(hadisCurrent.getHadisNo()));
                         editor.commit();
                         Context context = v.getContext();
                         context.startActivity(new Intent(context, MainActivity.class));
 
-
-
                         return false;
                     }
                 });
-                movieVH.tv_kaynak.setText(filteredHadisList.get(position).getHadisNo()+"::"+filteredHadisList.get(position).getKaynak());
+                viewHolder.tv_kaynak.setText(hadisCurrent.getHadisNo()+"::"+hadisCurrent.getKaynak());
+               final Hadis hadisDB=App.DbAdapter.getHadis(hadisCurrent.getHadisNo());
+                if(hadisDB.getIsFav()){
+                    viewHolder.img_isfav.setImageResource(R.drawable.ic_baseline_favorite_24);
+
+                }else
+                    viewHolder.img_isfav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                viewHolder.img_isfav.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if(hadisDB.getIsFav()){
+                            App.DbAdapter.updateHadisIsFav(hadisCurrent.getHadisNo(),false);
+                            viewHolder.img_isfav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                            hadisDB.setIsFav(false);
+                        }
+                        else{
+                            App.DbAdapter.updateHadisIsFav(hadisCurrent.getHadisNo(),true);
+                            viewHolder.img_isfav.setImageResource(R.drawable.ic_baseline_favorite_24);
+                            hadisDB.setIsFav(true);
+
+                        }
+
+                        hadisList.set(position,hadisDB);
+
+                        //notifyItemChanged(position);
+                    }
+                });
                 break;
             case LOADING:
 //                Do nothing
@@ -133,6 +155,78 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder = new HadisViewHolder(v1);
         return viewHolder;
     }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String searchString = charSequence.toString();
+                boolean isAna=false;
+                boolean isAlt=false;
+                if(charSequence.toString().startsWith("@1/")){
+
+                    isAna=true;
+                    searchString=searchString.substring(3);
+                }
+                else if(charSequence.toString().startsWith("@2/"))
+                {
+                    isAlt=true;
+                    searchString=searchString.substring(3);
+                }
+
+                if (searchString.isEmpty()) {
+
+//                    filteredHadisList = hadisList;
+
+                } else {
+
+                    ArrayList<Hadis> tempFilteredList = new ArrayList<>();
+
+                    for (Hadis hadis : App.mArrayListHadisler) {
+
+                        if(isAna && hadis.getAnaKonu().contains(searchString)){
+                            tempFilteredList.add(hadis);
+                        }
+                        else if(isAlt && hadis.getAltKonu().contains(searchString)){
+                            tempFilteredList.add(hadis);
+                        }
+
+                        else{
+                            if (hadis.getHadis().toLowerCase().contains(searchString.toLowerCase())) {
+
+                                tempFilteredList.add(hadis);
+                            }
+                        }
+                    }
+
+                    if(tempFilteredList.size()>10)
+                    {
+                        App.filteredListHadisler=tempFilteredList;
+                        for(int i=0;i<10;i++){
+                            add(App.filteredListHadisler.get(i));
+                        }
+                    }else
+                        setHadisler(tempFilteredList);
+//                    filteredHadisList = tempFilteredList;
+
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = hadisList;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                hadisList = (ArrayList<Hadis>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     protected class LoadingVH extends RecyclerView.ViewHolder {
 
         public LoadingVH(View itemView) {
@@ -185,87 +279,25 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
 //    }
     @Override
     public int getItemViewType(int position) {
-        return (position == filteredHadisList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+        return (position == hadisList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
     }
 
     @Override
     public long getItemId(int position) {
-        return filteredHadisList.get(position).getHadisNo();
+        return hadisList.get(position).getHadisNo();
     }
 
     @Override
     public int getItemCount() {
-        if(filteredHadisList!=null)
-            if(filteredHadisList.isEmpty())
+        if(hadisList!=null)
+            if(hadisList.isEmpty())
                 return 0;
             else
-                return filteredHadisList.size()-1;
+                return hadisList.size()-1;
         return 0;
     }
 
 
-//    @Override
-//    public Filter getFilter() {
-//        return new Filter() {
-//            @Override
-//            protected FilterResults performFiltering(CharSequence charSequence) {
-//
-//                String searchString = charSequence.toString();
-//                boolean isAna=false;
-//                boolean isAlt=false;
-//                if(charSequence.toString().startsWith("@1/")){
-//
-//                    isAna=true;
-//                    searchString=searchString.substring(3);
-//                }
-//                else if(charSequence.toString().startsWith("@2/"))
-//                {
-//                    isAlt=true;
-//                    searchString=searchString.substring(3);
-//                }
-//
-//                if (searchString.isEmpty()) {
-//
-//                    filteredHadisList = hadisList;
-//
-//                } else {
-//
-//                    ArrayList<Hadis> tempFilteredList = new ArrayList<>();
-//
-//                    for (Hadis hadis : hadisList) {
-//
-//                        if(isAna && hadis.getAnaKonu().contains(searchString))
-//                            tempFilteredList.add(hadis);
-//                        else if(isAlt && hadis.getAltKonu().contains(searchString))
-//                            tempFilteredList.add(hadis);
-//                        else{
-//                            if (hadis.getHadis().toLowerCase().contains(searchString)) {
-//
-//                                tempFilteredList.add(hadis);
-//                            }
-//                        }
-//                    }
-//
-//                    filteredHadisList = tempFilteredList;
-//
-//                }
-//
-//                FilterResults filterResults = new FilterResults();
-//                filterResults.values = filteredHadisList;
-//
-//                return filterResults;
-//            }
-//
-//            @Override
-//            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//                filteredHadisList = (ArrayList<Hadis>) filterResults.values;
-//                notifyDataSetChanged();
-//            }
-//        };
-//    }
-    /**
-     * Main list's content ViewHolder
-     */
 
     public class HadisViewHolder extends RecyclerView.ViewHolder{
         private TextView tv_hadis;
@@ -286,8 +318,13 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
     */
 
     public void add(Hadis mc) {
-        filteredHadisList.add(mc);
-        notifyItemInserted(filteredHadisList.size() - 1);
+        if(mc!=null){
+
+            if(hadisList==null)
+                hadisList=new ArrayList<>();
+            hadisList.add(mc);
+            notifyItemInserted(hadisList.size() - 1);
+        }
     }
 
     public void addAll(List<Hadis> mcList) {
@@ -297,9 +334,9 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void remove(Hadis city) {
-        int position = filteredHadisList.indexOf(city);
+        int position = hadisList.indexOf(city);
         if (position > -1) {
-            filteredHadisList.remove(position);
+            hadisList.remove(position);
             notifyItemRemoved(position);
         }
     }
@@ -311,9 +348,9 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public boolean isEmpty() {
-        return getItemCount() == 0;
-    }
+//    public boolean isEmpty() {
+//        return getItemCount() == 0;
+//    }
 
 
     public void addLoadingFooter() {
@@ -324,17 +361,17 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
-        int position = filteredHadisList.size() - 1;
+        int position = hadisList.size() - 1;
         Hadis item = getItem(position);
 
         if (item != null) {
-            filteredHadisList.remove(position);
+            hadisList.remove(position);
             notifyItemRemoved(position);
         }
     }
 
     public Hadis getItem(int position) {
-        return filteredHadisList.get(position);
+        return hadisList.get(position);
     }
 
 }

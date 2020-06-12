@@ -24,7 +24,7 @@ public class TestViewModel extends AndroidViewModel {
     public void loadHadisler(Context context){
         mArrListHadisler= new MutableLiveData<>();
 
-        mArrListHadisler.setValue(App.mArrayListHadisler);
+       // mArrListHadisler.setValue(App.mArrayListHadisler);
     }
     public LiveData<ArrayList<Hadis>> getHadisler() {
         return mArrListHadisler;

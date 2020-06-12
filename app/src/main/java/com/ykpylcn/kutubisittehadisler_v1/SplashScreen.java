@@ -16,6 +16,7 @@ import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -62,6 +63,7 @@ public class SplashScreen extends AppCompatActivity {
 
             if(App.DbAdapter!=null){
                 App.mArrayListHadisler=App.DbAdapter.getAllHadislerArrList();
+                App.filteredListHadisler = new ArrayList<>();
                 setContentView(R.layout.activity_splash_screen);
                 mHideHandler.postDelayed(new Runnable(){
                     @Override

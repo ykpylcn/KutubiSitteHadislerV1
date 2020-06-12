@@ -197,7 +197,7 @@ public class HadislerAdapter extends RecyclerView.Adapter<HadislerAdapter.MyView
                         else if(isAlt && hadis.getAltKonu().contains(searchString))
                             tempFilteredList.add(hadis);
                         else{
-                            if (hadis.getHadis().toLowerCase().contains(searchString)) {
+                            if (hadis.getHadis().toLowerCase().contains(searchString.toLowerCase())) {
 
                                 tempFilteredList.add(hadis);
                             }

@@ -15,6 +15,7 @@ public class App extends Application {
 
     public static Context app_context;
     public static ArrayList<Hadis> mArrayListHadisler;
+    public static ArrayList<Hadis> filteredListHadisler;
     public static String package_name;
     public static DBAdapter DbAdapter;
     @Override

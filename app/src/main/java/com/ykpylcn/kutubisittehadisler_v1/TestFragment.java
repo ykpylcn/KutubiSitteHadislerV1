@@ -13,17 +13,21 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadislerAdapter;
+import com.ykpylcn.kutubisittehadisler_v1.db.HadislerAdapterTest;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.ui.search.SearchViewModel;
+import com.ykpylcn.kutubisittehadisler_v1.utils.PaginationScrollListener;
 
 import java.util.ArrayList;
 
@@ -35,7 +39,17 @@ public class TestFragment extends Fragment {
         return new TestFragment();
     }
     private RecyclerView recyclerView;
-    private HadislerAdapter hadislerAdapter;
+    HadislerAdapterTest adapter;
+    LinearLayoutManager   linearLayoutManager;
+
+    ProgressBar progressBar;
+
+    private static final int PAGE_START = 0;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int TOTAL_PAGES = 3;
+    private int currentPage = PAGE_START;
+
     private TestViewModel testViewModel;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -68,37 +82,55 @@ public class TestFragment extends Fragment {
     private boolean loading = true;
     private void GetHadisler(final ArrayList<Hadis> hadisler){
 
-        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(App.app_context);
-        recyclerView.setLayoutManager(mLayoutManager);
+        linearLayoutManager = new LinearLayoutManager(App.app_context);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
         //        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         //        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
 
-        hadislerAdapter = new HadislerAdapter(App.app_context, hadisler);
-        recyclerView.setAdapter(hadislerAdapter);
-
-        final int[] pastVisiblesItems = new int[1];
-        final int[] visibleItemCount = new int[1];
-        final int[] totalItemCount = new int[1];
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        adapter = new HadislerAdapterTest(App.app_context);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) { //check for scroll down
-                    visibleItemCount[0] = mLayoutManager.getChildCount();
-                    totalItemCount[0] = mLayoutManager.getItemCount();
-                    pastVisiblesItems[0] = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += 1;
 
-                    if (loading) {
-                        if ((visibleItemCount[0] + pastVisiblesItems[0]) >= totalItemCount[0]) {
-                            loading = false;
-
-                            // Do pagination.. i.e. fetch new data
-                        }
+                // mocking network delay for API call
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadNextPage();
                     }
-                }
+                }, 1000);
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return TOTAL_PAGES;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
             }
         });
+
+
+        // mocking network delay for API call
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadFirstPage();
+            }
+        }, 1000);
+
 
 //        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(App.app_context,
 //                recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -117,7 +149,37 @@ public class TestFragment extends Fragment {
 //        }));
 
     }
+    private void loadFirstPage() {
 
+        ArrayList<Hadis> movies = createMovies(adapter.getItemCount());
+        progressBar.setVisibility(View.GONE);
+        adapter.addAll(movies);
+
+        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+
+    }
+
+    private void loadNextPage() {
+
+        ArrayList<Hadis> movies = createMovies(adapter.getItemCount());
+
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        adapter.addAll(movies);
+
+        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+    }
+    public ArrayList<Hadis> createMovies(int itemCount) {
+        ArrayList<Hadis> movies = new ArrayList<>();
+        for (int i = itemCount; i < itemCount+10; i++) {
+
+            movies.add(App.mArrayListHadisler.get(i));
+        }
+        return movies;
+    }
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
@@ -131,10 +193,10 @@ public class TestFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                if(query.length()>2)
-                    hadislerAdapter.getFilter().filter(query);
-                else
-                    Message.show("En az uc karakter girmelisiniz!");
+//                if(query.length()>2)
+//                    adapter.getFilter().filter(query);
+//                else
+//                    Message.show("En az uc karakter girmelisiniz!");
 //                toggleEmptyHadisler();
 
 //                if( ! searchView.isIconified()) {
@@ -155,6 +217,7 @@ public class TestFragment extends Fragment {
     }
     private void Init(View root){
 
+        progressBar = root.findViewById(R.id.main_progress);
         recyclerView = root.findViewById(R.id.rv_Hadisler_test);
 
     }

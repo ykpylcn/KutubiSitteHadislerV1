@@ -102,7 +102,7 @@ public class TestFragment extends Fragment {
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-                progressBar.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.VISIBLE);
                 // mocking network delay for API call
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -110,7 +110,7 @@ public class TestFragment extends Fragment {
 
                         loadNextPage();
                     }
-                }, 1000);
+                }, 500);
             }
 
             @Override
@@ -167,7 +167,7 @@ public class TestFragment extends Fragment {
 
 
         ArrayList<Hadis> movies = CreateHadisler(adapter.getItemCount());
-        progressBar.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.GONE);
         adapter.removeLoadingFooter();
         isLoading = false;
 
@@ -190,10 +190,15 @@ public class TestFragment extends Fragment {
                 else
                     return movies;
             }else {
-                if (App.filteredListHadisler.get(i) != null)
-                    movies.add(App.filteredListHadisler.get(i));
-                else
-                    return movies;
+                if (App.filteredListHadisler.size()>i){
+                    if(App.filteredListHadisler.get(i) != null)
+                        movies.add(App.filteredListHadisler.get(i));
+                }
+                else{
+                    isLastPage=true;
+                        return movies;
+                    }
+
 
             }
 
@@ -223,7 +228,6 @@ public class TestFragment extends Fragment {
                         isLastPage = false;
                         adapter.clear();
                         isSearched=true;
-
 
                         adapter.getFilter().filter(query);
                     }

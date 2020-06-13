@@ -27,12 +27,14 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
     private boolean isLoadingAdded = false;
 
     private ArrayList<Hadis> hadisList;
+    private ArrayList<Hadis> filteredHadisList;
     private Context context;
 //    private CustomItemClickListener customItemClickListener;
 
     public HadislerAdapterTest(Context context) {
         this.context = context;
         this.hadisList = new ArrayList<>();
+        this.filteredHadisList=new ArrayList<>();
         setHasStableIds(true);
 //        this.customItemClickListener = customItemClickListener;
     }
@@ -68,6 +70,8 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
 
         final Hadis hadisCurrent=hadisList.get(position);
+        if(hadisCurrent==null)
+            return;
         switch (getItemViewType(position)) {
             case ITEM:
                 final HadisViewHolder viewHolder = (HadisViewHolder) holder;
@@ -178,7 +182,7 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 if (searchString.isEmpty()) {
 
-//                    filteredHadisList = hadisList;
+                    filteredHadisList = hadisList;
 
                 } else {
 
@@ -199,29 +203,40 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
                                 tempFilteredList.add(hadis);
                             }
                         }
+//                        filteredHadisList = tempFilteredList;
                     }
 
-                    if(tempFilteredList.size()>10)
-                    {
-                        App.filteredListHadisler=tempFilteredList;
-                        for(int i=0;i<10;i++){
-                            add(App.filteredListHadisler.get(i));
-                        }
-                    }else
-                        setHadisler(tempFilteredList);
-//                    filteredHadisList = tempFilteredList;
+//                    if(tempFilteredList.size()>10)
+//                    {
+//                        App.filteredListHadisler=tempFilteredList;
+//                        for(int i=0;i<10;i++){
+//                            add(App.filteredListHadisler.get(i));
+//                        }
+//                    }else
+//                        setHadisler(tempFilteredList);
+                   // hadisList = tempFilteredList;
+
+                    filteredHadisList=tempFilteredList;
+//                    hadisList=(ArrayList<Hadis>)tempFilteredList.subList(0, 10);
+
 
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = hadisList;
+                filterResults.values = filteredHadisList;
+
 
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                hadisList = (ArrayList<Hadis>) filterResults.values;
+                ArrayList<Hadis> hadisList1 = (ArrayList<Hadis>) filterResults.values;
+                App.filteredListHadisler=hadisList1;
+                if(hadisList1.size()>10)
+                    hadisList.addAll(hadisList1.subList(0,10));
+                else
+                    hadisList.addAll(hadisList1);
                 notifyDataSetChanged();
             }
         };
@@ -293,7 +308,7 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
             if(hadisList.isEmpty())
                 return 0;
             else
-                return hadisList.size()-1;
+                return hadisList.size();
         return 0;
     }
 
@@ -319,7 +334,6 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void add(Hadis mc) {
         if(mc!=null){
-
             if(hadisList==null)
                 hadisList=new ArrayList<>();
             hadisList.add(mc);

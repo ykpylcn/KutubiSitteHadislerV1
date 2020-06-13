@@ -206,15 +206,7 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
 //                        filteredHadisList = tempFilteredList;
                     }
 
-//                    if(tempFilteredList.size()>10)
-//                    {
-//                        App.filteredListHadisler=tempFilteredList;
-//                        for(int i=0;i<10;i++){
-//                            add(App.filteredListHadisler.get(i));
-//                        }
-//                    }else
-//                        setHadisler(tempFilteredList);
-                   // hadisList = tempFilteredList;
+
 
                     filteredHadisList=tempFilteredList;
 //                    hadisList=(ArrayList<Hadis>)tempFilteredList.subList(0, 10);
@@ -231,12 +223,14 @@ public class HadislerAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                ArrayList<Hadis> hadisList1 = (ArrayList<Hadis>) filterResults.values;
-                App.filteredListHadisler=hadisList1;
-                if(hadisList1.size()>10)
-                    hadisList.addAll(hadisList1.subList(0,10));
+                hadisList.clear();
+                App.filteredListHadisler=  (ArrayList<Hadis>) filterResults.values;
+                if(App.filteredListHadisler.size()>10){
+                    hadisList.addAll(App.filteredListHadisler.subList(0,10));
+                    addLoadingFooter();
+                }
                 else
-                    hadisList.addAll(hadisList1);
+                    hadisList.addAll(App.filteredListHadisler);
                 notifyDataSetChanged();
             }
         };

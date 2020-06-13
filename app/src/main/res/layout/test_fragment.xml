@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".TestFragment">
-<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-<!--        android:id="@+id/swipeRefresh"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-
-<!--        >-->
+    <Spinner
+        android:id="@+id/spinnerAnaKonu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_margin"
+        />
+    <Spinner
+        android:id="@+id/spinnerAltKonu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_margin"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_Hadisler_test"
         android:layout_width="match_parent"
@@ -21,4 +28,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
-</FrameLayout>
+</LinearLayout>

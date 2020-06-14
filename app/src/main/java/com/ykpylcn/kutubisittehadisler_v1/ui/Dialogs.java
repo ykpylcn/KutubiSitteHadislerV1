@@ -100,8 +100,8 @@ public class Dialogs {
 //        TextView dialogTitle = view.findViewById(R.id.dialog_title);
 //        dialogTitle.setText(!shouldUpdate ? activity.getResources().getText(R.string.lbl_new_notify_title) : activity.getResources().getText(R.string.lbl_edit_notify_title));
 //
-//        TimePicker timePicker=view.findViewById(R.id.editTimePicker);
-
+        TimePicker timePicker=view.findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(true);
 //        Calendar myCal = Calendar.getInstance();
 //
 //

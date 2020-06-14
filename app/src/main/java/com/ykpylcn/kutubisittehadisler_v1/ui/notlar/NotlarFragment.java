@@ -29,7 +29,6 @@ import com.ykpylcn.kutubisittehadisler_v1.MainActivity;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 import com.ykpylcn.kutubisittehadisler_v1.db.NotesAdapter;
-import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
@@ -120,8 +119,8 @@ public class NotlarFragment extends Fragment {
      * Delete - 0
      */
     private void showActionsDialog(final int position) {
-        String sEdit=  getResources().getString(R.string.btn_note_edit);
-        String sDelete=  getResources().getString(R.string.btn_note_delete);
+        String sEdit=  getResources().getString(R.string.btn_edit);
+        String sDelete=  getResources().getString(R.string.btn_delete);
         CharSequence colors[] = new CharSequence[]{sEdit, sDelete};
         Context con=getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(con);
@@ -176,12 +175,12 @@ public class NotlarFragment extends Fragment {
         }
         alertDialogBuilderUserInput
                 .setCancelable(false)
-                .setPositiveButton(shouldUpdate ? getResources().getText(R.string.btn_note_update) : getResources().getText(R.string.btn_note_save), new DialogInterface.OnClickListener() {
+                .setPositiveButton(shouldUpdate ? getResources().getText(R.string.btn_update) : getResources().getText(R.string.btn_save), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
 
                     }
                 })
-                .setNegativeButton(getResources().getText(R.string.btn_note_cancel),
+                .setNegativeButton(getResources().getText(R.string.btn_cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogBox, int id) {
                                 dialogBox.cancel();

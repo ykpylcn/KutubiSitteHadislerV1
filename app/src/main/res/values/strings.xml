@@ -23,11 +23,7 @@
     <string name="lbl_new_note_title">Yeni Not</string>
     <string name="lbl_hadis_go_title">Hadis No Giriniz</string>
     <string name="btn_hadis_go">Hadis Bul!</string>
-    <string name="btn_note_save">Kaydet</string>
-    <string name="btn_note_edit">Duzenle</string>
-    <string name="btn_note_delete">Sil</string>
-    <string name="btn_note_update">Guncelle</string>
-    <string name="btn_note_cancel">Iptal</string>
+
     <string name="lbl_edit_note_title">Notu Duzenle</string>
     <string name="hint_enter_note">Notunuzu Girin!</string>
     <string name="hint_enter_hadis_go">Gecerli bir Hadis Numarasi Giriniz!</string>
@@ -36,5 +32,16 @@
     <string name="hint_hadis_isfav_add">Kaldır</string>
     <string name="hint_hadis_isfav_remove">Sakla</string>
 
+<!--    Notofocation-->
+    <string name="lbl_new_notify_title">Yeni Hatirlatma</string>
+    <string name="lbl_notify_Saat">Saat:</string>
+    <string name="lbl_edit_notify_title">Hatirlatma Duzenle</string>
+    <string name="hint_enter_notify">Hatirlatma Girin!</string>
 
+<!--    Genel-->
+    <string name="btn_save">Kaydet</string>
+    <string name="btn_edit">Duzenle</string>
+    <string name="btn_delete">Sil</string>
+    <string name="btn_update">Guncelle</string>
+    <string name="btn_cancel">Iptal</string>
 </resources>

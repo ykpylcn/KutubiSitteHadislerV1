@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_margin"
+    android:paddingRight="@dimen/activity_margin"
+    android:paddingTop="@dimen/activity_margin">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView android:id="@+id/dialog_title"
+        style="@style/TextStyleBasicHeader"
+        android:layout_marginBottom="@dimen/dimen_10"
+        android:text="@string/lbl_new_notify_title"
+        />
+
+</LinearLayout>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" android:orientation="horizontal">
+       <TextView android:id="@+id/dialog_Saat"
+           style="@style/TextStyleBasic"
+           android:layout_marginBottom="@dimen/dimen_10"
+           android:text="@string/lbl_notify_Saat"
+           android:layout_weight="1"
+           />
+
+       <TimePicker
+           android:id="@+id/editTextTime"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:timePickerMode="spinner" />
+
+   </LinearLayout>
+<CheckBox
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Hergun">
+
+</CheckBox>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/sound"
+        >
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sound"
+            android:text="Secili Hadis" />
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/vibration"
+            android:text="Sakli Hadislerden" />
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/silent"
+            android:text="Tum hadislerden" />
+    </RadioGroup>
+</LinearLayout>

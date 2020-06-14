@@ -1,30 +1,20 @@
 package com.ykpylcn.kutubisittehadisler_v1.ui.hadisler;
 
 
-import android.animation.Animator;
 import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -36,7 +26,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
-import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadisViewFlipperAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
@@ -44,7 +33,6 @@ import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HadislerFragment extends Fragment {
 
@@ -82,11 +70,12 @@ public class HadislerFragment extends Fragment {
         });
 
 
-//        dbAdapter=new DBAdapter(getActivity().getApplicationContext());
+
         bnavigate=root.findViewById(R.id.bottom_navigation);
         bnavigate.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Dialogs dial = new Dialogs();
                 long hadisNo=adapViewFlipper.getAdapter().getItemId(adapViewFlipper.getDisplayedChild());
                 switch (item.getItemId()) {
                     case R.id.navigate_hadis_no:
@@ -95,7 +84,7 @@ public class HadislerFragment extends Fragment {
                     case R.id.navigation_note:
 
                         Note not= App.DbAdapter.getNoteByHadisID(hadisNo);
-                        Dialogs dial = new Dialogs();
+
                         if(not!=null){
 
                             dial.showNoteDialog(true,not,not.getId(),getActivity(), (int) hadisNo);
@@ -105,7 +94,7 @@ public class HadislerFragment extends Fragment {
                         }
                         return true;
                     case R.id.navigation_notifications:
-
+                        dial.showNotificationDialog(true,getActivity(), (int) hadisNo);
                         return true;
                     case R.id.fav_add:
                         UpdateHadisIsFav(hadisNo);
@@ -191,7 +180,7 @@ public class HadislerFragment extends Fragment {
 
                     }
                 })
-                .setNegativeButton(getResources().getText(R.string.btn_note_cancel),
+                .setNegativeButton(getResources().getText(R.string.btn_cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogBox, int id) {
                                 dialogBox.cancel();

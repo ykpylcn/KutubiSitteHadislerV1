@@ -3,17 +3,21 @@ package com.ykpylcn.kutubisittehadisler_v1.ui.hadisler;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -94,7 +98,8 @@ public class HadislerFragment extends Fragment {
                         }
                         return true;
                     case R.id.navigation_notifications:
-                        dial.showNotificationDialog(true,getActivity(), (int) hadisNo);
+
+                        dial.showNotificationDialog(false,getActivity(), hadisNo);
                         return true;
                     case R.id.fav_add:
                         UpdateHadisIsFav(hadisNo);
@@ -252,6 +257,8 @@ public class HadislerFragment extends Fragment {
                 CheckIsFavorite(adapViewFlipper.getAdapter().getItemId(adapViewFlipper.getDisplayedChild()));
             }
         });
+
+
 //        adapViewFlipper.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
 //            @Override
 //            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {

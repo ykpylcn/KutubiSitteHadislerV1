@@ -2,7 +2,9 @@ package com.ykpylcn.kutubisittehadisler_v1.db;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.text.method.KeyListener;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+
+import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 
 import android.widget.SeekBar;
@@ -66,9 +70,23 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                     inflate(R.layout.hadis_list_row, parent, false);
         }
 
-        Hadis hadis = hadisler.get(position);
+        final Hadis hadis = hadisler.get(position);
         final TextView textHadis = convertView.findViewById(R.id.txt_hadis);
         textHadis.setText(hadis.getHadis());
+        textHadis.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent sharingIntent = new Intent(Intent.ACTION_VIEW);
+                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                sharingIntent.setData(Uri.parse("http://muhaddis.org/cgi-bin/dbman/db.cgi?db=ks&uid=default&SNo="+hadis.getHadisNo()+"&mh=10&view_records=Sorgula"));
+
+                Intent chooserIntent = Intent.createChooser(sharingIntent, "Open With");
+                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                App.app_context.startActivity(chooserIntent);
+                return false;
+            }
+        });
         textHadis.setMovementMethod(new ScrollingMovementMethod());
         TextView text_kaynak = convertView.findViewById(R.id.text_kaynak);
         text_kaynak.setText(hadis.getKaynak());

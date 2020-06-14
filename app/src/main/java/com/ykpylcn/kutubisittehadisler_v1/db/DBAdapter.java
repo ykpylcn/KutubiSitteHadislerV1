@@ -40,14 +40,14 @@ public class DBAdapter {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query(DBHelper.TABLE_NAME_HADISLER,
-                new String[]{Hadis.COLUMN_HADIS,Hadis.COLUMN_KAYNAK, Hadis.COLUMN_ISFAV},
+                new String[]{Hadis.COLUMN_ANAKONU,Hadis.COLUMN_HADIS,Hadis.COLUMN_KAYNAK, Hadis.COLUMN_ISFAV},
                 Hadis.COLUMN_HADIS_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         Hadis hadis=null;
         if (cursor != null){
             cursor.moveToFirst();
             // prepare note object
-            hadis = new Hadis(Integer.parseInt(String.valueOf(id)) ,"","","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_KAYNAK)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
+            hadis = new Hadis(Integer.parseInt(String.valueOf(id)) ,cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ANAKONU)),"","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_KAYNAK)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
 
         }
 

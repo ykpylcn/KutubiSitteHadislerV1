@@ -26,13 +26,13 @@
            android:text="@string/lbl_notify_Saat"
            android:layout_weight="1"
            />
+<EditText
+    android:id="@+id/timeText"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text=""
+    android:layout_weight="1"></EditText>
 
-       <TimePicker
-           android:id="@+id/editTextTime"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_weight="1"
-           android:timePickerMode="spinner" />
 
    </LinearLayout>
 <CheckBox

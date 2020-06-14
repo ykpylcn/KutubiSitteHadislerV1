@@ -5,6 +5,7 @@ public class Hadis {
     public static final String COLUMN_HADIS = "Hadis";
     public static final String COLUMN_KAYNAK = "Kaynak";
     public static final String COLUMN_ISFAV = "IsFav";
+    public static final String COLUMN_ANAKONU = "AnaKonu";
 
 
     private int ID;

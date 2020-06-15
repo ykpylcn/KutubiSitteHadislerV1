@@ -23,7 +23,7 @@ public class NotificationUtils extends ContextWrapper {
     Intent intent;
     PendingIntent pIntent;
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public NotificationUtils(Context base) {
+    public NotificationUtils(Context base,int id) {
         super(base);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
@@ -31,7 +31,8 @@ public class NotificationUtils extends ContextWrapper {
         else
             createChannel2();
         intent = new Intent(this, SplashScreen.class);
-        pIntent = PendingIntent.getActivity(base, (int) System.currentTimeMillis(), intent, 0);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        pIntent = PendingIntent.getActivity(base, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void createChannel2() {
@@ -71,6 +72,7 @@ public class NotificationUtils extends ContextWrapper {
                     .setStyle(new Notification.BigTextStyle().bigText(body))
                     .setSmallIcon(R.mipmap.ic_launcher_foreground)
                     .addAction(android.R.drawable.stat_notify_more, "Hadisler..", pIntent)
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
         }
         return new Notification.Builder(this,ANDROID_CHANNEL_ID)
@@ -79,6 +81,7 @@ public class NotificationUtils extends ContextWrapper {
                 .setStyle(new Notification.BigTextStyle().bigText(body))
                 .setSmallIcon(R.mipmap.ic_launcher_foreground)
                 .addAction(android.R.drawable.stat_notify_more, "Hadisler..", pIntent)
+                .setContentIntent(pIntent)
                 .setAutoCancel(true);
 
     }

@@ -1,16 +1,21 @@
 package com.ykpylcn.kutubisittehadisler_v1.ui;
 
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -22,6 +27,7 @@ import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
+import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
 import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
 
 import java.util.Calendar;
@@ -100,7 +106,8 @@ public class Dialogs {
 //        TextView dialogTitle = view.findViewById(R.id.dialog_title);
 //        dialogTitle.setText(!shouldUpdate ? activity.getResources().getText(R.string.lbl_new_notify_title) : activity.getResources().getText(R.string.lbl_edit_notify_title));
 //
-        TimePicker timePicker=view.findViewById(R.id.timePicker);
+        final TimePicker timePicker=view.findViewById(R.id.timePicker);
+        final CheckBox isDaily=view.findViewById(R.id.cbHergun);
         timePicker.setIs24HourView(true);
 //        Calendar myCal = Calendar.getInstance();
 //
@@ -108,25 +115,25 @@ public class Dialogs {
 //        timePicker.setCurrentHour(myCal.get(Calendar.HOUR_OF_DAY)+12);
 //        timePicker.setCurrentMinute(Calendar.MINUTE);
 
-        final EditText time=view.findViewById(R.id.timeText);
-        time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(activity, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        time.setText(selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Saat Belirle!");
-                mTimePicker.show();
-
-            }
-        });
+//        final EditText time=view.findViewById(R.id.timePicker);
+//        time.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Calendar mcurrentTime = Calendar.getInstance();
+//                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+//                int minute = mcurrentTime.get(Calendar.MINUTE);
+//                TimePickerDialog mTimePicker;
+//                mTimePicker = new TimePickerDialog(activity, new TimePickerDialog.OnTimeSetListener() {
+//                    @Override
+//                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                        time.setText(selectedHour + ":" + selectedMinute);
+//                    }
+//                }, hour, minute, true);//Yes 24 hour time
+//                mTimePicker.setTitle("Saat Belirle!");
+//                mTimePicker.show();
+//
+//            }
+//        });
 //        notif e gore degistir
 //        if (shouldUpdate && note != null) {
 //            inputNote.setText(note.getNote());
@@ -167,16 +174,13 @@ public class Dialogs {
 //                    alertDialog.dismiss();
 //                }
                 alertDialog.dismiss();
-                Hadis hadis=App.DbAdapter.getHadis(hadisID);
 
-                if(hadis!=null) {
+//                Hadis hadis=App.DbAdapter.getHadis(hadisID);
+//                if(hadis!=null) {
 
-                    NotificationUtils mNotificationUtils=new NotificationUtils(App.app_context);
-                    Notification.Builder nb = mNotificationUtils.
-                            getAndroidChannelNotification(hadis.AnaKonu, hadis.getHadis());
+                    startAlarm(hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute());
 
-                    mNotificationUtils.getManager().notify((int) hadisID, nb.build());
-                }
+
 //                // check if user updating notification
 //                if (shouldUpdate && note != null) {
 //                    // update note by it's id
@@ -188,5 +192,26 @@ public class Dialogs {
 //                }
             }
         });
+    }
+    private void startAlarm(long hadisID, boolean isRepeat,int hour, int minute) {
+        AlarmManager manager = (AlarmManager)App.app_context.getSystemService(Context.ALARM_SERVICE);
+        Intent myIntent;
+        PendingIntent pendingIntent;
+
+        // SET TIME HERE
+        Calendar calendar= Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,minute);
+
+
+        myIntent = new Intent(App.app_context, AlarmNotificationReceiver.class);
+        myIntent.putExtra("hadisid",hadisID);
+        pendingIntent = PendingIntent.getBroadcast(App.app_context.getApplicationContext(),0,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        if(!isRepeat)
+            manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+500,pendingIntent);
+        else
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 }

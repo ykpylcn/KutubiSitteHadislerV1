@@ -20,6 +20,7 @@ public class NotificationUtils extends ContextWrapper {
     private NotificationManager mManager;
     public static final String ANDROID_CHANNEL_ID = "com.ykpylcn.kutubisittehadisler";
     public static final String ANDROID_CHANNEL_NAME = "KÜTÜB-İ SİTTE HADİSLER";
+    long when;
     Intent intent;
     PendingIntent pIntent;
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -33,9 +34,11 @@ public class NotificationUtils extends ContextWrapper {
         intent = new Intent(this, SplashScreen.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         pIntent = PendingIntent.getActivity(base, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        when = System.currentTimeMillis();
     }
 
     private void createChannel2() {
+        getManager();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -71,16 +74,16 @@ public class NotificationUtils extends ContextWrapper {
                     .setContentText(body)
                     .setStyle(new Notification.BigTextStyle().bigText(body))
                     .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                    .addAction(android.R.drawable.stat_notify_more, "Hadisler..", pIntent)
                     .setContentIntent(pIntent)
+                    .setWhen(when)
                     .setAutoCancel(true);
         }
-        return new Notification.Builder(this,ANDROID_CHANNEL_ID)
+        return new Notification.Builder(getApplicationContext())
                 .setContentTitle(title)
                 .setContentText(body)
                 .setStyle(new Notification.BigTextStyle().bigText(body))
                 .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                .addAction(android.R.drawable.stat_notify_more, "Hadisler..", pIntent)
+                .setWhen(when)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true);
 

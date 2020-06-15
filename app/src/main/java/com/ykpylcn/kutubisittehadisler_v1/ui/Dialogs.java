@@ -207,12 +207,12 @@ public class Dialogs {
 
         myIntent = new Intent(App.app_context, AlarmNotificationReceiver.class);
         myIntent.putExtra("hadisid",hadisID);
-        pendingIntent = PendingIntent.getBroadcast(App.app_context.getApplicationContext(),0,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(App.app_context.getApplicationContext(),AlarmManager.RTC,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         if(!isRepeat)
-            manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+500,pendingIntent);
+            manager.set(AlarmManager.RTC, SystemClock.elapsedRealtime()+500,pendingIntent);
         else
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
+            manager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 }

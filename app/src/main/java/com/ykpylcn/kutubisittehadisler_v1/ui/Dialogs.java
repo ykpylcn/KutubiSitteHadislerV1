@@ -91,6 +91,7 @@ public class Dialogs {
                     long id = App.DbAdapter.insertNote(inputNote.getText().toString(),hadisID);
 
                 }
+
             }
         });
     }

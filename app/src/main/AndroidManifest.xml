@@ -3,6 +3,7 @@
     package="com.ykpylcn.kutubisittehadisler_v1">
 <uses-permission android:name="android.permission.SET_ALARM"></uses-permission>
     <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,6 +42,7 @@
                             android:name="android.app.searchable"
             android:resource="@xml/searchable" />
         </activity>
+        <service android:name=".utils.RunService" android:enabled="true"></service>
         <receiver android:name=".utils.AlarmNotificationReceiver" android:enabled="true" android:exported="true"></receiver>
     </application>
 

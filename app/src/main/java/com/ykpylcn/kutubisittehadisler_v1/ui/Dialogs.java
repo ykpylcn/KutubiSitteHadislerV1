@@ -95,7 +95,7 @@ public class Dialogs {
             }
         });
     }
-    public void showNotificationDialog(final boolean shouldUpdate,final FragmentActivity activity, final long hadisID) {
+    public void showNotificationDialog(final boolean shouldUpdate,final Context activity, final long hadisID) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
         View view = layoutInflaterAndroid.inflate(R.layout.notify_dialog, null);
@@ -180,9 +180,9 @@ public class Dialogs {
 //                if(hadis!=null) {
 
                 if(Build.VERSION.SDK_INT>=23)
-                startAlarm(hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute());
+                startAlarm(hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute(),activity);
                 else
-                startAlarm(hadisID,isDaily.isChecked(),timePicker.getCurrentHour(),timePicker.getCurrentMinute());
+                startAlarm(hadisID,isDaily.isChecked(),timePicker.getCurrentHour(),timePicker.getCurrentMinute(),activity);
 
 
 //                // check if user updating notification
@@ -197,7 +197,7 @@ public class Dialogs {
             }
         });
     }
-    private void startAlarm(long hadisID, boolean isRepeat,int hour, int minute) {
+    private void startAlarm(long hadisID, boolean isRepeat,int hour, int minute,Context activity) {
         AlarmManager manager = (AlarmManager)App.app_context.getSystemService(Context.ALARM_SERVICE);
         Intent myIntent;
         PendingIntent pendingIntent;
@@ -208,9 +208,9 @@ public class Dialogs {
         calendar.set(Calendar.MINUTE,minute);
         calendar.set(Calendar.SECOND,0);
 
-        myIntent = new Intent(App.app_context.getApplicationContext(), AlarmNotificationReceiver.class);
+        myIntent = new Intent(activity, AlarmNotificationReceiver.class);
         myIntent.putExtra("hadisid",hadisID);
-        pendingIntent = PendingIntent.getBroadcast(App.app_context.getApplicationContext(),0,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(activity,0,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         if(!isRepeat)

@@ -46,7 +46,7 @@ public class NotificationUtils extends ContextWrapper {
 
         // create android channel
         NotificationChannel androidChannel = new NotificationChannel(ANDROID_CHANNEL_ID,
-                ANDROID_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+                ANDROID_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
         // Sets whether notifications posted to this channel should display notification lights
         androidChannel.enableLights(true);
         // Sets whether notification posted to this channel should vibrate.
@@ -72,10 +72,11 @@ public class NotificationUtils extends ContextWrapper {
             return new Notification.Builder(getApplicationContext(), ANDROID_CHANNEL_ID)
                     .setContentTitle(title)
                     .setContentText(body)
+
                     .setStyle(new Notification.BigTextStyle().bigText(body))
                     .setSmallIcon(R.mipmap.ic_launcher_foreground)
                     .setContentIntent(pIntent)
-                    .setWhen(when)
+//                    .setWhen(when)
                     .setAutoCancel(true);
         }
         return new Notification.Builder(getApplicationContext())
@@ -83,7 +84,7 @@ public class NotificationUtils extends ContextWrapper {
                 .setContentText(body)
                 .setStyle(new Notification.BigTextStyle().bigText(body))
                 .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                .setWhen(when)
+//                .setWhen(when)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true);
 

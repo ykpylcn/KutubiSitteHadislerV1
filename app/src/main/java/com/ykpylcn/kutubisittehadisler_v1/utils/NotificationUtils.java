@@ -12,6 +12,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.MainActivity;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.SplashScreen;
@@ -23,26 +24,26 @@ public class NotificationUtils extends ContextWrapper {
     long when;
     Intent intent;
     PendingIntent pIntent;
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     public NotificationUtils(Context base,int id) {
         super(base);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel();
+            createChannel(base);
         }
         else
-            createChannel2();
+            createChannel2(base);
         intent = new Intent(this, SplashScreen.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         pIntent = PendingIntent.getActivity(base, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         when = System.currentTimeMillis();
     }
 
-    private void createChannel2() {
-        getManager();
+    private void createChannel2(Context base) {
+        getManager(base);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void createChannel() {
+    public void createChannel(Context base) {
 
         // create android channel
         NotificationChannel androidChannel = new NotificationChannel(ANDROID_CHANNEL_ID,
@@ -56,17 +57,17 @@ public class NotificationUtils extends ContextWrapper {
         // Sets whether notifications posted to this channel appear on the lockscreen or not
         androidChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 
-        getManager().createNotificationChannel(androidChannel);
+        getManager(base).createNotificationChannel(androidChannel);
 
 
     }
-    public NotificationManager getManager() {
+    public NotificationManager getManager(Context base) {
         if (mManager == null) {
-            mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return mManager;
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     public Notification.Builder getAndroidChannelNotification(String title, String body) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return new Notification.Builder(getApplicationContext(), ANDROID_CHANNEL_ID)

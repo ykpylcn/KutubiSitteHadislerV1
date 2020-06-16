@@ -198,7 +198,7 @@ public class Dialogs {
         });
     }
     private void startAlarm(long hadisID, boolean isRepeat,int hour, int minute,Context activity) {
-        AlarmManager manager = (AlarmManager)App.app_context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
         Intent myIntent;
         PendingIntent pendingIntent;
 
@@ -214,8 +214,8 @@ public class Dialogs {
 
 
         if(!isRepeat)
-            manager.set(AlarmManager.RTC, SystemClock.elapsedRealtime()+500,pendingIntent);
+            manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+500,pendingIntent);
         else
-            manager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 }

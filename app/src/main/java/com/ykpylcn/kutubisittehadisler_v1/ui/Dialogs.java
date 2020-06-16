@@ -179,7 +179,10 @@ public class Dialogs {
 //                Hadis hadis=App.DbAdapter.getHadis(hadisID);
 //                if(hadis!=null) {
 
-                    startAlarm(hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute());
+                if(Build.VERSION.SDK_INT>=23)
+                startAlarm(hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute());
+                else
+                startAlarm(hadisID,isDaily.isChecked(),timePicker.getCurrentHour(),timePicker.getCurrentMinute());
 
 
 //                // check if user updating notification
@@ -203,11 +206,11 @@ public class Dialogs {
         Calendar calendar= Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY,hour);
         calendar.set(Calendar.MINUTE,minute);
+        calendar.set(Calendar.SECOND,0);
 
-
-        myIntent = new Intent(App.app_context, AlarmNotificationReceiver.class);
+        myIntent = new Intent(App.app_context.getApplicationContext(), AlarmNotificationReceiver.class);
         myIntent.putExtra("hadisid",hadisID);
-        pendingIntent = PendingIntent.getBroadcast(App.app_context.getApplicationContext(),AlarmManager.RTC,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(App.app_context.getApplicationContext(),0,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         if(!isRepeat)

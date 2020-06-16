@@ -25,6 +25,12 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
                             getAndroidChannelNotification(hadis.AnaKonu, hadis.getHadis());
                     mNotificationUtils.getManager().notify(hadis.getHadisNo(), nb.build());
                 }
+                else {
+                    NotificationUtils mNotificationUtils=new NotificationUtils(context,100);
+                    Notification.Builder nb = mNotificationUtils.
+                            getAndroidChannelNotification("Hadis yok", "hadis bulunamadi null");
+                    mNotificationUtils.getManager().notify(hadis.getHadisNo(), nb.build());
+                }
 
 
     }

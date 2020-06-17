@@ -32,13 +32,13 @@ public class RunService extends JobIntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        showToast("Job Execution Started");
+//        showToast("Job Execution Started");
         Log.d("YKPTAG", "Started" );
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        showToast("Job Execution Finished");
+//        showToast("Job Execution Finished");
         Log.d("YKPTAG", "Stopped" );
     }
     @Override
@@ -58,7 +58,7 @@ public class RunService extends JobIntentService {
                 }
 
         } catch (Exception e) {
-            showToast("error notificaton: "+e.getMessage());
+            showToast("Bildirimler Hata : "+e.getMessage());
             e.printStackTrace();
             Log.d("YKPTAG", "Err: " + e.getMessage());
         }

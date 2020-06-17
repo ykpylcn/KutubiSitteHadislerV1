@@ -43,5 +43,7 @@
     <string name="btn_edit">Duzenle</string>
     <string name="btn_delete">Sil</string>
     <string name="btn_update">Guncelle</string>
+    <string name="btn_kaldir">Kaldir</string>
+    <string name="btn_kur">Hatirlatma Kur</string>
     <string name="btn_cancel">Iptal</string>
 </resources>

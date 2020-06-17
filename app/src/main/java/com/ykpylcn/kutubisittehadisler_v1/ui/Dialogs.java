@@ -95,7 +95,7 @@ public class Dialogs {
             }
         });
     }
-    public void showNotificationDialog(final boolean shouldUpdate,final Context activity, final long hadisID) {
+    public void showNotificationDialog(final boolean shouldUpdate, final Context activity, final long hadisID, final Intent intent) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
         View view = layoutInflaterAndroid.inflate(R.layout.notify_dialog, null);
@@ -103,6 +103,7 @@ public class Dialogs {
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(activity);
         alertDialogBuilderUserInput.setView(view);
 
+        final AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
 //        final EditText inputNote = view.findViewById(R.id.note);
 //        TextView dialogTitle = view.findViewById(R.id.dialog_title);
 //        dialogTitle.setText(!shouldUpdate ? activity.getResources().getText(R.string.lbl_new_notify_title) : activity.getResources().getText(R.string.lbl_edit_notify_title));
@@ -146,6 +147,7 @@ public class Dialogs {
 
                     }
                 })
+
                 .setNegativeButton(activity.getResources().getText(R.string.btn_cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogBox, int id) {
@@ -158,6 +160,18 @@ public class Dialogs {
                             }
                         });
 
+        if(shouldUpdate){
+            alertDialogBuilderUserInput.setNeutralButton("Kaldir" , new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogBox, int id) {
+
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);//the same as up
+                    manager.cancel(pendingIntent);//important
+                    pendingIntent.cancel();//important
+                }
+            });
+        }
+
 
         final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
         alertDialog.show();
@@ -166,25 +180,17 @@ public class Dialogs {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                // Show toast message when no text is entered
-//                if (TextUtils.isEmpty(inputNote.getText().toString())) {
-//                    String msg=activity.getResources().getText(R.string.hint_enter_note).toString();
-//                    Message.show(msg);
-//                    return;
-//                } else {
-//                    alertDialog.dismiss();
-//                }
+
                 alertDialog.dismiss();
 
-//                Hadis hadis=App.DbAdapter.getHadis(hadisID);
-//                if(hadis!=null) {
+
 
                 if(Build.VERSION.SDK_INT>=23)
-                startAlarm(hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute(),activity);
+                startAlarm(manager,hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute(),activity,intent);
                 else
-                startAlarm(hadisID,isDaily.isChecked(),timePicker.getCurrentHour(),timePicker.getCurrentMinute(),activity);
+                startAlarm(manager,hadisID,isDaily.isChecked(),timePicker.getCurrentHour(),timePicker.getCurrentMinute(),activity,intent);
 
-
+//DATABASE ISLERI BURDAN
 //                // check if user updating notification
 //                if (shouldUpdate && note != null) {
 //                    // update note by it's id
@@ -197,9 +203,9 @@ public class Dialogs {
             }
         });
     }
-    private void startAlarm(long hadisID, boolean isRepeat,int hour, int minute,Context activity) {
-        AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
-        Intent myIntent;
+    private void startAlarm(AlarmManager manager,long hadisID, boolean isRepeat,int hour, int minute,Context activity, Intent myIntent) {
+
+//        Intent myIntent;
         PendingIntent pendingIntent;
 
         // SET TIME HERE
@@ -208,14 +214,18 @@ public class Dialogs {
         calendar.set(Calendar.MINUTE,minute);
         calendar.set(Calendar.SECOND,0);
 
-        myIntent = new Intent(activity, AlarmNotificationReceiver.class);
-        myIntent.putExtra("hadisid",hadisID);
+//        myIntent = new Intent(activity, AlarmNotificationReceiver.class);
+//        myIntent.putExtra("hadisid",hadisID);
+//        myIntent.setAction(String.valueOf(hadisID));
+
+
         pendingIntent = PendingIntent.getBroadcast(activity,0,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-
         if(!isRepeat)
-            manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+500,pendingIntent);
+            manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
         else
             manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
     }
+
+
 }

@@ -14,6 +14,7 @@ import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 
 public class AlarmNotificationReceiver extends BroadcastReceiver {
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -21,7 +22,7 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
         if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
             Intent mIntent2 = new Intent(context, RunService.class);
 
-            mIntent2.putExtra("hadisid", 500);
+            mIntent2.putExtra("hadisid", intent.getLongExtra("hadisid",1));
             RunService.enqueueWork(context, mIntent2);
 //            Intent serviceLauncher = new Intent(context, RunService.class);
 //            context.startService(serviceLauncher);

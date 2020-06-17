@@ -2,6 +2,8 @@ package com.ykpylcn.kutubisittehadisler_v1.ui.hadisler;
 
 
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +37,7 @@ import com.ykpylcn.kutubisittehadisler_v1.db.HadisViewFlipperAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
+import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
 
 import java.util.ArrayList;
 
@@ -99,7 +102,10 @@ public class HadislerFragment extends Fragment {
                         return true;
                     case R.id.navigation_notifications:
 
-                        dial.showNotificationDialog(false,getActivity(), hadisNo);
+                        Intent myIntent = new Intent(getActivity(), AlarmNotificationReceiver.class);
+                        myIntent.putExtra("hadisid",hadisNo);
+                        myIntent.setAction(String.valueOf(hadisNo));
+                        dial.showNotificationDialog(checkNatification(myIntent,getActivity()),getActivity(), hadisNo,myIntent);
                         return true;
                     case R.id.fav_add:
                         UpdateHadisIsFav(hadisNo);
@@ -115,6 +121,13 @@ public class HadislerFragment extends Fragment {
 
 
         return root;
+    }
+    private boolean checkNatification(Intent intent, Context activity){
+
+        boolean alarmUp = (PendingIntent.getBroadcast(activity, 0,
+                intent,
+                PendingIntent.FLAG_NO_CREATE) != null);
+        return  alarmUp;
     }
     private void UpdateHadisIsFav(long hadisId){
 

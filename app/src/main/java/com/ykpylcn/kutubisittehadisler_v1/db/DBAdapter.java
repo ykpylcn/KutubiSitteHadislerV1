@@ -25,8 +25,8 @@ public class DBAdapter {
 //        String[] columns = {myDbHelper.UID,myDbHelper.NAME,myDbHelper.MyPASSWORD};
         Cursor cursor=dbHelper.getReadableDatabase().query(dbHelper.TABLE_NAME_HADISLER,new String[]{Hadis.COLUMN_HADIS,Hadis.COLUMN_KAYNAK,Hadis.COLUMN_ISFAV},Hadis.COLUMN_HADIS_ID+"= ?",new String[]{String.valueOf(hadisNo)},null,null,null);
         Hadis hadis;
-        if (cursor != null){
-            cursor.moveToFirst();
+        if (cursor.moveToFirst()){
+
             hadis= new Hadis(hadisNo,"","","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_KAYNAK)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
 
         }else
@@ -44,8 +44,8 @@ public class DBAdapter {
                 Hadis.COLUMN_HADIS_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         Hadis hadis=null;
-        if (cursor != null){
-            cursor.moveToFirst();
+        if (cursor.moveToFirst()){
+
             // prepare note object
             hadis = new Hadis(Integer.parseInt(String.valueOf(id)) ,cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ANAKONU)),"","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_KAYNAK)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
 
@@ -55,6 +55,66 @@ public class DBAdapter {
         cursor.close();
         db.close();
         return hadis;
+    }
+    public Notif GetNotifByHadisID(long hadisID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(DBHelper.TABLE_NAME_NOTIF,
+                new String[]{Notif.COLUMN_ID,Notif.COLUMN_HADIS_ID,Notif.COLUMN_HOUR,Notif.COLUMN_MINUTE,Notif.COLUMN_IS_DAILY,Notif.COLUMN_SHOW_TYPE,Notif.COLUMN_DATE,Notif.COLUMN_IS_ACTIVE},
+                Notif.COLUMN_HADIS_ID + "=?",
+                new String[]{String.valueOf(hadisID)}, null, null, null, null);
+        Notif notif=null;
+        if (cursor.moveToFirst()){
+
+            // prepare note object
+            notif = new Notif(cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_ID)),cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_HADIS_ID)),cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_HOUR)),cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_MINUTE)),cursor.getString(cursor.getColumnIndex(Notif.COLUMN_IS_DAILY)),cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_SHOW_TYPE)),cursor.getString(cursor.getColumnIndex(Notif.COLUMN_DATE)),cursor.getString(cursor.getColumnIndex(Notif.COLUMN_IS_ACTIVE)));
+
+        }
+
+        // close the db connection
+        cursor.close();
+        db.close();
+        return notif;
+    }
+    public void deleteNotif(int hadisID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(DBHelper.TABLE_NAME_NOTIF, Notif.COLUMN_HADIS_ID + " = ?",
+                new String[]{String.valueOf(hadisID)});
+        db.close();
+    }
+    public long insertNotif(Notif notif) {
+        // get writable database as we want to write data
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        // `id` and `timestamp` will be inserted automatically.
+        // no need to add them
+        values.put(Notif.COLUMN_HADIS_ID, notif.HadisID);
+        values.put(Notif.COLUMN_HOUR, notif.Hour);
+        values.put(Notif.COLUMN_MINUTE, notif.Minute);
+        values.put(Notif.COLUMN_IS_DAILY, notif.IsDaily);
+        values.put(Notif.COLUMN_SHOW_TYPE, notif.HadisShowType);
+        // insert row
+        long id = db.insert(DBHelper.TABLE_NAME_NOTIF, null, values);
+
+        // close db connection
+        db.close();
+
+        // return newly inserted row id
+        return id;
+    }
+    public int updateNotif(Notif notif) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Notif.COLUMN_HOUR, notif.Hour);
+        values.put(Notif.COLUMN_MINUTE, notif.Minute);
+        values.put(Notif.COLUMN_IS_DAILY, notif.IsDaily);
+        values.put(Notif.COLUMN_SHOW_TYPE, notif.HadisShowType);
+
+        // updating row
+        return db.update(DBHelper.TABLE_NAME_NOTIF, values, Notif.COLUMN_HADIS_ID + " = ?",
+                new String[]{String.valueOf(notif.HadisID)});
     }
     public Boolean CheckHadisBy(int hadisNo) {
 
@@ -359,6 +419,7 @@ public class DBAdapter {
             dbHelper.close();
 
     }
+
 
 
 }

@@ -38,11 +38,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:checked="true"
-    android:text="Hergun"
+    android:text="@string/lbl_notify_IsDaily"
     >
 
 </CheckBox>
     <RadioGroup
+        android:id="@+id/rgShowType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checkedButton="@+id/sound"
@@ -50,19 +51,21 @@
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/sound"
-            android:text="Secili Hadis" />
+            android:id="@+id/currenthadis"
+            android:text="Secili Hadis"
+            android:checked="true"
+            />
 
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/vibration"
+            android:id="@+id/favhadis"
             android:text="Sakli Hadislerden" />
 
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/silent"
+            android:id="@+id/randomhadis"
             android:text="Tum hadislerden" />
     </RadioGroup>
     </LinearLayout>

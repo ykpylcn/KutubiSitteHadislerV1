@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -27,6 +29,7 @@ import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
+import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
 import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
 import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
 
@@ -95,51 +98,52 @@ public class Dialogs {
             }
         });
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void showNotificationDialog(final boolean shouldUpdate, final Context activity, final long hadisID, final Intent intent) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
-        View view = layoutInflaterAndroid.inflate(R.layout.notify_dialog, null);
+        final View view = layoutInflaterAndroid.inflate(R.layout.notify_dialog, null);
 
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(activity);
         alertDialogBuilderUserInput.setView(view);
 
-        final AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
-//        final EditText inputNote = view.findViewById(R.id.note);
-//        TextView dialogTitle = view.findViewById(R.id.dialog_title);
-//        dialogTitle.setText(!shouldUpdate ? activity.getResources().getText(R.string.lbl_new_notify_title) : activity.getResources().getText(R.string.lbl_edit_notify_title));
-//
         final TimePicker timePicker=view.findViewById(R.id.timePicker);
         final CheckBox isDaily=view.findViewById(R.id.cbHergun);
+        final RadioGroup showType=view.findViewById(R.id.rgShowType);
         timePicker.setIs24HourView(true);
-//        Calendar myCal = Calendar.getInstance();
-//
-//
-//        timePicker.setCurrentHour(myCal.get(Calendar.HOUR_OF_DAY)+12);
-//        timePicker.setCurrentMinute(Calendar.MINUTE);
 
-//        final EditText time=view.findViewById(R.id.timePicker);
-//        time.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Calendar mcurrentTime = Calendar.getInstance();
-//                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-//                int minute = mcurrentTime.get(Calendar.MINUTE);
-//                TimePickerDialog mTimePicker;
-//                mTimePicker = new TimePickerDialog(activity, new TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-//                        time.setText(selectedHour + ":" + selectedMinute);
-//                    }
-//                }, hour, minute, true);//Yes 24 hour time
-//                mTimePicker.setTitle("Saat Belirle!");
-//                mTimePicker.show();
-//
-//            }
-//        });
-//        notif e gore degistir
-//        if (shouldUpdate && note != null) {
-//            inputNote.setText(note.getNote());
-//        }
+
+
+        final AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
+        Notif notif=null;
+
+        if(shouldUpdate){
+            notif=App.DbAdapter.GetNotifByHadisID(hadisID);
+            if (notif==null)
+            {
+
+                notif=new Notif();
+                notif.HadisID=(int)hadisID;
+                notif.Hour=timePicker.getHour();
+                notif.Minute=timePicker.getMinute();
+                notif.IsDaily=isDaily.isChecked();
+                notif.HadisShowType=showType.indexOfChild(view.findViewById(showType.getCheckedRadioButtonId()));
+                long sonuc=App.DbAdapter.insertNotif(notif);
+            }else {
+//                dialog penceresini set et
+                timePicker.setHour(notif.Hour);
+                timePicker.setMinute(notif.Minute);
+                isDaily.setChecked(notif.IsDaily);
+                ((RadioButton)showType.getChildAt(notif.HadisShowType)).setChecked(true);
+            }
+
+        }
+
+
+        final TextView dialogTitle = view.findViewById(R.id.dialog_title);
+        dialogTitle.setText(!shouldUpdate ? activity.getResources().getText(R.string.lbl_new_notify_title) : activity.getResources().getText(R.string.lbl_edit_notify_title));
+
+
         alertDialogBuilderUserInput
                 .setCancelable(false)
                 .setPositiveButton(shouldUpdate ? activity.getResources().getText(R.string.btn_update) : activity.getResources().getText(R.string.btn_save), new DialogInterface.OnClickListener() {
@@ -161,14 +165,16 @@ public class Dialogs {
                         });
 
         if(shouldUpdate){
-            alertDialogBuilderUserInput.setNeutralButton("Kaldir" , new DialogInterface.OnClickListener() {
+            alertDialogBuilderUserInput.setNeutralButton(activity.getResources().getText(R.string.btn_kaldir) , new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogBox, int id) {
 
 
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);//the same as up
+                    App.DbAdapter.deleteNotif((int) hadisID);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                     manager.cancel(pendingIntent);//important
                     pendingIntent.cancel();//important
                 }
+
             });
         }
 
@@ -176,6 +182,8 @@ public class Dialogs {
         final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
         alertDialog.show();
 
+
+        final Notif[] finalNotif = {notif};
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -183,23 +191,22 @@ public class Dialogs {
 
                 alertDialog.dismiss();
 
+                if (finalNotif[0] ==null)
+                    finalNotif[0] =new Notif();
 
-
-                if(Build.VERSION.SDK_INT>=23)
+                finalNotif[0].HadisID=(int)hadisID;
+                finalNotif[0].Hour=timePicker.getHour();
+                finalNotif[0].Minute=timePicker.getMinute();
+                finalNotif[0].IsDaily=isDaily.isChecked();
+                finalNotif[0].HadisShowType=showType.indexOfChild(view.findViewById(showType.getCheckedRadioButtonId()));
+                if (shouldUpdate) {
+                    App.DbAdapter.updateNotif(finalNotif[0]);
+                } else {
+                    long id = App.DbAdapter.insertNotif(finalNotif[0]);
+                }
                 startAlarm(manager,hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute(),activity,intent);
-                else
-                startAlarm(manager,hadisID,isDaily.isChecked(),timePicker.getCurrentHour(),timePicker.getCurrentMinute(),activity,intent);
 
-//DATABASE ISLERI BURDAN
-//                // check if user updating notification
-//                if (shouldUpdate && note != null) {
-//                    // update note by it's id
-//                    App.DbAdapter.updateNoteByID(inputNote.getText().toString(), position);
-//                } else {
-//                    // create new note
-//                    long id = App.DbAdapter.insertNote(inputNote.getText().toString(),hadisID);
-//
-//                }
+
             }
         });
     }

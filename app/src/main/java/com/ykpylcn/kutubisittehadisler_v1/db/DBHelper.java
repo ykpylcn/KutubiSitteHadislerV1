@@ -20,9 +20,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG ="DBHelper" ;
     private static String DB_NAME = "DBHadislerV1.db";
     public static String TABLE_NAME_HADISLER = "kutubisitte";
+    public static String TABLE_NAME_NOTIF = "notifications";
     public static String TABLE_NAME_NOTE = "notes";
     private static String DB_PATH = "";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static final String SP_KEY_DB_VER = "db_ver";
     private Context mContext;
 

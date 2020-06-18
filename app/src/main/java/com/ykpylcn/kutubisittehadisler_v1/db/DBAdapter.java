@@ -56,6 +56,32 @@ public class DBAdapter {
         db.close();
         return hadis;
     }
+    public Hadis getOneHadisRandom(boolean isFav) {
+        Hadis hadis =null;
+        // Select All Query
+        String isfav="";
+        if (isFav)
+            isfav=" where "+Hadis.COLUMN_ISFAV+"=1";
+        String selectQuery = "SELECT  * FROM " + dbHelper.TABLE_NAME_HADISLER+isfav+" ORDER BY RANDOM() LIMIT 1";
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+
+
+        if (cursor.moveToFirst()){
+
+            // prepare note object
+            hadis = new Hadis(cursor.getInt(cursor.getColumnIndex(Hadis.COLUMN_HADIS_ID)) ,cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ANAKONU)),"","","",cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_HADIS)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_KAYNAK)),cursor.getString(cursor.getColumnIndex(Hadis.COLUMN_ISFAV)));
+
+        }
+
+        // close the db connection
+        cursor.close();
+        db.close();
+        return hadis;
+    }
     public Notif GetNotifByHadisID(long hadisID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 

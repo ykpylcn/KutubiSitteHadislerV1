@@ -12,9 +12,9 @@
     <item
     android:id="@+id/navigation_notifications"
     android:icon="@drawable/ic_notifications"
-    android:title="Notification" />
+    android:title="@string/hint_menu_notify" />
     <item
         android:id="@+id/fav_add"
         android:icon="@drawable/ic_action_favorite_border"
-        android:title="" />
+        android:title="Sakla  " />
 </menu>

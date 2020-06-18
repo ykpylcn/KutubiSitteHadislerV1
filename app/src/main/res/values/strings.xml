@@ -38,7 +38,7 @@
     <string name="lbl_notify_IsDaily">Hergün Yenile</string>
     <string name="lbl_edit_notify_title">Hatırlatma Düzenle</string>
     <string name="hint_enter_notify">Hatırlatma Girin!</string>
-
+    <string name="hint_menu_notify">Hatırlat</string>
 <!--    Genel-->
     <string name="btn_save">Kaydet</string>
     <string name="btn_edit">Duzenle</string>

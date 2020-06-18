@@ -19,6 +19,7 @@ import androidx.core.app.JobIntentService;
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
+import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
 
 public class RunService extends JobIntentService {
     final Handler mHandler = new Handler();
@@ -47,9 +48,18 @@ public class RunService extends JobIntentService {
 
         try {
 
-
+                Hadis hadis=null;
                 DBAdapter db=new DBAdapter(this);
-                Hadis hadis=db.getHadis(intent.getLongExtra("hadisid",1));
+                Notif notif=db.GetNotifByHadisID(intent.getLongExtra("hadisid",1));
+                if(notif!=null){
+                    if(notif.HadisShowType==0)
+                        hadis=db.getHadis(intent.getLongExtra("hadisid",1));
+                    else if(notif.HadisShowType==1)
+                        hadis=db.getOneHadisRandom(true);
+                    else
+                        hadis=db.getOneHadisRandom(false);
+                }
+
                 if(hadis!=null) {
                     NotificationUtils mNotificationUtils=new NotificationUtils(this,hadis.getHadisNo());
                     Notification.Builder nb = mNotificationUtils.

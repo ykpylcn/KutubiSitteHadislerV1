@@ -23,4 +23,14 @@ public class App extends Application {
         super.onCreate();
         package_name = getPackageName();
     }
+
+
+
+
+
+
+
+
 }
+
+

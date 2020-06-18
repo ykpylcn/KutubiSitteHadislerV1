@@ -32,6 +32,11 @@
         android:name="com.ykpylcn.kutubisittehadisler_v1.TestFragment"
         android:label="@string/home_test"
         tools:layout="@layout/test_fragment" />
+    <fragment
+        android:id="@+id/nav_notifler"
+        android:name="com.ykpylcn.kutubisittehadisler_v1.ui.notifler.Notifications"
+        android:label="@string/home_test"
+        tools:layout="@layout/fragment_notifications" />
 
 
 

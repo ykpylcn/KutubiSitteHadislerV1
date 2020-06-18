@@ -37,6 +37,8 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
+        if(hadisler==null)
+            return 0;
         return hadisler.size();
     }
 
@@ -51,6 +53,8 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 
     public long getItemId(int position) {
 
+        if(hadisler==null)
+            return -1;
         if(hadisler.size()==0)
             return -1;
         return  hadisler.get(position).getHadisNo();

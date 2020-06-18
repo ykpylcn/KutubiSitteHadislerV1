@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.MainActivity;
 import com.ykpylcn.kutubisittehadisler_v1.R;
+import com.ykpylcn.kutubisittehadisler_v1.ReturnNotification;
 import com.ykpylcn.kutubisittehadisler_v1.SplashScreen;
 
 public class NotificationUtils extends ContextWrapper {
@@ -32,7 +33,8 @@ public class NotificationUtils extends ContextWrapper {
         }
         else
             createChannel2(base);
-        intent = new Intent(this, SplashScreen.class);
+        intent = new Intent(this, ReturnNotification.class);
+        intent.putExtra("hadisno",id);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         pIntent = PendingIntent.getActivity(base, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         when = System.currentTimeMillis();

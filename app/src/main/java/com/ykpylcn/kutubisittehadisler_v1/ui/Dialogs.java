@@ -98,7 +98,7 @@ public class Dialogs {
             }
         });
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     public void showNotificationDialog(final boolean shouldUpdate, final Context activity, final long hadisID, final Intent intent) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);

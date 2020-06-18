@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
+import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadisViewFlipperAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
@@ -60,6 +62,7 @@ public class HadislerFragment extends Fragment {
         hadislerViewModel =
                 ViewModelProviders.of(this).get(HadislerViewModel.class);
 
+
 //        if(savedInstanceState!=null)
 //            indexVP=savedInstanceState.getInt("indexVP");
         refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
@@ -70,6 +73,7 @@ public class HadislerFragment extends Fragment {
         hadislerViewModel.getHadisler().observe(getViewLifecycleOwner(), new Observer<ArrayList<Hadis>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
+
 
                 FlipMethodCalistirbyAdapter(root,s);
 
@@ -122,6 +126,9 @@ public class HadislerFragment extends Fragment {
 
         return root;
     }
+
+
+
     private boolean checkNatification(Intent intent, Context activity){
 
         boolean alarmUp = (PendingIntent.getBroadcast(activity, 0,
@@ -151,8 +158,9 @@ public class HadislerFragment extends Fragment {
 
     }
     private void CheckIsFavorite(long hadisId){
+
         Hadis hadis=App.DbAdapter.getHadis(hadisId);
-        UpdateIconHadisIsFav(hadis.getIsFav());
+        UpdateIconHadisIsFav(hadis==null?false:hadis.getIsFav());
     }
     private void UpdateIconHadisIsFav(boolean isfav){
 
@@ -245,19 +253,9 @@ public class HadislerFragment extends Fragment {
         });
 
     }
-//    public int GetIndexID(ArrayList<Hadis> hadisler,int hadisid){
-//        for (int i=0;i<hadisler.size();i++){
-//
-//            if (hadisler.get(i).getHadisNo()==hadisid) {
-//                return i;
-//            }
-//        }
-//        return -1;
-//    }
     private void FlipMethodCalistirbyAdapter(View root,ArrayList<Hadis> list1) {
         before=root.findViewById(R.id.btn_before);
         next=root.findViewById(R.id.btn_Next);
-
 
         adapViewFlipper = root.findViewById(R.id.adapterViewFlipper);
         hadisViewFlipperAdapter=new HadisViewFlipperAdapter(getActivity().getApplicationContext(), list1);
@@ -268,18 +266,11 @@ public class HadislerFragment extends Fragment {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 CheckIsFavorite(adapViewFlipper.getAdapter().getItemId(adapViewFlipper.getDisplayedChild()));
+                SetVPIndex();
             }
         });
 
 
-//        adapViewFlipper.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-//            @Override
-//            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-//                CheckIsFavorite(adapViewFlipper.getDisplayedChild());
-//
-//            }
-//        });
-//        adapViewFlipper.o
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -325,12 +316,14 @@ public class HadislerFragment extends Fragment {
 
 
 
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
+        SetVPIndex();
+    }
+
+    private void SetVPIndex() {
         SharedPreferences.Editor editor=refindexVP.edit();
         editor.putInt("refindexVPkey",adapViewFlipper.getDisplayedChild());
         editor.commit();
@@ -356,89 +349,5 @@ public class HadislerFragment extends Fragment {
 
 
 
-//Eski Kod
-//    private void FlipMethodCalistir(View root) {
-//        before=root.findViewById(R.id.btn_before);
-//        next=root.findViewById(R.id.btn_Next);
-//
-//
-//
-//        simpleViewFlipper = root.findViewById(R.id.simpleViewFlipper);
-//
-//        List<Hadis> list=dbAdapter.getAllHadisler();
-//        for (Hadis hadis : list) {
-//            TextView tv = new TextView(getActivity().getApplicationContext());
-//            tv.setText(hadis.getHadis());
-//            tv.setTextSize(24);
-//
-//            simpleViewFlipper.addView(tv);
-//
-//        }
-//        simpleViewFlipper.setDisplayedChild(indexVP);
-//        simpleViewFlipper.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent event) {
-//                int action = event.getActionMasked();
-//
-//                switch (action) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        startX = event.getX();
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        float endX = event.getX();
-//                        float endY = event.getY();
-//
-//                        //swipe right
-//                        if (startX < endX) {
-//                            simpleViewFlipper.showNext();
-//                        }
-//
-//                        //swipe left
-//                        if (startX > endX) {
-//                            simpleViewFlipper.showPrevious();
-//                        }
-//
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
-//
-//
-//        next.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                indexVP++;
-//
-//                Context con1 = getActivity().getApplicationContext();
-////                simpleViewFlipper.setInAnimation(AnimationUtils.loadAnimation(con1, R.anim.in));
-//
-//                simpleViewFlipper.setInAnimation(AnimationUtils.loadAnimation(con1, android.R.anim.slide_in_left));
-//                simpleViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(con1, android.R.anim.slide_out_right));
-//                simpleViewFlipper.showNext();
-//
-//            }
-//        });
-//        before.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                indexVP--;
-//
-//                Context con1 = getActivity().getApplicationContext();
-////                simpleViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(con1, R.anim.out));
-//                simpleViewFlipper.setInAnimation(AnimationUtils.loadAnimation(con1, R.anim.slide_out_right));
-//                simpleViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(con1, R.anim.slide_in_left));
-//                simpleViewFlipper.showPrevious();
-//
-//
-//
-//            }
-//        });
-//
-//
-//        //simpleViewFlipper.startFlipping(); // start the flipping of views
-//        simpleViewFlipper.setFlipInterval(2000); //set 1 seconds for interval time
-//    }
+
 }

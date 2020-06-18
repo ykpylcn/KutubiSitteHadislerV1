@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/navigate_hadis_no"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_menu_slideshow"
+
         android:title="Getir" />
     <item
 

@@ -24,10 +24,10 @@ import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
 public class RunService extends JobIntentService {
     final Handler mHandler = new Handler();
     private static final int JOB_ID = 2;
-    public static Context context1;
+
     public static void enqueueWork(Context context, Intent intent) {
         enqueueWork(context, RunService.class, JOB_ID, intent);
-        context1=context;
+
     }
 
     @Override

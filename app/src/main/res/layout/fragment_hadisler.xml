@@ -55,7 +55,7 @@
             style="@style/ButtonStyleBasicLeft"
 
             android:layout_weight="1"
-            android:text="Geri"
+            android:text="@string/btn_hadis_onceki"
             />
 
         <Button
@@ -63,7 +63,7 @@
 
             style="@style/ButtonStyleBasicRight"
             android:layout_weight="1"
-            android:text="Ileri" />
+            android:text="@string/btn_hadis_sonraki" />
 
 
     </LinearLayout>

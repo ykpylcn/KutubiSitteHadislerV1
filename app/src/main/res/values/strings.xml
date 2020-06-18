@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Kutubi Sitte Hadisler</string>
+    <string name="app_name">Kütüb-i Sitte Hadisler</string>
     <string name="search_title">Hadis Ara..</string>
     <string name="search_konular_title">KONULAR</string>
     <string name="search_hint">Hadis Ara..</string>
     <string name="navigation_drawer_open">Aç</string>
     <string name="navigation_drawer_close">Kapat</string>
-    <string name="nav_header_title">Kutubi Sitte Hadisler</string>
+    <string name="nav_header_title">Kütüb-i Sitte Hadisler</string>
     <string name="nav_header_subtitle">yalcin.web@gmail.com</string>
     <string name="nav_header_desc">Başlık</string>
     <string name="action_settings">Ayarlar</string>
@@ -21,10 +21,11 @@
     <string name="msg_no_notes">Herhangi bir not bulunamadi!</string>
 
     <string name="lbl_new_note_title">Yeni Not</string>
-    <string name="lbl_hadis_go_title">Hadis No Giriniz</string>
+    <string name="lbl_hadis_go_title">Hadis Kayıt No Giriniz</string>
     <string name="btn_hadis_go">Hadis Bul!</string>
-
-    <string name="lbl_edit_note_title">Notu Duzenle</string>
+    <string name="btn_hadis_onceki">ÖNCEKİ</string>
+    <string name="btn_hadis_sonraki">SONRAKİ</string>
+    <string name="lbl_edit_note_title">Notu Düzenle</string>
     <string name="hint_enter_note">Notunuzu Girin!</string>
     <string name="hint_enter_hadis_go">Gecerli bir Hadis Numarasi Giriniz!</string>
     <string name="hint_enter_hadis_go2">Herhangi bir hadis bulunamadi!</string>
@@ -32,19 +33,22 @@
     <string name="hint_hadis_isfav_add">Kaldır</string>
     <string name="hint_hadis_isfav_remove">Sakla</string>
 
-<!--    Notofocation-->
+    <!--    Notofocation-->
     <string name="lbl_new_notify_title">Yeni Hatırlatma</string>
     <string name="lbl_notify_Saat">Saat:</string>
     <string name="lbl_notify_IsDaily">Hergün Yenile</string>
     <string name="lbl_edit_notify_title">Hatırlatma Düzenle</string>
     <string name="hint_enter_notify">Hatırlatma Girin!</string>
     <string name="hint_menu_notify">Hatırlat</string>
-<!--    Genel-->
+    <string name="hint_menu_nav_notifler">Hatırlatmalar</string>
+    <!--    Genel-->
     <string name="btn_save">Kaydet</string>
     <string name="btn_edit">Duzenle</string>
     <string name="btn_delete">Sil</string>
-    <string name="btn_update">Guncelle</string>
+    <string name="btn_update">Güncelle</string>
     <string name="btn_kaldir">Kaldır(Sil)</string>
-    <string name="btn_kur">Hatirlatma Kur</string>
-    <string name="btn_cancel">Iptal</string>
+    <string name="btn_kur">Hatırlatma Kur</string>
+    <string name="btn_cancel">İptal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

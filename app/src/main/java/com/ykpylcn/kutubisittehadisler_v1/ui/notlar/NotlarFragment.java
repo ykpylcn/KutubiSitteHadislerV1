@@ -58,7 +58,7 @@ public class NotlarFragment extends Fragment {
 //                textView.setText(s);
             }
         });
-        coordinatorLayout = root.findViewById(R.id.coordinator_layout);
+//        coordinatorLayout = root.findViewById(R.id.coordinator_layout);
         recyclerView = root.findViewById(R.id.recycler_view);
         noNotesView = root.findViewById(R.id.empty_notes_view);
 

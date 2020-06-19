@@ -5,10 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.notifler.Notifications">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent" />
+
+
+    <TextView
+        android:id="@+id/empty_notif_view"
+        style="@style/TextStyleBasic"
+
+        android:layout_marginTop="@dimen/margin_top_no_notes"
+
+        android:text="@string/msg_no_notif"
+        />
 
 </FrameLayout>

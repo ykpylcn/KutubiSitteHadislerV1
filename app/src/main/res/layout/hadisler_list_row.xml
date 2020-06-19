@@ -29,7 +29,7 @@
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
             <TextView
-                android:id="@+id/tv_hadisAltBaslik"
+                android:id="@+id/tv_hadisAltKonu"
                 style="@style/TextStyleBasicHeader"
                 android:layout_width="match_parent"
                 />

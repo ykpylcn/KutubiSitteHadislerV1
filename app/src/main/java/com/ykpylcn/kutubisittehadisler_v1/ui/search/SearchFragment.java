@@ -67,6 +67,7 @@ public class SearchFragment extends Fragment {
 
             }
         });
+
         Init(root);
         GetHadisler();
         GetAnaKonuSpinler();
@@ -75,9 +76,10 @@ public class SearchFragment extends Fragment {
             @Override
             public void run() {
                 loadFirstPage();
+                progressBar.setVisibility(View.GONE);
             }
         }, 1000);
-
+//        progressBar.setVisibility(View.GONE);
         setHasOptionsMenu(true);
 
 
@@ -208,9 +210,9 @@ public class SearchFragment extends Fragment {
     private void loadFirstPage() {
 
         ArrayList<Hadis> movies = CreateHadisler(adapter.getItemCount());
-        progressBar.setVisibility(View.GONE);
-        adapter.addAll(movies);
 
+        adapter.addAll(movies);
+//        progressBar.setVisibility(View.GONE);
         if (currentPage <= TOTAL_PAGES)
             adapter.addLoadingFooter();
         else

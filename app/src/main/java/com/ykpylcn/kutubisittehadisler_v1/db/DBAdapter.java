@@ -142,6 +142,55 @@ public class DBAdapter {
         return db.update(DBHelper.TABLE_NAME_NOTIF, values, Notif.COLUMN_HADIS_ID + " = ?",
                 new String[]{String.valueOf(notif.HadisID)});
     }
+    public int getNotifsCount() {
+        String countQuery = "SELECT  * FROM " + DBHelper.TABLE_NAME_NOTIF;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+
+        // return count
+        return count;
+    }
+    public List<Notif> getAllNotifs() {
+        List<Notif> notifs = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DBHelper.TABLE_NAME_NOTIF + " ORDER BY " +
+                Notif.COLUMN_DATE + " DESC";
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Notif notif = new Notif(
+                        cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_ID)),
+                        cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_HADIS_ID)),
+                        cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_HOUR)),
+                        cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_MINUTE)),
+                        cursor.getString(cursor.getColumnIndex(Notif.COLUMN_IS_DAILY)),
+                        cursor.getInt(cursor.getColumnIndex(Notif.COLUMN_SHOW_TYPE)),
+                        cursor.getString(cursor.getColumnIndex(Notif.COLUMN_DATE)),
+                        cursor.getString(cursor.getColumnIndex(Notif.COLUMN_IS_ACTIVE))
+
+                );
+
+
+                notifs.add(notif);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        // close db connection
+        db.close();
+
+        // return notes list
+        return notifs;
+    }
     public Boolean CheckHadisBy(int hadisNo) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();

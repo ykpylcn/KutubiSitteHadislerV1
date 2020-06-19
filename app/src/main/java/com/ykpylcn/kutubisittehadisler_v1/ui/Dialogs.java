@@ -99,7 +99,7 @@ public class Dialogs {
         });
     }
 
-    public void showNotificationDialog(final boolean shouldUpdate, final Context activity, final long hadisID, final Intent intent) {
+    public void showNotificationDialog(boolean shouldUpdate, final Context activity, final long hadisID, final Intent intent) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
         final View view = layoutInflaterAndroid.inflate(R.layout.notify_dialog, null);
@@ -115,13 +115,12 @@ public class Dialogs {
 
 
         final AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
-        Notif notif=null;
+        Notif notif=App.DbAdapter.GetNotifByHadisID(hadisID);
 
-        if(shouldUpdate){
-            notif=App.DbAdapter.GetNotifByHadisID(hadisID);
+
+
             if (notif==null)
             {
-
                 notif=new Notif();
                 notif.HadisID=(int)hadisID;
                 notif.Hour=timePicker.getHour();
@@ -131,13 +130,14 @@ public class Dialogs {
                 long sonuc=App.DbAdapter.insertNotif(notif);
             }else {
 //                dialog penceresini set et
+                shouldUpdate=true;
                 timePicker.setHour(notif.Hour);
                 timePicker.setMinute(notif.Minute);
                 isDaily.setChecked(notif.IsDaily);
                 ((RadioButton)showType.getChildAt(notif.HadisShowType)).setChecked(true);
             }
 
-        }
+
 
 
         final TextView dialogTitle = view.findViewById(R.id.dialog_title);
@@ -184,6 +184,7 @@ public class Dialogs {
 
 
         final Notif[] finalNotif = {notif};
+        final boolean finalShouldUpdate = shouldUpdate;
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -199,10 +200,13 @@ public class Dialogs {
                 finalNotif[0].Minute=timePicker.getMinute();
                 finalNotif[0].IsDaily=isDaily.isChecked();
                 finalNotif[0].HadisShowType=showType.indexOfChild(view.findViewById(showType.getCheckedRadioButtonId()));
-                if (shouldUpdate) {
+                if (finalShouldUpdate) {
                     App.DbAdapter.updateNotif(finalNotif[0]);
                 } else {
-                    long id = App.DbAdapter.insertNotif(finalNotif[0]);
+                    if(App.DbAdapter.GetNotifByHadisID(hadisID)!=null)
+                        App.DbAdapter.updateNotif(finalNotif[0]);
+                    else
+                        App.DbAdapter.insertNotif(finalNotif[0]);
                 }
                 startAlarm(manager,hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute(),activity,intent);
 

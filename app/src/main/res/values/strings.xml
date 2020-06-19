@@ -43,6 +43,7 @@
     <string name="hint_enter_notify">Hatırlatma Girin!</string>
     <string name="hint_menu_notify">Hatırlat</string>
     <string name="hint_menu_nav_notifler">Hatırlatmalar</string>
+    <string name="msg_no_notif">Herhangi bir hatırlatma bulunamadi!</string>
     <!--    Genel-->
     <string name="btn_save">Kaydet</string>
     <string name="btn_edit">Duzenle</string>

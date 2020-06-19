@@ -25,9 +25,9 @@
             android:id="@+id/nav_notifler"
             android:icon="@drawable/ic_notifications"
             android:title="@string/hint_menu_nav_notifler" />
-        <item
-            android:id="@+id/nav_test"
-            android:icon="@drawable/ic_search_24"
-            android:title="@string/home_test" />
+<!--        <item-->
+<!--            android:id="@+id/nav_test"-->
+<!--            android:icon="@drawable/ic_search_24"-->
+<!--            android:title="@string/home_test" />-->
     </group>
 </menu>

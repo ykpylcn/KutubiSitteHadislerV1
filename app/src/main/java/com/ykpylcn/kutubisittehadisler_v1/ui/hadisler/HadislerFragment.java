@@ -40,6 +40,7 @@ import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
+import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
 
 import java.util.ArrayList;
 
@@ -109,7 +110,7 @@ public class HadislerFragment extends Fragment {
                         Intent myIntent = new Intent(getActivity(), AlarmNotificationReceiver.class);
                         myIntent.putExtra("hadisid",hadisNo);
                         myIntent.setAction(String.valueOf(hadisNo));
-                        dial.showNotificationDialog(checkNatification(myIntent,getActivity()),getActivity(), hadisNo,myIntent);
+                        dial.showNotificationDialog(NotificationUtils.checkNatification(myIntent,getActivity()),getActivity(), hadisNo,myIntent);
                         return true;
                     case R.id.fav_add:
                         UpdateHadisIsFav(hadisNo);
@@ -129,13 +130,7 @@ public class HadislerFragment extends Fragment {
 
 
 
-    private boolean checkNatification(Intent intent, Context activity){
 
-        boolean alarmUp = (PendingIntent.getBroadcast(activity, 0,
-                intent,
-                PendingIntent.FLAG_NO_CREATE) != null);
-        return  alarmUp;
-    }
     private void UpdateHadisIsFav(long hadisId){
 
         Hadis hadis=App.DbAdapter.getHadis(hadisId);

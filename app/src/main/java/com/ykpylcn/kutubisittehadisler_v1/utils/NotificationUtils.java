@@ -39,7 +39,13 @@ public class NotificationUtils extends ContextWrapper {
         pIntent = PendingIntent.getActivity(base, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         when = System.currentTimeMillis();
     }
+    public static boolean checkNatification(Intent intent, Context activity){
 
+        boolean alarmUp = (PendingIntent.getBroadcast(activity, 0,
+                intent,
+                PendingIntent.FLAG_NO_CREATE) != null);
+        return  alarmUp;
+    }
     private void createChannel2(Context base) {
         getManager(base);
     }

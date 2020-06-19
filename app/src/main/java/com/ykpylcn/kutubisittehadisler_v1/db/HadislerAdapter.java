@@ -123,7 +123,9 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         return false;
                     }
                 });
-                viewHolder.tv_kaynak.setText(hadisCurrent.getHadisNo()+"::"+hadisCurrent.getKaynak());
+                viewHolder.tv_kaynak.setText(hadisCurrent.getHadisNo()+": "+hadisCurrent.getKaynak());
+                viewHolder.tv_hadisAltKonu.setText(hadisCurrent.getAltKonu());
+
                 final Hadis hadisDB=App.DbAdapter.getHadis(hadisCurrent.getHadisNo());
                 if(hadisDB.getIsFav()){
                     viewHolder.img_isfav.setImageResource(R.drawable.ic_baseline_favorite_24);
@@ -318,11 +320,12 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private TextView tv_hadis;
         private TextView tv_kaynak;
         private ImageView img_isfav;
+        private TextView tv_hadisAltKonu;
 
         public HadisViewHolder(View view) {
             super(view);
             tv_hadis = (TextView)view.findViewById(R.id.tv_hadis);
-
+            tv_hadisAltKonu= (TextView)view.findViewById(R.id.tv_hadisAltKonu);
             tv_kaynak = (TextView)view.findViewById(R.id.tv_kaynak);
             img_isfav = (ImageView) view.findViewById(R.id.img_isfav);
         }

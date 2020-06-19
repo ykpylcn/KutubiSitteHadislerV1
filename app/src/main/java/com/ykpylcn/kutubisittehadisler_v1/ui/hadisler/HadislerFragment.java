@@ -145,12 +145,13 @@ public class HadislerFragment extends Fragment {
             if (hadis.getIsFav()){
                 App.DbAdapter.updateHadisIsFav(hadisId,false);
                 UpdateIconHadisIsFav(false);
+                Message.show(getResources().getText(R.string.hint_fav_hadis_2).toString());
 
             }
             else{
                 App.DbAdapter.updateHadisIsFav(hadisId,true);
                 UpdateIconHadisIsFav(true);
-
+                Message.show(getResources().getText(R.string.hint_fav_hadis_1).toString());
             }
 
         }else

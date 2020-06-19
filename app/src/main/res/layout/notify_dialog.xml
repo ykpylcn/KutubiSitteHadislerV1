@@ -60,13 +60,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/favhadis"
-            android:text="Sakli Hadislerden" />
+            android:text="Sakli Hadislerden Rastgele" />
 
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/randomhadis"
-            android:text="Tum hadislerden" />
+            android:text="Tum hadislerden Rastgele" />
     </RadioGroup>
     </LinearLayout>
 </LinearLayout>

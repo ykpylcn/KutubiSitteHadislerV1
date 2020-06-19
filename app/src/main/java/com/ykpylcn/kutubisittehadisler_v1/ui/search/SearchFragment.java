@@ -1,7 +1,7 @@
 package com.ykpylcn.kutubisittehadisler_v1.ui.search;
 
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,13 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -30,23 +29,27 @@ import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadislerAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadislerSpinnerAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
-import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
+import com.ykpylcn.kutubisittehadisler_v1.utils.PaginationScrollListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
-    private HadislerAdapter hadislerAdapter;
-    private SearchViewModel searchViewModel;
-    private Spinner spinAnaKonu, spinAltKonu;
-//    private ArrayList<Hadis> hadisList;
+    HadislerAdapter adapter;
+    LinearLayoutManager   linearLayoutManager;
 
+    ProgressBar progressBar;
+    private Spinner spinAnaKonu, spinAltKonu;
+    private boolean isSearched = false;
+    private static final int PAGE_START = 0;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int pageLimit = 10;
+    private int TOTAL_PAGES =10;
+    private int currentPage = PAGE_START;
+    private SearchViewModel searchViewModel;
 
 
     @Override
@@ -60,15 +63,23 @@ public class SearchFragment extends Fragment {
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
 
-                GetHadisler(s);
-                GetAnaKonuSpinler(s);
 
-                setHasOptionsMenu(true);
-//                toggleEmptyHadisler();
 
             }
         });
         Init(root);
+        GetHadisler();
+        GetAnaKonuSpinler();
+        // mocking network delay for API call
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadFirstPage();
+            }
+        }, 1000);
+
+        setHasOptionsMenu(true);
+
 
 
 
@@ -77,87 +88,55 @@ public class SearchFragment extends Fragment {
         return root;
     }
 
-    private void Init(View root){
+    private void GetHadisler(){
 
-        recyclerView = root.findViewById(R.id.rv_Hadisler);
-        spinAnaKonu=root.findViewById(R.id.spinnerAnaKonu);
-        spinAltKonu=root.findViewById(R.id.spinnerAltKonu);
-    }
+        linearLayoutManager = new LinearLayoutManager(App.app_context);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
-
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void GetAnaKonuSpinler(final ArrayList<Hadis> hadislerAll){
-
-        List<Hadis> hadislist=App.DbAdapter.getAnaKonular();
-
-        spinAnaKonu.setAdapter(new HadislerSpinnerAdapter(App.app_context,R.layout.spinner_hadisler_list_row,hadislist));
-        spinAnaKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0){
-                    Hadis hadis = (Hadis) parent.getSelectedItem();
-                    hadislerAdapter.getFilter().filter("@1/"+hadis.getAnaKonu());
-                    DisplayAltKonular(hadis);
-                }
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-//        HashMap<String, List<Hadis>> hashMap = new HashMap<String, List<Hadis>>();
-//        for(Hadis hadis : hadisler) {
-//            if(!hashMap.containsKey(hadis.getAnaKonu())){
-//                List<Hadis> list = new ArrayList<Hadis>();
-//                list.add(hadis);
-//
-//                hashMap.put(hadis.getAnaKonu(), list);
-//            } else {
-//                hashMap.get(hadis.getAnaKonu()).add(hadis);
-//            }
-//        }
-
-
-//        Map<Object, List<Object>> studlistGrouped =
-//                hadisler.stream().collect(Collectors.groupingBy(new Function<Object, Object>() {
-//                    @Override
-//                    public Object apply(Object w) {
-//                        Hadis h=(Hadis)w;
-//                        return h.getAnaKonu();
-//                    }
-//                }));
-
-
-
-    }
-    private void DisplayAltKonular(Hadis hadis) {
-
-        List<Hadis> hadislist=App.DbAdapter.getAltKonular(hadis.getAnaKonu());
-
-        spinAltKonu.setAdapter(new HadislerSpinnerAdapter(App.app_context,R.layout.spinner_hadisler_list_row,hadislist));
-        spinAltKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0){
-                Hadis hadis = (Hadis) parent.getSelectedItem();
-                hadislerAdapter.getFilter().filter("@2/"+hadis.getAnaKonu());
-            }}
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-    private void GetHadisler(final ArrayList<Hadis> hadisler){
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(App.app_context);
-        recyclerView.setLayoutManager(mLayoutManager);
-    //        recyclerView.setHasFixedSize(true);
+        //        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-    //        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
+        //        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
 
-        hadislerAdapter = new HadislerAdapter(App.app_context, hadisler);
-        recyclerView.setAdapter(hadislerAdapter);
+        adapter = new HadislerAdapter(App.app_context);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                if(isSearched)
+                    TOTAL_PAGES= App.filteredListHadisler.size()/pageLimit;
+                else
+                    TOTAL_PAGES= App.mArrayListHadisler.size()/pageLimit;
+                isLoading = true;
+                currentPage += 1;
+//                progressBar.setVisibility(View.VISIBLE);
+                // mocking network delay for API call
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        loadNextPage();
+                    }
+                }, 1000);
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return TOTAL_PAGES;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+
+
 
 
 //        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(App.app_context,
@@ -177,7 +156,113 @@ public class SearchFragment extends Fragment {
 //        }));
 
     }
+    private void GetAnaKonuSpinler(){
 
+        List<Hadis> hadislist=App.DbAdapter.getAnaKonular();
+
+        spinAnaKonu.setAdapter(new HadislerSpinnerAdapter(App.app_context,R.layout.spinner_hadisler_list_row,hadislist));
+        spinAnaKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    Hadis hadis = (Hadis) parent.getSelectedItem();
+                    currentPage = PAGE_START;
+                    isLoading = false;
+                    isLastPage = false;
+                    adapter.clear();
+                    isSearched=true;
+                    adapter.getFilter().filter("@1/"+hadis.getAnaKonu());
+                    DisplayAltKonular(hadis);
+                }
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+    }
+    private void DisplayAltKonular(Hadis hadis) {
+
+        List<Hadis> hadislist=App.DbAdapter.getAltKonular(hadis.getAnaKonu());
+
+        spinAltKonu.setAdapter(new HadislerSpinnerAdapter(App.app_context,R.layout.spinner_hadisler_list_row,hadislist));
+        spinAltKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    Hadis hadis = (Hadis) parent.getSelectedItem();
+                    currentPage = PAGE_START;
+                    isLoading = false;
+                    isLastPage = false;
+                    adapter.clear();
+                    isSearched=true;
+                    adapter.getFilter().filter("@2/"+hadis.getAnaKonu());
+                }}
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void loadFirstPage() {
+
+        ArrayList<Hadis> movies = CreateHadisler(adapter.getItemCount());
+        progressBar.setVisibility(View.GONE);
+        adapter.addAll(movies);
+
+        if (currentPage <= TOTAL_PAGES)
+            adapter.addLoadingFooter();
+        else
+            isLastPage = true;
+
+    }
+
+    private void loadNextPage() {
+
+
+        ArrayList<Hadis> movies = CreateHadisler(adapter.getItemCount()-1);
+//        progressBar.setVisibility(View.GONE);
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        adapter.addAll(movies);
+
+        if (currentPage != TOTAL_PAGES){
+            if(TOTAL_PAGES>=currentPage)
+                adapter.addLoadingFooter();
+        }
+        else
+            isLastPage = true;
+    }
+    public ArrayList<Hadis> CreateHadisler(int itemCount) {
+        ArrayList<Hadis> movies = new ArrayList<>();
+
+        for (int i = itemCount; i < itemCount+pageLimit; i++) {
+
+            if(!isSearched) {
+                if (App.mArrayListHadisler.get(i) != null)
+                    movies.add(App.mArrayListHadisler.get(i));
+                else
+                    return movies;
+            }else {
+                if (App.filteredListHadisler.size()>i){
+                    if(App.filteredListHadisler.get(i) != null)
+                        movies.add(App.filteredListHadisler.get(i));
+                }
+                else{
+                    isLastPage=true;
+                    return movies;
+                }
+
+
+            }
+
+
+        }
+
+        return movies;
+    }
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
@@ -191,10 +276,7 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                if(query.length()>2)
-                    hadislerAdapter.getFilter().filter(query);
-                else
-                    Message.show("En az uc karakter girmelisiniz!");
+                Filter(query);
 //                toggleEmptyHadisler();
 
 //                if( ! searchView.isIconified()) {
@@ -207,20 +289,38 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextChange(String s) {
                 // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
 
-                return false;
+                Filter(s);
+                return true;
             }
         });
-        return;
+
 
     }
-//    private void toggleEmptyHadisler() {
-//        // you can check notesList.size() > 0
-//
-//        if (hadislerAdapter.getItemCount() > 0) {
-//            noHadisView.setVisibility(View.GONE);
-//        }
-//         else {
-//            noHadisView.setVisibility(View.VISIBLE);
-//        }
-//    }
+    private void Filter(String s){
+        if(s.length()>2)
+            if(adapter!=null){
+
+                spinAltKonu.setSelection(0);
+                spinAnaKonu.setSelection(0);
+                currentPage = PAGE_START;
+                isLoading = false;
+                isLastPage = false;
+                adapter.clear();
+                isSearched=true;
+
+                adapter.getFilter().filter(s);
+
+            }
+
+            else
+                Message.show("En az uc karakter girmelisiniz!");
+    }
+    private void Init(View root){
+
+        progressBar = root.findViewById(R.id.main_progress);
+        recyclerView = root.findViewById(R.id.rv_Hadisler);
+        spinAnaKonu=root.findViewById(R.id.spinnerAnaKonu);
+        spinAltKonu=root.findViewById(R.id.spinnerAltKonu);
+    }
+
 }

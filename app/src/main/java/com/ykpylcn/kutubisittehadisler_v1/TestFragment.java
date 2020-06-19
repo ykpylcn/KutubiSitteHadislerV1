@@ -321,7 +321,7 @@ public class TestFragment extends Fragment {
     private void Init(View root){
 
         progressBar = root.findViewById(R.id.main_progress);
-        recyclerView = root.findViewById(R.id.rv_Hadisler_test);
+        recyclerView = root.findViewById(R.id.rv_Hadisler);
         spinAnaKonu=root.findViewById(R.id.spinnerAnaKonu);
         spinAltKonu=root.findViewById(R.id.spinnerAltKonu);
     }

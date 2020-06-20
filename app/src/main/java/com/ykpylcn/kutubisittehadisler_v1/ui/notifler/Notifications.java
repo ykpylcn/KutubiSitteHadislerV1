@@ -1,6 +1,10 @@
 package com.ykpylcn.kutubisittehadisler_v1.ui.notifler;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,7 +28,9 @@ import com.ykpylcn.kutubisittehadisler_v1.db.NotesAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
 import com.ykpylcn.kutubisittehadisler_v1.db.NotifsAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.ui.notlar.NotlarViewModel;
+import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
 import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
+import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
 
 import java.util.ArrayList;
@@ -73,7 +79,7 @@ public class Notifications extends Fragment {
             @Override
             public void onClick(View view, final int position) {
 
-                //showActionsDialog(position);
+                showActionsDialog(position);
             }
 
             @Override
@@ -93,7 +99,37 @@ public class Notifications extends Fragment {
         }));
         return root;
     }
+    private void showActionsDialog(final int position) {
+        String sEdit=  getResources().getString(R.string.btn_edit);
+        String sDelete=  getResources().getString(R.string.btn_delete);
+        CharSequence colors[] = new CharSequence[]{sEdit, sDelete};
+        Context con=getActivity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(con);
+        builder.setTitle(getResources().getString(R.string.activity_title_home));
+        builder.setItems(colors, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
 
+//                    showNoteDialog(true, notesList.get(position), position);
+                } else {
+                    NotificationUtils.deleteNatification(getActivity(),notifList.get(position).HadisID);
+                    deleteNotif(position);
+                }
+            }
+        });
+        builder.show();
+    }
+    private void deleteNotif(int position) {
+        // deleting the note from db
+        App.DbAdapter.deleteNotif(notifList.get(position).HadisID);
+
+        // removing the note from the list
+        notifList.remove(position);
+        mAdapter.notifyItemRemoved(position);
+
+        toggleEmptyNotes();
+    }
 
     private void toggleEmptyNotes() {
         // you can check notesList.size() > 0

@@ -114,11 +114,12 @@ public class Dialogs {
 
 
 
-        final AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
+//        final AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
         Notif notif=App.DbAdapter.GetNotifByHadisID(hadisID);
 
 
 
+        if(shouldUpdate){
             if (notif==null)
             {
                 notif=new Notif();
@@ -130,12 +131,20 @@ public class Dialogs {
                 long sonuc=App.DbAdapter.insertNotif(notif);
             }else {
 //                dialog penceresini set et
-                shouldUpdate=true;
                 timePicker.setHour(notif.Hour);
                 timePicker.setMinute(notif.Minute);
                 isDaily.setChecked(notif.IsDaily);
                 ((RadioButton)showType.getChildAt(notif.HadisShowType)).setChecked(true);
             }
+        }else if(!shouldUpdate && notif!=null){
+            shouldUpdate=true;
+            timePicker.setHour(notif.Hour);
+            timePicker.setMinute(notif.Minute);
+            isDaily.setChecked(notif.IsDaily);
+            ((RadioButton)showType.getChildAt(notif.HadisShowType)).setChecked(true);
+        }else
+            App.DbAdapter.deleteNotif((int) hadisID);
+
 
 
 
@@ -170,9 +179,10 @@ public class Dialogs {
 
 
                     App.DbAdapter.deleteNotif((int) hadisID);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                    manager.cancel(pendingIntent);//important
-                    pendingIntent.cancel();//important
+                    NotificationUtils.deleteNatification(activity,(int)hadisID);
+//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//                    manager.cancel(pendingIntent);//important
+//                    pendingIntent.cancel();//important
                 }
 
             });
@@ -208,6 +218,7 @@ public class Dialogs {
                     else
                         App.DbAdapter.insertNotif(finalNotif[0]);
                 }
+                AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
                 startAlarm(manager,hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute(),activity,intent);
 
 

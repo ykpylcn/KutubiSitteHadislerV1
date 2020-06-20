@@ -1,5 +1,6 @@
 package com.ykpylcn.kutubisittehadisler_v1.utils;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -45,6 +46,16 @@ public class NotificationUtils extends ContextWrapper {
                 intent,
                 PendingIntent.FLAG_NO_CREATE) != null);
         return  alarmUp;
+    }
+    public static void deleteNatification(Context activity, int hadisID){
+
+        AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
+        Intent myIntent = new Intent(activity, AlarmNotificationReceiver.class);
+        myIntent.putExtra("hadisid",hadisID);
+        myIntent.setAction(String.valueOf(hadisID));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        manager.cancel(pendingIntent);//important
+        pendingIntent.cancel();//important
     }
     private void createChannel2(Context base) {
         getManager(base);

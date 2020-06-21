@@ -29,6 +29,7 @@ import com.ykpylcn.kutubisittehadisler_v1.MainActivity;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 import com.ykpylcn.kutubisittehadisler_v1.db.NotesAdapter;
+import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
@@ -130,7 +131,9 @@ public class NotlarFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
 
-                    showNoteDialog(true, notesList.get(position), position);
+                    Dialogs dial=new Dialogs();
+                    dial.showNoteDialog(true,notesList.get(position),notesList.get(position).getId(),getActivity(), 0,notesList,mAdapter,position);
+                    //showNoteDialog(true, notesList.get(position), position);
                 } else {
                     deleteNote(position);
                 }
@@ -152,67 +155,8 @@ public class NotlarFragment extends Fragment {
 
         toggleEmptyNotes();
     }
-    /**
-     * Shows alert dialog with EditText options to enter / edit
-     * a note.
-     * when shouldUpdate=true, it automatically displays old note and changes the
-     * button text to UPDATE
-     */
-    private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
 
-        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity());
-        View view = layoutInflaterAndroid.inflate(R.layout.note_dialog, null);
 
-        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getActivity());
-        alertDialogBuilderUserInput.setView(view);
-
-        final EditText inputNote = view.findViewById(R.id.note);
-        TextView dialogTitle = view.findViewById(R.id.dialog_title);
-        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
-
-        if (shouldUpdate && note != null) {
-            inputNote.setText(note.getNote());
-        }
-        alertDialogBuilderUserInput
-                .setCancelable(false)
-                .setPositiveButton(shouldUpdate ? getResources().getText(R.string.btn_update) : getResources().getText(R.string.btn_save), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogBox, int id) {
-
-                    }
-                })
-                .setNegativeButton(getResources().getText(R.string.btn_cancel),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogBox, int id) {
-                                dialogBox.cancel();
-                            }
-                        });
-
-        final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
-        alertDialog.show();
-
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Show toast message when no text is entered
-                if (TextUtils.isEmpty(inputNote.getText().toString())) {
-                    String msg=getResources().getText(R.string.hint_enter_note).toString();
-                    Message.show(msg);
-                    return;
-                } else {
-                    alertDialog.dismiss();
-                }
-
-                // check if user updating note
-                if (shouldUpdate && note != null) {
-                    // update note by it's id
-                    updateNote(inputNote.getText().toString(), position);
-                } else {
-                    // create new note
-                    createNote(inputNote.getText().toString());
-                }
-            }
-        });
-    }
     /**
      * Inserting new note in db
      * and refreshing the list
@@ -235,24 +179,24 @@ public class NotlarFragment extends Fragment {
             toggleEmptyNotes();
         }
     }
-    /**
-     * Updating note in db and updating
-     * item in the list by its position
-     */
-    private void updateNote(String note, int position) {
-        Note n = notesList.get(position);
-        // updating note text
-        n.setNote(note);
-
-        // updating note in db
-        App.DbAdapter.updateNote(n);
-
-        // refreshing the list
-        notesList.set(position, n);
-        mAdapter.notifyItemChanged(position);
-
-        toggleEmptyNotes();
-    }
+//    /**
+//     * Updating note in db and updating
+//     * item in the list by its position
+//     */
+//    private void updateNote(String note, int position) {
+//        Note n = notesList.get(position);
+//        // updating note text
+//        n.setNote(note);
+//
+//        // updating note in db
+//        App.DbAdapter.updateNote(n);
+//
+//        // refreshing the list
+//        notesList.set(position, n);
+//        mAdapter.notifyItemChanged(position);
+//
+//        toggleEmptyNotes();
+//    }
     /**
      * Toggling list and empty notes view
      */

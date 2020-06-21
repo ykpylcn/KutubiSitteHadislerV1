@@ -1,6 +1,8 @@
 package com.ykpylcn.kutubisittehadisler_v1.db;
 
 
+import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
 import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
@@ -30,6 +34,7 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.MyViewHold
     private Context context;
     private List<Notif> notifsList;
 
+    private FragmentActivity activity;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView notifHourMinute;
         public TextView notifDetay;
@@ -46,9 +51,10 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.MyViewHold
     }
 
 
-    public NotifsAdapter(Context context, List<Notif> notifsList) {
+    public NotifsAdapter(Context context, List<Notif> notifsList, FragmentActivity activity) {
         this.context = context;
         this.notifsList = notifsList;
+        this.activity=activity;
     }
 
     @Override
@@ -72,9 +78,7 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.MyViewHold
         else if(notif.HadisShowType==2)
             showType="Tüm Hadislerden Rastgele";
 
-        Intent myIntent = new Intent(context, AlarmNotificationReceiver.class);
-        myIntent.putExtra("hadisid",notif.HadisID);
-        myIntent.setAction(String.valueOf(notif.HadisID));
+
 
 //        String text = "<font color=\"red\">Kurulu Değil!</font>";
         SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -84,6 +88,7 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.MyViewHold
         SpannableString redSpannable= new SpannableString(red);
         redSpannable.setSpan(new ForegroundColorSpan(Color.RED), 0, red.length(), 0);
 
+        Intent myIntent= NotificationUtils.getIntent(activity,notif.HadisID);
         if(!NotificationUtils.checkNatification(myIntent,context))
             builder.append(redSpannable);
 

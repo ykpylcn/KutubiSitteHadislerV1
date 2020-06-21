@@ -80,14 +80,26 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
         textHadis.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Intent sharingIntent = new Intent(Intent.ACTION_VIEW);
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody =hadis.getHadis();
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAnaKonu());
+                sharingIntent.putExtra(Intent.EXTRA_TITLE, hadis.getAltKonu());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                sharingIntent.setData(Uri.parse("http://muhaddis.org/cgi-bin/dbman/db.cgi?db=ks&uid=default&SNo="+hadis.getHadisNo()+"&mh=10&view_records=Sorgula"));
-
-                Intent chooserIntent = Intent.createChooser(sharingIntent, "Open With");
+                Intent chooserIntent = Intent.createChooser(sharingIntent, "Paylaş: ");
                 chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                 App.app_context.startActivity(chooserIntent);
+
+
+//                Intent sharingIntent = new Intent(Intent.ACTION_VIEW);
+//                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                sharingIntent.setData(Uri.parse("http://muhaddis.org/cgi-bin/dbman/db.cgi?db=ks&uid=default&SNo="+hadis.getHadisNo()+"&mh=10&view_records=Sorgula"));
+//
+//                Intent chooserIntent = Intent.createChooser(sharingIntent, "Open With");
+//                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                App.app_context.startActivity(chooserIntent);
                 return false;
             }
         });

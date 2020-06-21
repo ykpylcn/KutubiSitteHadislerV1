@@ -63,7 +63,8 @@
 
             style="@style/ButtonStyleBasicRight"
             android:layout_weight="1"
-            android:text="@string/btn_hadis_sonraki" />
+            android:text="@string/btn_hadis_sonraki"
+           />
 
 
     </LinearLayout>

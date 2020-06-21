@@ -3,15 +3,11 @@ package com.ykpylcn.kutubisittehadisler_v1.ui;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,20 +23,21 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
-import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
+import com.ykpylcn.kutubisittehadisler_v1.db.NotesAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
-import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
+import com.ykpylcn.kutubisittehadisler_v1.db.NotifsAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 public class Dialogs {
 
     public Dialogs() {
     }
-    public void showNoteDialog(final boolean shouldUpdate, final Note note, final int position, final FragmentActivity activity, final int hadisID) {
+    public void showNoteDialog(final boolean shouldUpdate, final Note note, final int position, final FragmentActivity activity, final int hadisID, final List<Note> notesList, final NotesAdapter mAdapter, final int pos) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
         View view = layoutInflaterAndroid.inflate(R.layout.note_dialog, null);
@@ -87,8 +84,20 @@ public class Dialogs {
 
                 // check if user updating note
                 if (shouldUpdate && note != null) {
-                    // update note by it's id
-                    App.DbAdapter.updateNoteByID(inputNote.getText().toString(), position);
+
+                    note.setNote(inputNote.getText().toString());
+                    // updating note in db
+                    App.DbAdapter.updateNote(note);
+
+//                    App.DbAdapter.updateNoteByID(inputNote.getText().toString(), position);
+                    if (mAdapter!=null){
+                        notesList.set(pos, note);
+                        mAdapter.notifyItemChanged(pos);
+
+                    }
+
+
+
                 } else {
                     // create new note
                     long id = App.DbAdapter.insertNote(inputNote.getText().toString(),hadisID);
@@ -99,7 +108,7 @@ public class Dialogs {
         });
     }
 
-    public void showNotificationDialog(boolean shouldUpdate, final Context activity, final long hadisID, final Intent intent) {
+    public void showNotificationDialog(boolean shouldUpdate, final Context activity, final long hadisID, final Intent intent, final List<Notif> notifList, final NotifsAdapter mAdapter, final int position, final TextView noNotifView) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
         final View view = layoutInflaterAndroid.inflate(R.layout.notify_dialog, null);
@@ -180,6 +189,15 @@ public class Dialogs {
 
                     App.DbAdapter.deleteNotif((int) hadisID);
                     NotificationUtils.deleteNatification(activity,(int)hadisID);
+                    if(mAdapter!=null && notifList.size()>0){
+                        notifList.remove(position);
+                        mAdapter.notifyItemRemoved(position);
+                        if (App.DbAdapter.getNotifsCount() > 0) {
+                            noNotifView.setVisibility(View.GONE);
+                        } else {
+                            noNotifView.setVisibility(View.VISIBLE);
+                        }
+                    }
 //                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 //                    manager.cancel(pendingIntent);//important
 //                    pendingIntent.cancel();//important
@@ -212,6 +230,15 @@ public class Dialogs {
                 finalNotif[0].HadisShowType=showType.indexOfChild(view.findViewById(showType.getCheckedRadioButtonId()));
                 if (finalShouldUpdate) {
                     App.DbAdapter.updateNotif(finalNotif[0]);
+                    if(mAdapter!=null && notifList.size()>0){
+                        notifList.set(position, finalNotif[0]);
+                        mAdapter.notifyItemChanged(position);
+                        if (App.DbAdapter.getNotifsCount() > 0) {
+                            noNotifView.setVisibility(View.GONE);
+                        } else {
+                            noNotifView.setVisibility(View.VISIBLE);
+                        }
+                    }
                 } else {
                     if(App.DbAdapter.GetNotifByHadisID(hadisID)!=null)
                         App.DbAdapter.updateNotif(finalNotif[0]);
@@ -248,6 +275,7 @@ public class Dialogs {
         else
             manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
     }
+
 
 
 }

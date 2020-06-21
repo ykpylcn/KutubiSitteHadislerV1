@@ -27,6 +27,7 @@ import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 import com.ykpylcn.kutubisittehadisler_v1.db.NotesAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
 import com.ykpylcn.kutubisittehadisler_v1.db.NotifsAdapter;
+import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.notlar.NotlarViewModel;
 import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
 import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
@@ -66,7 +67,7 @@ public class Notifications extends Fragment {
 //                //showNoteDialog(false, null, -1);
 //            }
 //        });
-        mAdapter = new NotifsAdapter(App.app_context, notifList);
+        mAdapter = new NotifsAdapter(App.app_context, notifList,getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(App.app_context);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -80,7 +81,9 @@ public class Notifications extends Fragment {
             public void onClick(View view, final int position) {
 
                 showActionsDialog(position);
+
             }
+
 
             @Override
             public void onLongClick(View view, int position) {
@@ -103,14 +106,19 @@ public class Notifications extends Fragment {
         String sEdit=  getResources().getString(R.string.btn_edit);
         String sDelete=  getResources().getString(R.string.btn_delete);
         CharSequence colors[] = new CharSequence[]{sEdit, sDelete};
-        Context con=getActivity();
+        final Context con=getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(con);
-        builder.setTitle(getResources().getString(R.string.activity_title_home));
+        builder.setTitle(getResources().getString(R.string.hint_menu_nav_notifler));
         builder.setItems(colors, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
 
+                    Dialogs dial=new Dialogs();
+                    long hadisno=(long)notifList.get(position).HadisID;
+                    dial.showNotificationDialog(true,getActivity(),hadisno,NotificationUtils.getIntent(getActivity(),hadisno),notifList,mAdapter,position,noNotifView);
+
+                    toggleEmptyNotes();
 //                    showNoteDialog(true, notesList.get(position), position);
                 } else {
                     NotificationUtils.deleteNatification(getActivity(),notifList.get(position).HadisID);

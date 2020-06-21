@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
 
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.MainActivity;
@@ -47,6 +48,7 @@ public class NotificationUtils extends ContextWrapper {
                 PendingIntent.FLAG_NO_CREATE) != null);
         return  alarmUp;
     }
+
     public static void deleteNatification(Context activity, int hadisID){
 
         AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
@@ -57,6 +59,14 @@ public class NotificationUtils extends ContextWrapper {
         manager.cancel(pendingIntent);//important
         pendingIntent.cancel();//important
     }
+
+    public static Intent getIntent(FragmentActivity activity, long hadisNo) {
+        Intent myIntent = new Intent(activity, AlarmNotificationReceiver.class);
+        myIntent.putExtra("hadisid",hadisNo);
+        myIntent.setAction(String.valueOf(hadisNo));
+        return  myIntent;
+    }
+
     private void createChannel2(Context base) {
         getManager(base);
     }

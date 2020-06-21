@@ -2,25 +2,19 @@ package com.ykpylcn.kutubisittehadisler_v1.ui.hadisler;
 
 
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,13 +27,11 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
-import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadisViewFlipperAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
-import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
 import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
 
 import java.util.ArrayList;
@@ -99,18 +91,16 @@ public class HadislerFragment extends Fragment {
 
                         if(not!=null){
 
-                            dial.showNoteDialog(true,not,not.getId(),getActivity(), (int) hadisNo);
+                            dial.showNoteDialog(true,not,not.getId(),getActivity(), (int) hadisNo, null, null, -1);
                         }
                         else{
-                            dial.showNoteDialog(false,null,0,getActivity(), (int) hadisNo);
+                            dial.showNoteDialog(false,null,0,getActivity(), (int) hadisNo, null, null, -1);
                         }
                         return true;
                     case R.id.navigation_notifications:
 
-                        Intent myIntent = new Intent(getActivity(), AlarmNotificationReceiver.class);
-                        myIntent.putExtra("hadisid",hadisNo);
-                        myIntent.setAction(String.valueOf(hadisNo));
-                        dial.showNotificationDialog(NotificationUtils.checkNatification(myIntent,getActivity()),getActivity(), hadisNo,myIntent);
+                        Intent NotifIntent= NotificationUtils.getIntent(getActivity(),hadisNo);
+                        dial.showNotificationDialog(NotificationUtils.checkNatification(NotifIntent,getActivity()),getActivity(), hadisNo,NotifIntent,null,null,-1,null);
                         return true;
                     case R.id.fav_add:
                         UpdateHadisIsFav(hadisNo);

@@ -3,14 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
   >
 
-    <androidx.cardview.widget.CardView
+<androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="6dp"
         android:elevation="3dp"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="5dp"
+
         >
 
         <LinearLayout
@@ -19,24 +21,32 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
-            <ImageView
-                android:layout_gravity="right"
-                android:id="@+id/img_isfav"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-
-                app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
-
-            <TextView
-                android:id="@+id/tv_hadisAltKonu"
-                style="@style/TextStyleBasicHeader"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                />
+                android:layout_height="match_parent"
+                android:padding="10dp">
+                <ImageView
+                    android:id="@+id/img_isfav"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+
+                    app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+                <TextView
+                    android:id="@+id/tv_hadisAltKonu"
+                    style="@style/TextStyleBasicHeader"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/img_isfav"
+                    />
+
+
+
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/tv_hadis"
-                style="@style/TextStyleBasic"
+                style="@style/TextStyleNormal"
 
                 />
 

@@ -29,6 +29,7 @@ import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadislerAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadislerSpinnerAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
+import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
 import com.ykpylcn.kutubisittehadisler_v1.utils.PaginationScrollListener;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class SearchFragment extends Fragment {
 
         //        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 16));
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, 10));
 
         adapter = new HadislerAdapter(App.app_context);
         recyclerView.setAdapter(adapter);

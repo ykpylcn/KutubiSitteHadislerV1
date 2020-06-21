@@ -3,6 +3,10 @@ package com.ykpylcn.kutubisittehadisler_v1.db;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,13 +91,17 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 else
                     sBuild=hadisCurrent.getHadis();
 
-                viewHolder.tv_hadis.setText(sBuild);
+                if (hadisCurrent.getHadisBySearch()!=null)
+                    viewHolder.tv_hadis.setText(hadisCurrent.getHadisBySearch());
+                else
+                     viewHolder.tv_hadis.setText(sBuild);
 
                 final boolean[] arrowP = {true};
                 final String finalSBuild = sBuild;
                 viewHolder.tv_hadis.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (hadisCurrent.getHadisBySearch()==null)
                         if(arrowP[0]){
                             viewHolder.tv_hadis.setText(hadisCurrent.getHadis());
                             viewHolder.tv_hadis.setBackgroundResource(R.color.secondaryLightColor2);
@@ -206,8 +214,13 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         }
 
                         else{
-                            if (hadis.getHadis().toLowerCase().contains(searchString.toLowerCase())) {
+                            String body=hadis.getHadis().toLowerCase();
+                            String search=searchString.toLowerCase();
+                            if (body.contains(search)) {
 
+                                Spannable spannable = new SpannableString(body);
+                                spannable.setSpan(new ForegroundColorSpan(Color.RED), body.indexOf(search), body.indexOf(search) + search.length(),     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                hadis.setHadisBySearch(spannable);
                                 tempFilteredList.add(hadis);
                             }
                         }

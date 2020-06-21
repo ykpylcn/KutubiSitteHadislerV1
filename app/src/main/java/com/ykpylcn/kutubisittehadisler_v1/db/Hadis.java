@@ -1,5 +1,7 @@
 package com.ykpylcn.kutubisittehadisler_v1.db;
 
+import android.text.Spannable;
+
 public class Hadis {
     public static final String COLUMN_HADIS_ID = "ID";
     public static final String COLUMN_HADIS = "Hadis";
@@ -7,6 +9,7 @@ public class Hadis {
     public static final String COLUMN_ISFAV = "IsFav";
     public static final String COLUMN_ANAKONU = "AnaKonu";
 
+    private Spannable spannableHadis;
 
     private int ID;
     private String  RivayetKaynak,AltKonu,Rivayet,Hadis,Kaynak;
@@ -55,6 +58,7 @@ public class Hadis {
     public boolean getIsFav(){
         return this.IsFav;
     }
+
     public void setIsFav(boolean isFav){
         this.IsFav=isFav;
     }
@@ -67,4 +71,10 @@ public class Hadis {
     }
 
 
+    public void setHadisBySearch(Spannable spannable) {
+        this.spannableHadis=spannable;
+    }
+    public Spannable getHadisBySearch(){
+        return this.spannableHadis;
+    }
 }

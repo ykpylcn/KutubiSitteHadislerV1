@@ -79,7 +79,7 @@ public class SearchFragment extends Fragment {
                 loadFirstPage();
                 progressBar.setVisibility(View.GONE);
             }
-        }, 1000);
+        }, 500);
 //        progressBar.setVisibility(View.GONE);
         setHasOptionsMenu(true);
 
@@ -119,7 +119,7 @@ public class SearchFragment extends Fragment {
 
                         loadNextPage();
                     }
-                }, 1000);
+                }, 500);
             }
 
             @Override

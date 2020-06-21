@@ -9,7 +9,7 @@ public class Hadis {
     public static final String COLUMN_ISFAV = "IsFav";
     public static final String COLUMN_ANAKONU = "AnaKonu";
 
-    private Spannable spannableHadis;
+    private  Spannable spannableHadis;
 
     private int ID;
     private String  RivayetKaynak,AltKonu,Rivayet,Hadis,Kaynak;
@@ -17,6 +17,7 @@ public class Hadis {
     public String AnaKonu;
     private boolean IsFav=false;
     public Hadis() {
+
     }
     public Hadis(int HadisNo, String AnaKonu,String AltKonu,String RivayetKaynak,String Rivayet,String Hadis,String Kaynak,String IsFav) {
         this.ID=HadisNo;
@@ -57,6 +58,12 @@ public class Hadis {
     }
     public boolean getIsFav(){
         return this.IsFav;
+    }
+    public String getIsFavStr(){
+        if(this.IsFav)
+            return "1";
+        else
+            return "0";
     }
 
     public void setIsFav(boolean isFav){

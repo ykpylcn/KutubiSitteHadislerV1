@@ -202,6 +202,8 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 } else {
 
+                    hadisList = new ArrayList<>();
+                    App.filteredListHadisler = new ArrayList<>();
                     ArrayList<Hadis> tempFilteredList = new ArrayList<>();
 
                     for (Hadis hadis : App.mArrayListHadisler) {
@@ -220,8 +222,11 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                                 Spannable spannable = new SpannableString(body);
                                 spannable.setSpan(new ForegroundColorSpan(Color.RED), body.indexOf(search), body.indexOf(search) + search.length(),     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                hadis.setHadisBySearch(spannable);
-                                tempFilteredList.add(hadis);
+                                Hadis temphadis=new Hadis(hadis.getHadisNo(),hadis.getAnaKonu(),hadis.getAltKonu(),hadis.getARivayetKaynak(),hadis.getRivayet(),hadis.getHadis(),hadis.getKaynak(),hadis.getIsFavStr());
+
+//                                hadis.setHadisBySearch(null);
+                                temphadis.setHadisBySearch(spannable);
+                                tempFilteredList.add(temphadis);
                             }
                         }
 //                        filteredHadisList = tempFilteredList;
@@ -245,6 +250,7 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 hadisList.clear();
+
                 App.filteredListHadisler=  (ArrayList<Hadis>) filterResults.values;
                 if(App.filteredListHadisler.size()>10){
                     hadisList.addAll(App.filteredListHadisler.subList(0,10));

@@ -30,6 +30,7 @@ import com.ykpylcn.kutubisittehadisler_v1.R;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadisViewFlipperAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
+import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
@@ -97,10 +98,10 @@ public class HadislerFragment extends Fragment {
                             dial.showNoteDialog(false,null,0,getActivity(), (int) hadisNo, null, null, -1);
                         }
                         return true;
-                    case R.id.navigation_notifications:
-
+                    case R.id.notif_icon:
                         Intent NotifIntent= NotificationUtils.getIntent(getActivity(),hadisNo);
                         dial.showNotificationDialog(NotificationUtils.checkNatification(NotifIntent,getActivity()),getActivity(), hadisNo,NotifIntent,null,null,-1,null);
+                        CheckIsNotif(hadisNo);
                         return true;
                     case R.id.fav_add:
                         UpdateHadisIsFav(hadisNo);
@@ -120,7 +121,24 @@ public class HadislerFragment extends Fragment {
 
 
 
+    private void CheckIsNotif(long hadisId){
 
+        Notif notif=App.DbAdapter.getNotifByHadisID(hadisId);
+        Menu menu = bnavigate.getMenu();
+        MenuItem item= menu.findItem(R.id.notif_icon);
+        if (notif!=null){
+            item.setIcon(R.drawable.ic_notifications_red);
+        }else
+            item.setIcon(R.drawable.ic_notifications);
+    }
+
+
+
+    private void CheckIsFavorite(long hadisId){
+
+        Hadis hadis=App.DbAdapter.getHadis(hadisId);
+        UpdateIconHadisIsFav(hadis==null?false:hadis.getIsFav());
+    }
     private void UpdateHadisIsFav(long hadisId){
 
         Hadis hadis=App.DbAdapter.getHadis(hadisId);
@@ -143,11 +161,6 @@ public class HadislerFragment extends Fragment {
             Message.show(getResources().getText(R.string.hint_enter_hadis_go2).toString());
 
     }
-    private void CheckIsFavorite(long hadisId){
-
-        Hadis hadis=App.DbAdapter.getHadis(hadisId);
-        UpdateIconHadisIsFav(hadis==null?false:hadis.getIsFav());
-    }
     private void UpdateIconHadisIsFav(boolean isfav){
 
 
@@ -165,8 +178,6 @@ public class HadislerFragment extends Fragment {
                 item.setIcon(R.drawable.ic_action_favorite_border);
                 item.setTitle(R.string.hint_hadis_isfav_remove);
             }
-
-
 
     }
     private void ShowNavHadisNoDialog() {
@@ -251,7 +262,9 @@ public class HadislerFragment extends Fragment {
         adapViewFlipper.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                CheckIsFavorite(adapViewFlipper.getAdapter().getItemId(adapViewFlipper.getDisplayedChild()));
+                long hadisID=adapViewFlipper.getAdapter().getItemId(adapViewFlipper.getDisplayedChild());
+                CheckIsFavorite(hadisID);
+                CheckIsNotif(hadisID);
                 SetVPIndex();
             }
         });

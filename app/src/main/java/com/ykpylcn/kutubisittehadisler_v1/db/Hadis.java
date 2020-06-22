@@ -10,7 +10,7 @@ public class Hadis {
     public static final String COLUMN_ANAKONU = "AnaKonu";
 
     private  Spannable spannableHadis;
-
+    private  Spannable spannableKaynak;
     private int ID;
     private String  RivayetKaynak,AltKonu,Rivayet,Hadis,Kaynak;
     public int AltKonuSize=0;
@@ -26,7 +26,7 @@ public class Hadis {
         this.RivayetKaynak=RivayetKaynak;
         this.Rivayet=Rivayet;
         this.Hadis=Hadis;
-        this.Kaynak=Kaynak;
+        this.Kaynak=Kaynak==null?"":Kaynak;
         if (IsFav.trim().contains("1"))
             this.IsFav=true;
     }
@@ -83,5 +83,11 @@ public class Hadis {
     }
     public Spannable getHadisBySearch(){
         return this.spannableHadis;
+    }
+    public void setKaynakBySearch(Spannable spannable) {
+        this.spannableKaynak=spannable;
+    }
+    public Spannable getKaynakBySearch(){
+        return this.spannableKaynak;
     }
 }

@@ -82,7 +82,7 @@ public class DBAdapter {
         db.close();
         return hadis;
     }
-    public Notif GetNotifByHadisID(long hadisID) {
+    public Notif getNotifByHadisID(long hadisID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query(DBHelper.TABLE_NAME_NOTIF,

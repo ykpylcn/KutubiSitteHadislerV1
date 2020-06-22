@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,7 +132,10 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         return false;
                     }
                 });
-                viewHolder.tv_kaynak.setText(hadisCurrent.getHadisNo()+": "+hadisCurrent.getKaynak());
+                if (hadisCurrent.getKaynakBySearch()!=null)
+                    viewHolder.tv_kaynak.setText(hadisCurrent.getKaynakBySearch());
+                else
+                    viewHolder.tv_kaynak.setText(hadisCurrent.getHadisNo()+": "+hadisCurrent.getKaynak());
                 viewHolder.tv_hadisAltKonu.setText(hadisCurrent.getAltKonu());
 
                 final Hadis hadisDB=App.DbAdapter.getHadis(hadisCurrent.getHadisNo());
@@ -214,20 +218,33 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         else if(isAlt && hadis.getAltKonu().contains(searchString)){
                             tempFilteredList.add(hadis);
                         }
-
                         else{
+                            if (isAna || isAlt)
+                                continue;
                             String body=hadis.getHadis().toLowerCase();
+                            String kaynak=hadis.getKaynak().toLowerCase();
                             String search=searchString.toLowerCase();
+                            Hadis temphadis=new Hadis(hadis.getHadisNo(),hadis.getAnaKonu(),hadis.getAltKonu(),hadis.getARivayetKaynak(),hadis.getRivayet(),hadis.getHadis(),hadis.getKaynak(),hadis.getIsFavStr());
+
+                            boolean temExist=false;
                             if (body.contains(search)) {
 
-                                Spannable spannable = new SpannableString(body);
-                                spannable.setSpan(new ForegroundColorSpan(Color.RED), body.indexOf(search), body.indexOf(search) + search.length(),     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                Hadis temphadis=new Hadis(hadis.getHadisNo(),hadis.getAnaKonu(),hadis.getAltKonu(),hadis.getARivayetKaynak(),hadis.getRivayet(),hadis.getHadis(),hadis.getKaynak(),hadis.getIsFavStr());
+                                temExist=true;
+                                Spannable spanHadis = new SpannableString(body);
+                                spanHadis.setSpan(new ForegroundColorSpan(Color.RED), body.indexOf(search), body.indexOf(search) + search.length(),     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                temphadis.setHadisBySearch(spanHadis);
 
-//                                hadis.setHadisBySearch(null);
-                                temphadis.setHadisBySearch(spannable);
-                                tempFilteredList.add(temphadis);
                             }
+                            if (kaynak.contains(search)) {
+                                temExist=true;
+                                Spannable spanKaynak = new SpannableString(kaynak);
+                                spanKaynak.setSpan(new ForegroundColorSpan(Color.RED), kaynak.indexOf(search), kaynak.indexOf(search) + search.length(),     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                temphadis.setKaynakBySearch(spanKaynak);
+
+                            }
+                            if(temExist)
+                                tempFilteredList.add(temphadis);
+
                         }
 //                        filteredHadisList = tempFilteredList;
                     }
@@ -252,12 +269,15 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 hadisList.clear();
 
                 App.filteredListHadisler=  (ArrayList<Hadis>) filterResults.values;
-                if(App.filteredListHadisler.size()>10){
-                    hadisList.addAll(App.filteredListHadisler.subList(0,10));
-                    addLoadingFooter();
+                if(App.filteredListHadisler!=null){
+                    if(App.filteredListHadisler.size()>10){
+                        hadisList.addAll(App.filteredListHadisler.subList(0,10));
+                        addLoadingFooter();
+                    }
+                    else
+                        hadisList.addAll(App.filteredListHadisler);
                 }
-                else
-                    hadisList.addAll(App.filteredListHadisler);
+
                 notifyDataSetChanged();
             }
         };
@@ -407,7 +427,16 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public Hadis getItem(int position) {
-        return hadisList.get(position);
+//               try {
+
+        if (position<0)
+            return null;
+            return hadisList.get(position);
+//        }
+//        catch (Exception e){
+//            Log.d("YKPTAG", "Hata:"+e.getMessage()+" Pos:" +String.valueOf(position));
+//            return  null;
+//        }
     }
 
 }

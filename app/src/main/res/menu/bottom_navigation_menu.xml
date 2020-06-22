@@ -12,7 +12,7 @@
         android:icon="@drawable/ic_sms"
         android:title="Not Ekle" />
     <item
-    android:id="@+id/navigation_notifications"
+    android:id="@+id/notif_icon"
     android:icon="@drawable/ic_notifications"
     android:title="@string/hint_menu_notify" />
     <item

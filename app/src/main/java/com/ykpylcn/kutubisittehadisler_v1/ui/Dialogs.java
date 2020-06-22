@@ -124,7 +124,7 @@ public class Dialogs {
 
 
 //        final AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
-        Notif notif=App.DbAdapter.GetNotifByHadisID(hadisID);
+        Notif notif=App.DbAdapter.getNotifByHadisID(hadisID);
 
 
 
@@ -240,7 +240,7 @@ public class Dialogs {
                         }
                     }
                 } else {
-                    if(App.DbAdapter.GetNotifByHadisID(hadisID)!=null)
+                    if(App.DbAdapter.getNotifByHadisID(hadisID)!=null)
                         App.DbAdapter.updateNotif(finalNotif[0]);
                     else
                         App.DbAdapter.insertNotif(finalNotif[0]);

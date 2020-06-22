@@ -1,22 +1,15 @@
 package com.ykpylcn.kutubisittehadisler_v1.utils;
 
-import android.app.AlertDialog;
 import android.app.Notification;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
-import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.JobIntentService;
 
-import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.db.DBAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
@@ -50,7 +43,7 @@ public class RunService extends JobIntentService {
 
                 Hadis hadis=null;
                 DBAdapter db=new DBAdapter(this);
-                Notif notif=db.GetNotifByHadisID(intent.getLongExtra("hadisid",1));
+                Notif notif=db.getNotifByHadisID(intent.getLongExtra("hadisid",1));
                 if(notif!=null){
                     if(notif.HadisShowType==0)
                         hadis=db.getHadis(intent.getLongExtra("hadisid",1));

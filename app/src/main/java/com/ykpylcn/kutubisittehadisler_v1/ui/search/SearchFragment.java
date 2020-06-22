@@ -166,21 +166,33 @@ public class SearchFragment extends Fragment {
         spinAnaKonu.setAdapter(new HadislerSpinnerAdapter(App.app_context,R.layout.spinner_hadisler_list_row,hadislist));
         spinAnaKonu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(final AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
-                    Hadis hadis = (Hadis) parent.getSelectedItem();
+                    progressBar.setVisibility(View.VISIBLE);
+                    final Hadis hadis = (Hadis) parent.getSelectedItem();
                     currentPage = PAGE_START;
                     isLoading = false;
                     isLastPage = false;
                     adapter.clear();
                     isSearched=true;
-                    adapter.getFilter().filter("@1/"+hadis.getAnaKonu());
-                    DisplayAltKonular(hadis);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+
+                            adapter.getFilter().filter("@1/"+hadis.getAnaKonu());
+                            DisplayAltKonular(hadis);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }, 1000);
+
+
                 }
 
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -194,13 +206,22 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
-                    Hadis hadis = (Hadis) parent.getSelectedItem();
+                    progressBar.setVisibility(View.VISIBLE);
+                    final Hadis hadis = (Hadis) parent.getSelectedItem();
                     currentPage = PAGE_START;
                     isLoading = false;
                     isLastPage = false;
                     adapter.clear();
                     isSearched=true;
-                    adapter.getFilter().filter("@2/"+hadis.getAnaKonu());
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            adapter.getFilter().filter("@2/"+hadis.getAnaKonu());
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }, 800);
                 }}
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -241,6 +262,8 @@ public class SearchFragment extends Fragment {
     public ArrayList<Hadis> CreateHadisler(int itemCount) {
         ArrayList<Hadis> movies = new ArrayList<>();
 
+        if (itemCount<0)
+            return movies;
         for (int i = itemCount; i < itemCount+pageLimit; i++) {
 
             if(!isSearched) {
@@ -300,7 +323,7 @@ public class SearchFragment extends Fragment {
 
     }
     private void Filter(String s){
-        if(s.length()>2)
+        if(s.trim().length()>2)
             if(adapter!=null){
 
                 spinAltKonu.setSelection(0);

@@ -108,7 +108,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
         text_kaynak.setText(hadis.getKaynak());
         text_kaynak.setMovementMethod(new ScrollingMovementMethod());
         TextView textHadisNo = convertView.findViewById(R.id.txt_hadisno);
-        textHadisNo.setText("Hadis No: "+String.valueOf(hadis.getHadisNo()));
+        textHadisNo.setText(String.valueOf(hadis.getHadisNo())+". Hadis");
         TextView text_rivayet = convertView.findViewById(R.id.text_rivayet);
         text_rivayet.setText(hadis.getRivayet());
 //        textHadisNo.setText(String.valueOf(hadis.getHadisNo()));

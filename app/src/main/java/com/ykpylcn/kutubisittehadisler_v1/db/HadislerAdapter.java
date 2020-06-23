@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.MainActivity;
 import com.ykpylcn.kutubisittehadisler_v1.R;
+import com.ykpylcn.kutubisittehadisler_v1.utils.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,11 +122,12 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public boolean onLongClick(View v) {
 
-                        SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
-
-                        SharedPreferences.Editor editor=refindexVP.edit();
-                        editor.putInt("refindexVPkey",App.DbAdapter.getHadisRowIndex(hadisCurrent.getHadisNo()));
-                        editor.commit();
+//                        SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
+//
+//                        SharedPreferences.Editor editor=refindexVP.edit();
+//                        editor.putInt("refindexVPkey",App.DbAdapter.getHadisRowIndex(hadisCurrent.getHadisNo()));
+//                        editor.commit();
+                        Prefs.PutIntValue("refindexVPkey",App.DbAdapter.getHadisRowIndex(hadisCurrent.getHadisNo()));
                         Context context = v.getContext();
                         context.startActivity(new Intent(context, MainActivity.class));
 

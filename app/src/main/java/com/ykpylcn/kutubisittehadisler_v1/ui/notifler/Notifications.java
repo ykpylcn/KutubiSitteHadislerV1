@@ -32,6 +32,7 @@ import com.ykpylcn.kutubisittehadisler_v1.ui.notlar.NotlarViewModel;
 import com.ykpylcn.kutubisittehadisler_v1.utils.AlarmNotificationReceiver;
 import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
 import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
+import com.ykpylcn.kutubisittehadisler_v1.utils.Prefs;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
 
 import java.util.ArrayList;
@@ -88,12 +89,7 @@ public class Notifications extends Fragment {
             @Override
             public void onLongClick(View view, int position) {
 
-                SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
-
-                SharedPreferences.Editor editor=refindexVP.edit();
-                editor.putInt("refindexVPkey",App.DbAdapter.getHadisRowIndex(notifList.get(position).HadisID));
-                editor.commit();
-
+                Prefs.PutIntValue("refindexVPkey",App.DbAdapter.getHadisRowIndex(notifList.get(position).HadisID));
                 Context context=getContext();
 
                 context.startActivity(new Intent(context, MainActivity.class));

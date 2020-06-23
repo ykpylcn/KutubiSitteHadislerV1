@@ -246,13 +246,13 @@ public class Dialogs {
                         App.DbAdapter.insertNotif(finalNotif[0]);
                 }
                 AlarmManager manager = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
-                startAlarm(manager,hadisID,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute(),activity,intent);
+                startAlarm(manager,isDaily.isChecked(),timePicker.getHour(),timePicker.getMinute(),activity,intent);
 
 
             }
         });
     }
-    private void startAlarm(AlarmManager manager,long hadisID, boolean isRepeat,int hour, int minute,Context activity, Intent myIntent) {
+    private void startAlarm(AlarmManager manager, boolean isRepeat,int hour, int minute,Context activity, Intent myIntent) {
 
 //        Intent myIntent;
         PendingIntent pendingIntent;

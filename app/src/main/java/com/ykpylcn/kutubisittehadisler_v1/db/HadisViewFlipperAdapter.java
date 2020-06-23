@@ -11,12 +11,16 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterViewFlipper;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
+import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
+import com.ykpylcn.kutubisittehadisler_v1.utils.OnSwipeTouchListener;
 
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -28,12 +32,13 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
     private Context mContext;
     int textSizeHadis=16;
     SharedPreferences refTextSize;
-    public HadisViewFlipperAdapter(Context context, ArrayList<Hadis> hadisler) {
+    AdapterViewFlipper adapViewFlipper;
+    public HadisViewFlipperAdapter(Context context, ArrayList<Hadis> hadisler, AdapterViewFlipper adapVFlipper) {
         this.mContext = context;
         this.hadisler = hadisler;
         this.refTextSize=mContext.getSharedPreferences("refTextSize",0);
         this.textSizeHadis=refTextSize.getInt("HadisTextSize",textSizeHadis);
-
+        this.adapViewFlipper=adapVFlipper;
     }
     @Override
     public int getCount() {
@@ -67,6 +72,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 //    }
 
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -83,7 +89,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 String shareBody =hadis.getHadis();
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAnaKonu());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAltKonu());
                 sharingIntent.putExtra(Intent.EXTRA_TITLE, hadis.getAltKonu());
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -104,6 +110,40 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
             }
         });
         textHadis.setMovementMethod(new ScrollingMovementMethod());
+        textHadis.setOnTouchListener(new OnSwipeTouchListener(mContext.getApplicationContext()) {
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+
+                Ileri();
+
+            }
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+
+                Geri();
+
+            }
+        });
+        LinearLayout linLayout = convertView.findViewById(R.id.linLayout);
+
+        linLayout.setOnTouchListener(new OnSwipeTouchListener(mContext.getApplicationContext()) {
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+
+                Ileri();
+
+            }
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+
+                Geri();
+
+            }
+        });
         TextView text_kaynak = convertView.findViewById(R.id.text_kaynak);
         text_kaynak.setText(hadis.getKaynak());
         text_kaynak.setMovementMethod(new ScrollingMovementMethod());
@@ -161,6 +201,21 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 
 
         return convertView;
+    }
+
+    private void Geri() {
+        adapViewFlipper.stopFlipping();
+        adapViewFlipper.setInAnimation(App.app_context, android.R.animator.fade_in);
+//                    adapViewFlipper.setOutAnimation(con1, android.R.animator.fade_out);
+        adapViewFlipper.showPrevious();
+//                    CheckIsFavorite(adapViewFlipper.getDisplayedChild());
+    }
+
+    private void Ileri() {
+        adapViewFlipper.stopFlipping();
+        adapViewFlipper.setInAnimation(App.app_context, android.R.animator.fade_in);
+        adapViewFlipper.setOutAnimation(App.app_context, android.R.animator.fade_out);
+        adapViewFlipper.showNext();
     }
 
 

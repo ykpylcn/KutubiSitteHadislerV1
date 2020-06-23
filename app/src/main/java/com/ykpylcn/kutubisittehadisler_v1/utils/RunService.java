@@ -56,7 +56,7 @@ public class RunService extends JobIntentService {
                 if(hadis!=null) {
                     NotificationUtils mNotificationUtils=new NotificationUtils(this,hadis.getHadisNo());
                     Notification.Builder nb = mNotificationUtils.
-                            getAndroidChannelNotification(hadis.getAnaKonu(), hadis.getHadis());
+                            getAndroidChannelNotification(hadis.getAltKonu(), hadis.getHadis());
                     mNotificationUtils.getManager(this).notify(hadis.getHadisNo(), nb.build());
                 }
 

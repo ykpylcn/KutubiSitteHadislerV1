@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,8 @@ import com.ykpylcn.kutubisittehadisler_v1.db.Notif;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.NotificationUtils;
+import com.ykpylcn.kutubisittehadisler_v1.utils.OnSwipeTouchListener;
+import com.ykpylcn.kutubisittehadisler_v1.utils.Prefs;
 
 import java.util.ArrayList;
 
@@ -47,6 +50,7 @@ public class HadislerFragment extends Fragment {
     AdapterViewFlipper adapViewFlipper;
     HadisViewFlipperAdapter hadisViewFlipperAdapter;
     SharedPreferences refindexVP;
+    LinearLayout linLayout;
     int indexVP=0;
     private float startX;
     int i=1;
@@ -57,26 +61,29 @@ public class HadislerFragment extends Fragment {
                 ViewModelProviders.of(this).get(HadislerViewModel.class);
 
 
-//        if(savedInstanceState!=null)
-//            indexVP=savedInstanceState.getInt("indexVP");
-        refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
-        indexVP=refindexVP.getInt("refindexVPkey",indexVP);
 
         final View root = inflater.inflate(R.layout.fragment_hadisler, container, false);
-//      final TextView textView = root.findViewById(R.id.text_home);
+
+
         hadislerViewModel.getHadisler().observe(getViewLifecycleOwner(), new Observer<ArrayList<Hadis>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Hadis> s) {
 
-
-                FlipMethodCalistirbyAdapter(root,s);
+                Init(root);
+                SetBottomMenuMethods();
+                FlipMethodCalistirbyAdapter(s);
 
             }
         });
 
 
 
-        bnavigate=root.findViewById(R.id.bottom_navigation);
+
+
+        return root;
+    }
+
+    private void SetBottomMenuMethods() {
         bnavigate.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -114,11 +121,17 @@ public class HadislerFragment extends Fragment {
 
 
         });
-
-
-        return root;
     }
 
+    private void Init(View root) {
+
+        indexVP=Prefs.GetIntValue("refindexVPkey",indexVP);
+        before=root.findViewById(R.id.btn_before);
+        next=root.findViewById(R.id.btn_Next);
+        bnavigate=root.findViewById(R.id.bottom_navigation);
+        adapViewFlipper = root.findViewById(R.id.adapterViewFlipper);
+
+    }
 
 
     private void CheckIsNotif(long hadisId){
@@ -131,8 +144,6 @@ public class HadislerFragment extends Fragment {
         }else
             item.setIcon(R.drawable.ic_notifications);
     }
-
-
 
     private void CheckIsFavorite(long hadisId){
 
@@ -250,12 +261,9 @@ public class HadislerFragment extends Fragment {
         });
 
     }
-    private void FlipMethodCalistirbyAdapter(View root,ArrayList<Hadis> list1) {
-        before=root.findViewById(R.id.btn_before);
-        next=root.findViewById(R.id.btn_Next);
+    private void FlipMethodCalistirbyAdapter(ArrayList<Hadis> list1) {
 
-        adapViewFlipper = root.findViewById(R.id.adapterViewFlipper);
-        hadisViewFlipperAdapter=new HadisViewFlipperAdapter(getActivity().getApplicationContext(), list1);
+        hadisViewFlipperAdapter=new HadisViewFlipperAdapter(getActivity().getApplicationContext(), list1,adapViewFlipper);
         adapViewFlipper.setAdapter(hadisViewFlipperAdapter);
         adapViewFlipper.setDisplayedChild(indexVP);
         adapViewFlipper.setFlipInterval(1000);
@@ -323,9 +331,7 @@ public class HadislerFragment extends Fragment {
     }
 
     private void SetVPIndex() {
-        SharedPreferences.Editor editor=refindexVP.edit();
-        editor.putInt("refindexVPkey",adapViewFlipper.getDisplayedChild());
-        editor.commit();
+        Prefs.PutIntValue("refindexVPkey",adapViewFlipper.getDisplayedChild());
     }
 
     @Override

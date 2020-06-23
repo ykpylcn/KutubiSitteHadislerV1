@@ -20,22 +20,11 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
 
-            Log.d("YKPTAG", "BOOT_COMPLETED Started" );
-//            Intent mIntent2 = new Intent(context, RunService.class);
-//            mIntent2.putExtra("hadisid", intent.getLongExtra("hadisid",1));
-//            RunService.enqueueWork(context, mIntent2);
-
-//            Intent serviceLauncher = new Intent(context, RunService.class);
-//            context.startService(serviceLauncher);
-//            Log.v("TEST", "Service loaded at start");
-        }else {
             Intent mIntent = new Intent(context, RunService.class);
-
             mIntent.putExtra("hadisid", intent.getLongExtra("hadisid",1));
             RunService.enqueueWork(context, mIntent);
-        }
+
 
 //        Hadis hadis=App.DbAdapter.getHadis(intent.getLongExtra("hadisid",1));
 //                if(hadis!=null) {

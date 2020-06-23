@@ -7,38 +7,52 @@ import com.ykpylcn.kutubisittehadisler_v1.App;
 
 
 public class Prefs {
-    private static SharedPreferences get(final Context context) {
-        return context.getSharedPreferences(App.package_name, Context.MODE_PRIVATE);
+    private static SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);;
+//    SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
+
+    public static void PutIntValue(String key, int value) {
+        SharedPreferences.Editor editor=refindexVP.edit();
+        editor.putInt(key,value);
+        editor.commit();
     }
 
-    static String getPref(final Context context, String pref, String def) {
-        SharedPreferences prefs = Prefs.get(context);
-        String val = prefs.getString(pref, def);
+    public static int GetIntValue(String key, int defaultvalue) {
 
-        if (val == null || val.equals("") || val.equals("null"))
-            return def;
-        else
-            return val;
+        return refindexVP.getInt(key,defaultvalue);
     }
 
-    static void putPref(final Context context, String pref, String val) {
-        SharedPreferences prefs = Prefs.get(context);
-        SharedPreferences.Editor editor = prefs.edit();
+//    private static SharedPreferences get(final Context context) {
+//        return context.getSharedPreferences(App.package_name, Context.MODE_PRIVATE);
+//    }
 
-        editor.putString(pref, val);
-        editor.apply();
-    }
-
-    private static int getIntPref(final Context context, String pref, int def) {
-        SharedPreferences prefs = Prefs.get(context);
-        return prefs.getInt(pref, def);
-    }
-
-    private static void putIntPref(final Context context, String pref, int val) {
-        SharedPreferences prefs = Prefs.get(context);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putInt(pref, val);
-        editor.apply();
-    }
+//    static String getPref(final Context context, String pref, String def) {
+//        SharedPreferences prefs = Prefs.get(context);
+//        String val = prefs.getString(pref, def);
+//
+//        if (val == null || val.equals("") || val.equals("null"))
+//            return def;
+//        else
+//            return val;
+//    }
+//
+//    static void putPref(final Context context, String pref, String val) {
+//        SharedPreferences prefs = Prefs.get(context);
+//        SharedPreferences.Editor editor = prefs.edit();
+//
+//        editor.putString(pref, val);
+//        editor.apply();
+//    }
+//
+//    private static int getIntPref(final Context context, String pref, int def) {
+//        SharedPreferences prefs = Prefs.get(context);
+//        return prefs.getInt(pref, def);
+//    }
+//
+//    private static void putIntPref(final Context context, String pref, int val) {
+//        SharedPreferences prefs = Prefs.get(context);
+//        SharedPreferences.Editor editor = prefs.edit();
+//
+//        editor.putInt(pref, val);
+//        editor.apply();
+//    }
 }

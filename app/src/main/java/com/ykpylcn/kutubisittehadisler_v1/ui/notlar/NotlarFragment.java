@@ -32,6 +32,7 @@ import com.ykpylcn.kutubisittehadisler_v1.db.NotesAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Dialogs;
 import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.MyDividerItemDecoration;
+import com.ykpylcn.kutubisittehadisler_v1.utils.Prefs;
 import com.ykpylcn.kutubisittehadisler_v1.utils.RecyclerTouchListener;
 
 import java.util.ArrayList;
@@ -99,14 +100,8 @@ public class NotlarFragment extends Fragment {
             @Override
             public void onLongClick(View view, int position) {
 
-                SharedPreferences refindexVP=App.app_context.getSharedPreferences("refindexVP",0);
-
-                SharedPreferences.Editor editor=refindexVP.edit();
-                editor.putInt("refindexVPkey",App.DbAdapter.getHadisRowIndex(notesList.get(position).getHadisNo()));
-                editor.commit();
-
+                Prefs.PutIntValue("refindexVPkey",App.DbAdapter.getHadisRowIndex(notesList.get(position).getHadisNo()));
                 Context context=getContext();
-
                 context.startActivity(new Intent(context, MainActivity.class));
 //                getActivity().finish();
             }

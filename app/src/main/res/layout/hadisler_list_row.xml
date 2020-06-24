@@ -43,7 +43,12 @@
 
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/tv_hadis_ravi"
+                style="@style/TextStyleKucuk"
+                android:visibility="invisible"
 
+                />
             <TextView
                 android:id="@+id/tv_hadis"
                 style="@style/TextStyleNormal"

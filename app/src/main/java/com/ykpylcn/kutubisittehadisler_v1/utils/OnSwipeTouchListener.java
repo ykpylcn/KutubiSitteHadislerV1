@@ -5,7 +5,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class OnSwipeTouchListener implements View.OnTouchListener {
+public abstract class OnSwipeTouchListener implements View.OnTouchListener {
     private GestureDetector gestureDetector;
     protected OnSwipeTouchListener(Context c) {
         gestureDetector = new GestureDetector(c, new GestureListener());
@@ -15,6 +15,9 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
         return gestureDetector.onTouchEvent(event);
 
     }
+
+    public abstract void onLongPress();
+
     private final class GestureListener extends
             GestureDetector.SimpleOnGestureListener {
         private static final int SWIPE_THRESHOLD = 10;
@@ -33,11 +36,11 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 //            onDoubleClick();
 //            return super.onDoubleTap(e);
 //        }
-//        @Override
-//        public void onLongPress(MotionEvent e) {
-//            onLongClick();
-//            super.onLongPress(e);
-//        }
+        @Override
+        public void onLongPress(MotionEvent e) {
+            onLongClick();
+            super.onLongPress(e);
+        }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -81,6 +84,6 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 //    }
 //    private void onDoubleClick() {
 //    }
-//    private void onLongClick() {
-//    }
+    private void onLongClick() {
+    }
 }

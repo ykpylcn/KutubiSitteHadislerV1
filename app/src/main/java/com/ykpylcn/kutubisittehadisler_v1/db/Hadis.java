@@ -8,7 +8,7 @@ public class Hadis {
     public static final String COLUMN_KAYNAK = "Kaynak";
     public static final String COLUMN_ISFAV = "IsFav";
     public static final String COLUMN_ANAKONU = "AnaKonu";
-
+    public static final String COLUMN_ALTKONU = "AltKonu";
     private  Spannable spannableHadis;
     private  Spannable spannableKaynak;
     private int ID;
@@ -23,8 +23,8 @@ public class Hadis {
         this.ID=HadisNo;
         this.AnaKonu=AnaKonu;
         this.AltKonu=AltKonu;
-        this.RivayetKaynak=RivayetKaynak;
-        this.Rivayet=Rivayet;
+        this.RivayetKaynak=RivayetKaynak==null?"":RivayetKaynak;
+        this.Rivayet=Rivayet==null?"":Rivayet;
         this.Hadis=Hadis;
         this.Kaynak=Kaynak==null?"":Kaynak;
         if (IsFav.trim().contains("1"))

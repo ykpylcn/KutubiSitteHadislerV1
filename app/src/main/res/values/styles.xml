@@ -49,6 +49,10 @@
 
         <item name="android:textSize" >@dimen/activity_text_size</item>
     </style>
+    <style name="TextStyleKucuk" parent="TextStyleBasic">
+
+        <item name="android:textSize" >@dimen/activity_text_size_kucuk</item>
+    </style>
     <style name="TextStyleBasicHeader" parent="TextStyleBasic">
         <item name="android:fontFamily" >@font/basliklar_font</item>
         <item name="android:textSize" >@dimen/activity_text_size_header</item>

@@ -105,11 +105,15 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     public void onClick(View v) {
                         if (hadisCurrent.getHadisBySearch()==null)
                         if(arrowP[0]){
+                            viewHolder.tv_ravi.setVisibility(View.VISIBLE);
+                            viewHolder.tv_ravi.setText("Rivayet: "+hadisCurrent.getRivayet()+", Kaynak:"+hadisCurrent.getARivayetKaynak());
                             viewHolder.tv_hadis.setText(hadisCurrent.getHadis());
                             viewHolder.tv_hadis.setBackgroundResource(R.color.secondaryLightColor2);
                             arrowP[0] =false;
                         }
                         else{
+                            viewHolder.tv_ravi.setVisibility(View.GONE);
+                            viewHolder.tv_ravi.setText("");
                             viewHolder.tv_hadis.setText(finalSBuild);
 //                    holder.tv_hadis.setBackgroundResource(R.color.);
                             arrowP[0] =true;
@@ -359,6 +363,7 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class HadisViewHolder extends RecyclerView.ViewHolder{
         private TextView tv_hadis;
+        private TextView tv_ravi;
         private TextView tv_kaynak;
         private ImageView img_isfav;
         private TextView tv_hadisAltKonu;
@@ -366,6 +371,7 @@ public class HadislerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public HadisViewHolder(View view) {
             super(view);
             tv_hadis = (TextView)view.findViewById(R.id.tv_hadis);
+            tv_ravi = (TextView)view.findViewById(R.id.tv_hadis_ravi);
             tv_hadisAltKonu= (TextView)view.findViewById(R.id.tv_hadisAltKonu);
             tv_kaynak = (TextView)view.findViewById(R.id.tv_kaynak);
             img_isfav = (ImageView) view.findViewById(R.id.img_isfav);

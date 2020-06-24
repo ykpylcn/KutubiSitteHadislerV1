@@ -89,7 +89,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 String shareBody =hadis.getHadis();
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAltKonu());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAnaKonu());
                 sharingIntent.putExtra(Intent.EXTRA_TITLE, hadis.getAltKonu());
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -125,6 +125,14 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                 Geri();
 
             }
+            @Override
+            public void onLongPress() {
+
+
+                Geri();
+
+            }
+
         });
         LinearLayout linLayout = convertView.findViewById(R.id.linLayout);
 
@@ -139,6 +147,13 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
             @Override
             public void onSwipeRight() {
                 super.onSwipeRight();
+
+                Geri();
+
+            }
+            @Override
+            public void onLongPress() {
+
 
                 Geri();
 

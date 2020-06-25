@@ -16,8 +16,6 @@ public abstract class OnSwipeTouchListener implements View.OnTouchListener {
 
     }
 
-    public abstract void onLongPress();
-
     private final class GestureListener extends
             GestureDetector.SimpleOnGestureListener {
         private static final int SWIPE_THRESHOLD = 10;
@@ -72,6 +70,9 @@ public abstract class OnSwipeTouchListener implements View.OnTouchListener {
             return false;
         }
     }
+
+    protected abstract void onLongClick();
+
     public void onSwipeRight() {
     }
     public void onSwipeLeft() {
@@ -84,6 +85,7 @@ public abstract class OnSwipeTouchListener implements View.OnTouchListener {
 //    }
 //    private void onDoubleClick() {
 //    }
-    private void onLongClick() {
-    }
+//    private void onLongClick() {
+//
+//    }
 }

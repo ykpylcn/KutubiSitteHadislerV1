@@ -4,20 +4,16 @@ package com.ykpylcn.kutubisittehadisler_v1.db;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.text.method.KeyListener;
 import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
-import com.ykpylcn.kutubisittehadisler_v1.ui.Message;
 import com.ykpylcn.kutubisittehadisler_v1.utils.OnSwipeTouchListener;
 
 import android.widget.LinearLayout;
@@ -83,33 +79,24 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
         final Hadis hadis = hadisler.get(position);
         final TextView textHadis = convertView.findViewById(R.id.txt_hadis);
         textHadis.setText(hadis.getHadis());
-        textHadis.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                String shareBody =hadis.getHadis();
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAnaKonu());
-                sharingIntent.putExtra(Intent.EXTRA_TITLE, hadis.getAltKonu());
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Intent chooserIntent = Intent.createChooser(sharingIntent, "Paylaş: ");
-                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                App.app_context.startActivity(chooserIntent);
+//        textHadis.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
 
-
-//                Intent sharingIntent = new Intent(Intent.ACTION_VIEW);
-//                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                sharingIntent.setData(Uri.parse("http://muhaddis.org/cgi-bin/dbman/db.cgi?db=ks&uid=default&SNo="+hadis.getHadisNo()+"&mh=10&view_records=Sorgula"));
-//
-//                Intent chooserIntent = Intent.createChooser(sharingIntent, "Open With");
-//                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//                App.app_context.startActivity(chooserIntent);
-                return false;
-            }
-        });
+////                Intent sharingIntent = new Intent(Intent.ACTION_VIEW);
+////                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////                sharingIntent.setData(Uri.parse("http://muhaddis.org/cgi-bin/dbman/db.cgi?db=ks&uid=default&SNo="+hadis.getHadisNo()+"&mh=10&view_records=Sorgula"));
+////
+////                Intent chooserIntent = Intent.createChooser(sharingIntent, "Open With");
+////                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////
+////                App.app_context.startActivity(chooserIntent);
+//                return false;
+//            }
+//        });
         textHadis.setMovementMethod(new ScrollingMovementMethod());
+
+
         textHadis.setOnTouchListener(new OnSwipeTouchListener(mContext.getApplicationContext()) {
             @Override
             public void onSwipeLeft() {
@@ -118,6 +105,13 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                 Ileri();
 
             }
+
+            @Override
+            protected void onLongClick() {
+
+                Share(hadis);
+            }
+
             @Override
             public void onSwipeRight() {
                 super.onSwipeRight();
@@ -125,13 +119,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                 Geri();
 
             }
-            @Override
-            public void onLongPress() {
 
-
-                Geri();
-
-            }
 
         });
         LinearLayout linLayout = convertView.findViewById(R.id.linLayout);
@@ -144,6 +132,12 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                 Ileri();
 
             }
+
+            @Override
+            protected void onLongClick() {
+                Share(hadis);
+            }
+
             @Override
             public void onSwipeRight() {
                 super.onSwipeRight();
@@ -151,14 +145,17 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
                 Geri();
 
             }
-            @Override
-            public void onLongPress() {
 
 
-                Geri();
-
-            }
         });
+//        textHadis.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                Message.show("long basildi");
+//
+//                return false;
+//            }
+//        });
         TextView text_kaynak = convertView.findViewById(R.id.text_kaynak);
         text_kaynak.setText(hadis.getKaynak());
         text_kaynak.setMovementMethod(new ScrollingMovementMethod());
@@ -216,6 +213,19 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 
 
         return convertView;
+    }
+
+    private void Share(Hadis hadis) {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody =hadis.getHadis();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAnaKonu());
+        sharingIntent.putExtra(Intent.EXTRA_TITLE, hadis.getAltKonu());
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent chooserIntent = Intent.createChooser(sharingIntent, "Paylaş: ");
+        chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        App.app_context.startActivity(chooserIntent);
     }
 
     private void Geri() {

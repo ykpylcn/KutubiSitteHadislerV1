@@ -106,9 +106,14 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 
             }
 
-            @Override
-            protected void onLongClick() {
+//            @Override
+//            protected void onLongClick() {
+//
+//                Share(hadis);
+//            }
 
+            @Override
+            protected void onDoubleClick() {
                 Share(hadis);
             }
 
@@ -133,8 +138,13 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 
             }
 
+//            @Override
+//            protected void onLongClick() {
+//                Share(hadis);
+//            }
+
             @Override
-            protected void onLongClick() {
+            protected void onDoubleClick() {
                 Share(hadis);
             }
 

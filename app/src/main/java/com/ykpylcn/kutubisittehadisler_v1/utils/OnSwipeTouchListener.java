@@ -22,23 +22,23 @@ public abstract class OnSwipeTouchListener implements View.OnTouchListener {
         private static final int SWIPE_VELOCITY_THRESHOLD = 10;
         @Override
         public boolean onDown(MotionEvent e) {
-            return true;
+            return false;
         }
 //        @Override
 //        public boolean onSingleTapUp(MotionEvent e) {
 //            onClick();
 //            return super.onSingleTapUp(e);
 //        }
-//        @Override
-//        public boolean onDoubleTap(MotionEvent e) {
-//            onDoubleClick();
-//            return super.onDoubleTap(e);
-//        }
         @Override
-        public void onLongPress(MotionEvent e) {
-            onLongClick();
-            super.onLongPress(e);
+        public boolean onDoubleTap(MotionEvent e) {
+            onDoubleClick();
+            return super.onDoubleTap(e);
         }
+//        @Override
+//        public void onLongPress(MotionEvent e) {
+//            onLongClick();
+//            super.onLongPress(e);
+//        }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -71,7 +71,9 @@ public abstract class OnSwipeTouchListener implements View.OnTouchListener {
         }
     }
 
-    protected abstract void onLongClick();
+    protected abstract void onDoubleClick();
+
+//    protected abstract void onLongClick();
 
     public void onSwipeRight() {
     }

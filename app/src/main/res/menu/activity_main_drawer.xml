@@ -25,6 +25,10 @@
             android:id="@+id/nav_notifler"
             android:icon="@drawable/notifs_menu"
             android:title="@string/hint_menu_nav_notifler" />
+        <item
+            android:id="@+id/nav_kirkhadis"
+            android:icon="@drawable/kirk_hadis"
+            android:title="@string/hint_menu_nav_kirkhadis" />
 <!--        <item-->
 <!--            android:id="@+id/nav_test"-->
 <!--            android:icon="@drawable/ic_search_24"-->

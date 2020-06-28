@@ -46,7 +46,7 @@
             <TextView
                 android:id="@+id/tv_hadis_ravi"
                 style="@style/TextStyleKucuk"
-                android:visibility="invisible"
+                android:visibility="gone"
 
                 />
             <TextView

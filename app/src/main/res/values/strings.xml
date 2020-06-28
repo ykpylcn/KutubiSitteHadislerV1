@@ -13,6 +13,7 @@
     <string name="menu_home">Hadisler</string>
     <string name="menu_sakli_hadisler">Saklı Hadisler</string>
     <string name="menu_notlar">Notlar</string>
+
     <string name="menu_search_hadisler">Hadis Ara</string>
     <string name="title_activity_splash_screen">FullscreenActivity</string>
 
@@ -45,6 +46,7 @@
     <string name="hint_menu_nav_notifler">Hatırlatmalar</string>
     <string name="msg_no_notif">Herhangi bir hatırlatma bulunamadi!</string>
     <!--    Genel-->
+    <string name="hint_menu_nav_kirkhadis">Kırk Hadis</string>
     <string name="btn_save">Kaydet</string>
     <string name="btn_edit">Duzenle</string>
     <string name="btn_delete">Sil</string>

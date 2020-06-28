@@ -57,6 +57,10 @@
         <item name="android:fontFamily" >@font/basliklar_font</item>
         <item name="android:textSize" >@dimen/activity_text_size_header</item>
     </style>
+    <style name="TextStyleBuyuk" parent="TextStyleBasic">
+        <item name="android:fontFamily" >@font/basliklar_font</item>
+        <item name="android:textSize" >@dimen/buyuk_text_size</item>
+    </style>
     <style name="TextStyleItalikSmall" parent="TextStyleBasic">
         <item name="android:fontFamily" >@font/verdanai</item>
         <item name="android:textSize" >@dimen/activity_text_size_small</item>

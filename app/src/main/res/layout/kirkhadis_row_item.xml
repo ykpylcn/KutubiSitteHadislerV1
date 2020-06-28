@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
 
-    <TextView
-        android:id="@+id/name"
+ >
+
+    <LinearLayout
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Marshmallow"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black" />
+        android:background="@drawable/kirk_up"></LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/BackColor2"
+
+        >
+    <TextView
+        android:id="@+id/hadis_name"
+        style="@style/TextStyleBuyuk"
+        android:textAlignment="center"
+ />
 
 
     <TextView
-        android:id="@+id/type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
-        android:layout_marginTop="5dp"
-        android:text="Android 6.0"
-        android:textColor="@android:color/black" />
+        android:id="@+id/kaynak_name"
+        android:layout_marginTop="4dp"
+        android:textAlignment="center"
+        style="@style/TextStyleItalikSmall"/>
 
     <ImageView
         android:id="@+id/item_info"
@@ -31,31 +38,16 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@android:drawable/ic_dialog_info" />
-
-
+        android:src="@android:drawable/ic_dialog_info"
+        android:visibility="gone"
+    />
+    </LinearLayout>
     <LinearLayout
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:background="@drawable/kirk_down"></LinearLayout>
 
-        <TextView
-            android:id="@+id/version_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="API: "
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/version_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="23"
-            android:textAppearance="?android:attr/textAppearanceButton"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
 
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

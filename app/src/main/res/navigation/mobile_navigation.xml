@@ -25,6 +25,11 @@
         android:name="com.ykpylcn.kutubisittehadisler_v1.ui.notlar.NotlarFragment"
         android:label="@string/menu_notlar"
         tools:layout="@layout/fragment_notlar" />
+    <fragment
+        android:id="@+id/nav_kirkhadis"
+        android:name="com.ykpylcn.kutubisittehadisler_v1.ui.kirkhadis.KirkHadis"
+        android:label="@string/hint_menu_nav_kirkhadis"
+        tools:layout="@layout/kirk_hadis_fragment" />
 
 
 

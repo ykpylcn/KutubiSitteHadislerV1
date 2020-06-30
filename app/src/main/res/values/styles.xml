@@ -70,7 +70,7 @@
     <style name="ButtonStyleBasic" parent="TextAppearance.AppCompat.Widget.Button">
         <item name="android:layout_width" >wrap_content</item>
         <item name="android:layout_height" >wrap_content</item>
-        <item name="android:layout_margin" >6dp</item>
+        <item name="android:layout_margin" >4dp</item>
         <item name="android:textAlignment" >center</item>
         <item name="android:fontFamily" >@font/verdanab</item>
         <item name="android:textSize" >@dimen/activity_button_size</item>

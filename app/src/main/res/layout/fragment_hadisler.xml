@@ -5,15 +5,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.hadisler.HadislerFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/ana_body"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
 
             android:id="@+id/bottom_navigation"
@@ -31,7 +30,6 @@
         android:layout_height="0dp"
         android:layout_weight="0.8"
         android:orientation="horizontal"
-        android:background="@color/secondaryLightColor2"
         android:id="@+id/viewFlipperLayout">
 
         <AdapterViewFlipper
@@ -54,7 +52,6 @@
         <Button
             android:id="@+id/btn_before"
             style="@style/ButtonStyleBasicLeft"
-
             android:layout_weight="1"
             android:text="@string/btn_hadis_onceki"
             />

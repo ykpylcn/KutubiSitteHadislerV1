@@ -10,7 +10,7 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/kirk_up"></LinearLayout>
+        android:background="@drawable/kirkup"></LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,7 +46,7 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/kirk_down"></LinearLayout>
+        android:background="@drawable/kirkdown"></LinearLayout>
 
 
 

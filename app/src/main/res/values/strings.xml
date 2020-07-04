@@ -46,6 +46,7 @@
     <string name="hint_menu_nav_notifler">Hatırlatmalar</string>
     <string name="msg_no_notif">Herhangi bir hatırlatma bulunamadi!</string>
     <!--    Genel-->
+    <string name="lbl_share_Hadis">Hadis Paylaş..</string>
     <string name="hint_menu_nav_kirkhadis">Kırk Hadis</string>
     <string name="btn_save">Kaydet</string>
     <string name="btn_edit">Duzenle</string>

@@ -2,6 +2,7 @@ package com.ykpylcn.kutubisittehadisler_v1;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -23,7 +24,18 @@ public class App extends Application {
         super.onCreate();
         package_name = getPackageName();
     }
-
+    public static void Share(Hadis hadis) {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody =hadis.getHadis();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAnaKonu());
+        sharingIntent.putExtra(Intent.EXTRA_TITLE, hadis.getAltKonu());
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent chooserIntent = Intent.createChooser(sharingIntent, "Paylaş: ");
+        chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        App.app_context.startActivity(chooserIntent);
+    }
 
 
 

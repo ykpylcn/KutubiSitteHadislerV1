@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ykpylcn.kutubisittehadisler_v1.App;
 import com.ykpylcn.kutubisittehadisler_v1.R;
+import com.ykpylcn.kutubisittehadisler_v1.SplashScreen;
 import com.ykpylcn.kutubisittehadisler_v1.db.Hadis;
 import com.ykpylcn.kutubisittehadisler_v1.db.HadisViewFlipperAdapter;
 import com.ykpylcn.kutubisittehadisler_v1.db.Note;
@@ -49,11 +51,9 @@ public class HadislerFragment extends Fragment {
     Button before, next;
     AdapterViewFlipper adapViewFlipper;
     HadisViewFlipperAdapter hadisViewFlipperAdapter;
-    SharedPreferences refindexVP;
-    LinearLayout linLayout;
+
     int indexVP=0;
-    private float startX;
-    int i=1;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class HadislerFragment extends Fragment {
 
 
 
-
+        setHasOptionsMenu(true);
         return root;
     }
 
@@ -321,7 +321,25 @@ public class HadislerFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_share) {
+            App.Share(App.mArrayListHadisler.get(adapViewFlipper.getDisplayedChild()));
+//            Intent intent = new Intent(getContext(), SplashScreen.class);
+//            startActivity(intent);
+//            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onDestroyView() {

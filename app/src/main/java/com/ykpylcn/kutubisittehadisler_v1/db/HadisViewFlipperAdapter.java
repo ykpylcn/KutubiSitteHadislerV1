@@ -114,7 +114,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 
             @Override
             protected void onDoubleClick() {
-                Share(hadis);
+                App.Share(hadis);
             }
 
             @Override
@@ -145,7 +145,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
 
             @Override
             protected void onDoubleClick() {
-                Share(hadis);
+                App.Share(hadis);
             }
 
             @Override
@@ -225,18 +225,7 @@ public class HadisViewFlipperAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void Share(Hadis hadis) {
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        String shareBody =hadis.getHadis();
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, hadis.getAnaKonu());
-        sharingIntent.putExtra(Intent.EXTRA_TITLE, hadis.getAltKonu());
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Intent chooserIntent = Intent.createChooser(sharingIntent, "Paylaş: ");
-        chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        App.app_context.startActivity(chooserIntent);
-    }
+
 
     private void Geri() {
         adapViewFlipper.stopFlipping();

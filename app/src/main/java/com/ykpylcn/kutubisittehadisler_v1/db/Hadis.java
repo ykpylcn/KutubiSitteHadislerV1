@@ -66,6 +66,9 @@ public class Hadis {
             return "0";
     }
 
+    public void setHadisNo(int hadisno){
+        this.ID=hadisno;
+    }
     public void setIsFav(boolean isFav){
         this.IsFav=isFav;
     }

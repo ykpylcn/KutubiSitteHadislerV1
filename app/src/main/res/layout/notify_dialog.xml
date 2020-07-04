@@ -24,8 +24,10 @@
        <TimePicker
            android:id="@+id/timePicker"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:timePickerMode="spinner"></TimePicker>
+           android:layout_height="match_parent"
+           android:background="@color/secondaryLightColor3"
+           android:timePickerMode="spinner"
+           android:tooltipText="Saat Sec!"></TimePicker>
 
 
 
@@ -52,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/currenthadis"
-            android:text="Secili Hadis"
+            android:text="Secili Hadisi Hatırlat"
             android:checked="true"
             />
 
@@ -66,7 +68,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/randomhadis"
-            android:text="Tum hadislerden Rastgele" />
+            android:text="Tüm hadislerden Rastgele" />
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/kirkhadis"
+            android:text="Kırk hadislerden Rastgele" />
     </RadioGroup>
     </LinearLayout>
 </LinearLayout>

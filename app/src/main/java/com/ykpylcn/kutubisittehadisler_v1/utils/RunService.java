@@ -49,8 +49,10 @@ public class RunService extends JobIntentService {
                         hadis=db.getHadis(intent.getLongExtra("hadisid",1));
                     else if(notif.HadisShowType==1)
                         hadis=db.getOneHadisRandom(true);
-                    else
+                    else if(notif.HadisShowType==2)
                         hadis=db.getOneHadisRandom(false);
+                    else
+                        hadis= db.getOneRandomKirkHadis();
                 }
 
                 if(hadis!=null) {

@@ -77,13 +77,15 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.MyViewHold
             showType="Saklı Hadislerden Rastgele";
         else if(notif.HadisShowType==2)
             showType="Tüm Hadislerden Rastgele";
+        else if(notif.HadisShowType==3)
+            showType="Kırk Hadislerden Rastgele";
 
 
 
 //        String text = "<font color=\"red\">Kurulu Değil!</font>";
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
-        builder.append(h+":"+ m);
+        builder.append("Saat: "+h+":"+ m);
         String red = " Kurulu Değil!";
         SpannableString redSpannable= new SpannableString(red);
         redSpannable.setSpan(new ForegroundColorSpan(Color.RED), 0, red.length(), 0);

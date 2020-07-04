@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DBAdapter {
     DBHelper dbHelper;
@@ -495,6 +496,56 @@ public class DBAdapter {
 
     }
 
+    public Hadis getOneRandomKirkHadis() {
+        ArrayList<Hadis> dataModels=getKirkHadis();
+        Random rand=new Random();
+        return dataModels.get(rand.nextInt(dataModels.size()));
 
+    }
+    public ArrayList<Hadis> getKirkHadis() {
+        ArrayList<Hadis> dataModels= new ArrayList<>();
 
+        dataModels.add(new Hadis(6001,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Her doğan, İslâm fıtratı üzerine doğar. Sonra, anne-babası onu Hristiyan, Yahudi veya Mecusi yapar.","Buhârî, cenâiz 92; Ebû Dâvut, sünne 17; Tirmizî, kader 5","1"));
+        dataModels.add(new Hadis(6002,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Müslüman, dilinden ve elinden Müslümanların emin olduğu kimsedir. Muhâcir de Allah'ın yasakladığı şeyleri terk edendir.","Buhari, Bedu'l-vahy, 4.","1"));
+        dataModels.add(new Hadis(6003,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","İnsanlara merhamet etmeyene Allah merhamet etmez.","Müslim, Fedâil, 66; Tirmizî, Birr, 16","1"));
+        dataModels.add(new Hadis(6004,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Hayra vesile olan, hayrı yapan gibidir.","Tirmizî, İlim, 14.","1"));
+        dataModels.add(new Hadis(6005,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","İki göz vardır ki, cehennem ateşi onlara dokunmaz: Allah korkusundan ağlayan göz, bir de gecesini Allah yolunda nöbet tutarak geçiren göz.","Tirmizî, Fedâilü'l-Cihâd, 12.","1"));
+        dataModels.add(new Hadis(6006,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","(Mü'min) kardeşinle münakaşa etme, onun hoşuna gitmeyecek şakalar yapma ve ona yerine getirmeyeceğin bir söz verme.","Tirmizî, Birr, 58.","1"));
+        dataModels.add(new Hadis(6007,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Bizi aldatan bizden değildir.","Müslim, Îman, 164.","1"));
+        dataModels.add(new Hadis(6008,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Kim bir kavme benzerse, o da onlardandır.","Ebû Dâvûd, Libâs, 4.","1"));
+        dataModels.add(new Hadis(6009,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Allah, her işte ihsanı (güzel davranmayı) emretmiştir.","Müslim, Sayd ve Zebâih, 57.","1"));
+        dataModels.add(new Hadis(6010,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Kul bir günah işlediği zaman kalbinde siyah bir nokta oluşur. Bundan vazgeçip tövbe ve istiğfar ettiği zaman kalbi parlar. Günahtan dönmez ve bunu yapmaya devam ederse siyah nokta artırılır ve sonunda tüm kalbini kaplar. Allah'ın (Kitabında) 'Hayır! Doğrusu onların kazanmakta oldukları kalplerini paslandırmıştır.' (Mutaffifîn, 83/14.) diye anlattığı pas işte budur.","Tirmizî, Tefsîru'l-Kur'ân, 83.","1"));
+        dataModels.add(new Hadis(6011,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Kim duyulsun diye iyilik yaparsa, Allah (onun bu niyetini herkese) duyurur. Kim gösteriş için iyilik yaparsa, Allah da (onun bu riyakârlığını herkese) gösterir.","Müslim, Zühd, 48.","1"));
+        dataModels.add(new Hadis(6012,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Mümin, yeşil ekine benzer. Rüzgâr hangi taraftan eserse onu o tarafa yatırır (fakat yıkılmaz), rüzgâr sakinleştiğinde yine doğrulur. İşte mümin de böyledir; o, bela ve musibetler sebebiyle eğilir (fakat yıkılmaz). Kâfir ise sert ve dimdik selvi ağacına benzer ki Allah onu dilediği zaman (bir defada) söküp devirir.","Buhârî, Tevhid, 31.","1"));
+        dataModels.add(new Hadis(6013,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Dua, ibadetin özüdür.","Tirmizî, Deavât, 1","1"));
+        dataModels.add(new Hadis(6014,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Sizden birinin, bir lokması düştüğünde onu alsın, temizleyip yesin, şeytana bırakmasın.","Müslim, Eşribe, 136","1"));
+        dataModels.add(new Hadis(6015,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","İyilik güzel ahlaktır; günah da içinde tereddüt uyandıran ve halkın bilmesini istemediğin şeydir.","Müslim, el-Birrü ve's Sıle, 2553","1"));
+        dataModels.add(new Hadis(6016,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Dünyada garip yahut yolcu ol.","Buhârî, Rikak, babu kavlin Nebiyi, 11/199, 200","1"));
+        dataModels.add(new Hadis(6017,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Kendisini ilgilendirmeyen şeyleri (mâlâyâniyi) terk etmesi, kişinin Müslümanlığının güzelliğindendir.","Tirmizî, Zühd, 11.","1"));
+        dataModels.add(new Hadis(6018,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","İnsanların Allah'tan en uzak olanı, katı kalpli kimselerdir.","Tirmizî, Zühd,61","1"));
+        dataModels.add(new Hadis(6019,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Mizana ilk konacak amel güzel ahlak ve cömertliktir.","İhya C. 3 S. 116","1"));
+        dataModels.add(new Hadis(6020,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","İşçiye ücretini, (alnının) teri kurumadan veriniz.","İbn Mâce, Ruhûn, 4.","1"));
+        dataModels.add(new Hadis(6021,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Doğru olmayan birşey gördüğünüzde veya işittiğinizde, insanların heybeti, hakkı söylemekten sizi alıkoymasın.","İmam Taberâni, Mu'cemu's-Sağir, 2/185.","1"));
+        dataModels.add(new Hadis(6022,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Hiçbiriniz kendisi için istediğini (mü min) kardeşi için istemedikçe (gerçek) iman etmiş olamaz.","Buhari, İman, 7; Müslim, İman, 71.","1"));
+        dataModels.add(new Hadis(6023,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Hiçbir baba, çocuğuna, güzel terbiyeden daha üstün bir hediye veremez.","Tirmizi, Birr, 33","1"));
+        dataModels.add(new Hadis(6024,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Allah a ve ahiret gününe iman eden kimse, komşusuna eziyet etmesin. Allah a ve ahiret gününe iman eden misafirine ikramda bulunsun. Allah a ve ahiret gününe iman eden kimse, ya hayır söylesin veya sussun.","Buhari, Edeb, 31, 85; Müslim, İman, 74, 75.","1"));
+        dataModels.add(new Hadis(6025,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Kim evlenirse imanın yarısını tamamlamış olur; kalan diğer yarısı hakkında ise Allah'tan korksun!","Heysemî, IV, 252","1"));
+        dataModels.add(new Hadis(6026,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Nikâh benim sünnetimdir. Kim benim sünnetimle amel etmezse, benden değildir. Evleniniz! Zira ben, diğer ümmetlere karşı sizin çokluğunuz ile iftihar edeceğim. Kimin maddî imkânı varsa, hemen evlensin. Kim maddî imkân bulamazsa, nafile oruç tutsun. Çünkü oruç, onun için şehveti kırıcıdır.","İbn-i Mâce, Nikâh, 1/1846","1"));
+        dataModels.add(new Hadis(6027,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Âmâ'ya veya yol sorana yol göstermen, sadakadır. Güçsüz birine yardım etmen, sadakadır. Konuşmakta güçlük çekenin meramını ifade edivermen sadakadır.","İbn Hanbel, V, 152, 169.","1"));
+        dataModels.add(new Hadis(6028,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Kimin bir kız çocuğu dünyaya gelir de onu toprağa gömmeden, horlamadan ve üzerine erkek çocuğunu tercih etmeden yetiştirecek olursa Allah Teâlâ o kimseyi cennetine koyacaktır.","(Ahmed, Müsned,(Tah: Muhammed Şakir, Had. no: 1957),c. IV, s. 294)","1"));
+        dataModels.add(new Hadis(6029,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Allah'tan korkunuz; çocuklarınız arasında adaletli davranınız.","Müslim, Hibât 13)","1"));
+        dataModels.add(new Hadis(6030,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","İslâm, güzel ahlâktır","Kenzü'l-Ummâl, 3/17, HadisNo: 5225","1"));
+        dataModels.add(new Hadis(6031,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Bir müslümanın diktiği ağaçtan veya ektiği ekinden insan,\n" +    "hayvan ve kuşların yedikleri şeyler, o müslüman için birer\n" +               "sadakadır.","Buhârî, Edeb, 27; Müslim, Müsâkât, 7, 10.","1"));
+        dataModels.add(new Hadis(6032,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Nefsimi elinde bulundurana yemin ederim ki, sizden\n" +              "biriniz ben ona babasından, çocuğundan ve bütün insanlardan\n" +              "daha sevimli olmadıkça iman etmiş olamaz.","Buhârî, Sahih, İman, 8; Müslim, Sahih, İman, 69.","1"));
+        dataModels.add(new Hadis(6033,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Ümmetimin içinden bana en şiddetli sevgisi olanlar,\n" +             "benden sonra gelip onlardan biri ehli ve malına karşılık beni\n" +                "görmek arzusunda olan insanlardır.","Müslim, Sahih, Cennet, 4. H.No; 12.","1"));
+        dataModels.add(new Hadis(6034,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Ümmetimin fesada uğradığı bir anda benim bir sünnetime\n" +                "yapışan için şehit sevabı vardır.","El-Heysemi, Mecmeu'z-Zevâid, c.1. s.172.","1"));
+        dataModels.add(new Hadis(6035,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Kim bana bir defa salavat-ı şerife okursa Allah Teala ona\n" +                "on salat eder.","Müslim, Sahih, Salat, 17. H.No; 408.","1"));
+        dataModels.add(new Hadis(6036,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Her kul öldüğü hal üzere dirilir.","Müslim, Cennet 2878","1"));
+        dataModels.add(new Hadis(6037,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Ölüyü üç şey takip eder: Ailesi, malı ve ameli. İkisi geri\n" +                "döner; biri kalır: Ailesi ve malı geri döner; ameli ise kalır.","Buhârî, Rikak, 11/315","1"));
+        dataModels.add(new Hadis(6038,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Namazda Fatiha suresini okumayan kimsenin namazı\n" +                "yoktur.","Buhârî, Ezân 94; Müslim, Salât 34-37,( 394); Ebu Dâvud, Salât, 131-132 (822)","1"));
+        dataModels.add(new Hadis(6039,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Gücünüzün yettiği ibadeti yapın. Zira siz usanmadıkça\n" +                "Allah usanmaz.","Buhârî Teheccüd 3/31; Müslim Müsafirin, 785","1"));
+        dataModels.add(new Hadis(6040,"Kirk Kadis","Kırk Kadis","Rivayet Kaynak","Rivayet","Alışveriş yapanlar meclisten ayrılmadıkları sürece\n" +                "muhayyerdirler. Eğer doğru konuşurlarsa alışverişlerinin\n" +                "bereketini görürler. Eğer bazı şeyleri saklarlarsa alışverişlerinin\n" +            "bereketi kaçar.","Buhârî, Buyu', 1532","1"));
+return dataModels;
+
+    }
 }

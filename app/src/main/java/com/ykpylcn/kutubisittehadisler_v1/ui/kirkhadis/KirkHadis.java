@@ -47,16 +47,16 @@ public class KirkHadis extends Fragment {
                 adapter= new KirkHadisAdapter(s,getActivity().getApplicationContext());
 
                 listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        Hadis dataModel= s.get(position);
-
-                        Snackbar.make(view, dataModel.getAnaKonu()+"\n"+dataModel.getHadis()+" API: "+dataModel.getHadisNo(), Snackbar.LENGTH_LONG)
-                                .setAction("No action", null).show();
-                    }
-                });
+//                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                        Hadis dataModel= s.get(position);
+//
+//                        Snackbar.make(view, dataModel.getAnaKonu()+"\n"+dataModel.getHadis()+" API: "+dataModel.getHadisNo(), Snackbar.LENGTH_LONG)
+//                                .setAction("No action", null).show();
+//                    }
+//                });
 
             }
         });

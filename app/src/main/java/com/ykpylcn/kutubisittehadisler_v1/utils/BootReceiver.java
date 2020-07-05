@@ -16,12 +16,12 @@ import java.util.List;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("YKPTAG", "BOOT_COMPLETED onReceive Started" );
+//        Log.d("YKPTAG", "BOOT_COMPLETED onReceive Started" );
         String action = intent.getAction();
         if(action!=null)
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             // Do my stuff
-            Log.d("YKPTAG", "BOOT_COMPLETED Started" );
+//            Log.d("YKPTAG", "BOOT_COMPLETED Started" );
             List<Notif> notifList= App.DbAdapter.getAllNotifs();
             intent.setClassName(context.getPackageName(),"AlarmNotificationReceiver.class");
             for (Notif notif:notifList) {
@@ -31,7 +31,7 @@ public class BootReceiver extends BroadcastReceiver {
                 intent.setAction(String.valueOf(notif.HadisID));
 
                 if(!NotificationUtils.checkNatification(intent,context)){
-                    Log.d("YKPTAG", "BOOT__NotificationUtils.checkNatification(intent,context) is false" );
+//                    Log.d("YKPTAG", "BOOT__NotificationUtils.checkNatification(intent,context) is false" );
                     AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
                     PendingIntent pendingIntent;
 
